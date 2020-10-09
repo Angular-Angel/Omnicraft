@@ -22,7 +22,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
  */
 public class Player {
     private float x, y, z;
-    
     private float SPEED = 1f;
     
     private Camera3D camera;
@@ -39,7 +38,6 @@ public class Player {
             cameraController.mouseDelta(dx, dy);
             prevMouseX = x; prevMouseY = y;
         }
-        
     }
     
     public Player(Camera3D camera) {
