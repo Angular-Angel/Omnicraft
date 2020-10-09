@@ -82,6 +82,7 @@ public class Player {
                 moving = true;
             }
             if (moving) {
+                direction.normalize();
                 direction.mult(SPEED * dt);
                 position.add(direction);
             }

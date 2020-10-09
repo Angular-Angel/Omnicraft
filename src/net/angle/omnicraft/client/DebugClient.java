@@ -71,6 +71,7 @@ public class DebugClient {
             glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // Really Nice Perspective Calculations*/
             
             Game.getMouse().setGrabbed(true);
+            Game.setVsync(true);
         }
         
     }
