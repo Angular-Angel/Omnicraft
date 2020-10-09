@@ -10,7 +10,6 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2i;
-import com.samrj.devil.math.Vec3;
 import java.awt.Color;
 import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
