@@ -9,6 +9,7 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.game.Mouse;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.graphics.Camera3DController;
+import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -22,11 +23,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
  * @author angle
  */
 public class Player {
-    private Vec3 position;
-    private float SPEED = 1f;
+    private final Vec3 position;
+    private final float SPEED = 1f;
     
-    private Camera3D camera;
-    private Camera3DController cameraController;
+    private final Camera3D camera;
+    private final Camera3DController cameraController;
     float prevMouseX;
     float prevMouseY;
     
@@ -43,9 +44,12 @@ public class Player {
     
     public Player(Camera3D camera) {
         this.camera = camera;
-        this.cameraController = new Camera3DController(camera);
+        cameraController = new Camera3DController(camera);
         position = new Vec3(0, 1, 2);
-        Game.getMouse().setPos(100, 100);
+        
+        Vec2 mousePos = Game.getMouse().getPos();
+        prevMouseX = mousePos.x; prevMouseY = mousePos.y;
+        
         Game.onMouseMoved(new CursorCallback());
     }
     
