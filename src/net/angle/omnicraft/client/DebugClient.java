@@ -33,7 +33,6 @@ public class DebugClient {
     
     private Camera3D camera;
     private SoilBlock block;
-    private float cameraAngle;
     private Player player;
     
     private class InitCallback implements Game.InitCallback {
@@ -58,6 +57,10 @@ public class DebugClient {
             DGL.init();
  
             camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
+            
+            Vec2i resolution = Game.getResolution();
+            camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
+            
             player = new Player(camera);
             
             block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)));
@@ -84,14 +87,6 @@ public class DebugClient {
             if (Game.getKeyboard().isKeyDown(GLFW_KEY_ESCAPE)){
                 Game.stop();
             }
-            
-            //cameraAngle += dt;
-            //camera.dir.setRotation(new Vec3(0.0f, 1.0f, 0.0f), cameraAngle);
-            //camera.dir.rotate(new Vec3(1.0f, 0.0f, 0.0f), -Util.toRadians(10.0f));
-
-            float cameraX = 5.0f*(float)Math.sin(cameraAngle);
-            float cameraZ = 5.0f*(float)Math.cos(cameraAngle);
-            //camera.pos.set(cameraX, 1.0f, cameraZ);
         }
         
     }
@@ -101,9 +96,6 @@ public class DebugClient {
         @Override
         public void run() {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            
-            Vec2i resolution = Game.getResolution();
-            camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
 
             //I need to add matrix toArray functions to make this easier. -Sam
             try (MemoryStack stack = MemoryStack.stackPush())
