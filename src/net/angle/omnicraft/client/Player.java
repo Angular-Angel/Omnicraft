@@ -50,44 +50,51 @@ public class Player {
     }
     
     public void update(float dt) {
-        Vec3 direction = new Vec3();
+        
+        float forwards = 0, rightwards = 0;
+        
         boolean moving = false;
+        
         if (Game.getKeyboard().isKeyDown(GLFW_KEY_W)){
-                direction.z = -1;
-                moving = true;
-            }
-            
-            if (Game.getKeyboard().isKeyDown(GLFW_KEY_A)){
-                direction.x = -1;
-                moving = true;
-            }
-            
-            if (Game.getKeyboard().isKeyDown(GLFW_KEY_S)){
-                direction.z = 1;
-                moving = true;
-            }
-            
-            if (Game.getKeyboard().isKeyDown(GLFW_KEY_D)){
-                direction.x = 1;
-                moving = true;
-            }
-            
-            if (Game.getKeyboard().isKeyDown(GLFW_KEY_LEFT_SHIFT)){
-                direction.y = -1;
-                moving = true;
-            }
-            
-            if (Game.getKeyboard().isKeyDown(GLFW_KEY_SPACE)){
-                direction.y = 1;
-                moving = true;
-            }
-            if (moving) {
-                direction.normalize();
-                direction.mult(SPEED * dt);
-                position.add(direction);
-            }
-            
-            cameraController.target.set(position);
-            cameraController.update();
+            forwards = 1;
+            moving = true;
+        } else if (Game.getKeyboard().isKeyDown(GLFW_KEY_S)){
+            forwards = -1;
+            moving = true;
+        }
+
+        if (Game.getKeyboard().isKeyDown(GLFW_KEY_A)){
+            rightwards = -1;
+            moving = true;
+        }else if (Game.getKeyboard().isKeyDown(GLFW_KEY_D)){
+            rightwards = 1;
+            moving = true;
+        }
+        
+        float camSin = (float)Math.sin(cameraController.getYaw());
+        float camCos = (float)Math.cos(cameraController.getYaw());
+        Vec3 flatForward = new Vec3(-camSin, 0.0f, -camCos);
+        Vec3 flatRight   = new Vec3(camCos, 0.0f, -camSin);
+        Vec3 direction = Vec3.mult(flatRight, rightwards);
+        direction.madd(flatForward, forwards);
+        
+        if (Game.getKeyboard().isKeyDown(GLFW_KEY_LEFT_SHIFT)){
+            direction.y = -1;
+            moving = true;
+        }
+
+        if (Game.getKeyboard().isKeyDown(GLFW_KEY_SPACE)){
+            direction.y = 1;
+            moving = true;
+        }
+        
+        if (moving) {
+            direction.normalize();
+            direction.mult(SPEED * dt);
+            position.add(direction);
+        }
+
+        cameraController.target.set(position);
+        cameraController.update();
     }
 }

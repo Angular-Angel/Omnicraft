@@ -136,8 +136,6 @@ public class DebugClient {
         glFrustum(left, right, bottom, top, near, far);
     }
     
-    public DebugClient() {}
-    
     public void run() {
         Game.setTitle("Omnicraft");
         Game.setDebug(true);
