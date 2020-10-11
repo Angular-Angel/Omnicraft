@@ -10,6 +10,7 @@ import java.util.Random;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class OmniRandom extends Random {
     public int getIntBetween(int min, int max) {

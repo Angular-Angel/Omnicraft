@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.world.types;
+package net.angle.omnicraft.world.blocks;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Image;
@@ -13,6 +13,7 @@ import java.awt.Color;
 import net.angle.omnicraft.pixel.CubeTexture;
 import net.angle.omnicraft.pixel.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.world.types.SoilType;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
@@ -25,8 +26,9 @@ import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.*;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilBlock extends PixelSource {
+public class SoilBlock implements PixelSource {
     private final SoilType soilType;
     private final CubeTexture texture;
     

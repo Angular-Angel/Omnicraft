@@ -12,8 +12,9 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilFraction extends PixelSource {
+public class SoilFraction implements PixelSource {
     
     private SoilComponent component;
     private float fraction;

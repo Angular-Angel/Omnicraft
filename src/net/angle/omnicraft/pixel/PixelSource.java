@@ -11,10 +11,11 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class PixelSource {
+public interface PixelSource {
     
-    public int checkBand(int value) {
+    public static int checkBand(int value) {
         if (value < 0)
             return 0;
         if (value > 255)
@@ -23,5 +24,5 @@ public abstract class PixelSource {
             return value;
     }
     
-    public abstract Color getPixelColor(OmniRandom random, PixelSource context);
+    public Color getPixelColor(OmniRandom random, PixelSource context);
 }

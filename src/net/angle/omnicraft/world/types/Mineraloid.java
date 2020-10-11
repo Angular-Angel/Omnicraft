@@ -10,6 +10,7 @@ import net.angle.omnicraft.pixel.PixelSource;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class Mineraloid extends Substance {
     

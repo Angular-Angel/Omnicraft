@@ -12,6 +12,7 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class MineralGrain extends SoilComponent {
     private final Mineraloid mineraloid;

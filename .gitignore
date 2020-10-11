@@ -2,3 +2,8 @@
 build/classes/
 
 nbproject/private/
+/dist/
+
+build/built-jar.properties
+
+nbproject/

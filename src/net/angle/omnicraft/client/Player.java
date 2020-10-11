@@ -21,6 +21,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class Player {
     private final Vec3 position;

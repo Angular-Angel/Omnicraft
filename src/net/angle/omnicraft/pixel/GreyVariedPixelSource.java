@@ -6,13 +6,15 @@
 package net.angle.omnicraft.pixel;
 
 import java.awt.Color;
+import static net.angle.omnicraft.pixel.PixelSource.checkBand;
 import net.angle.omnicraft.random.OmniRandom;
 
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class GreyVariedPixelSource extends PixelSource {
+public class GreyVariedPixelSource implements PixelSource {
 
     private Color mainColor;
     

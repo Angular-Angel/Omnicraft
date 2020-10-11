@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class CubeTexture {
     private Texture2D top, bottom, front, back, left, right;

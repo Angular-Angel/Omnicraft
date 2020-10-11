@@ -8,6 +8,7 @@ package net.angle.omnicraft.world.types;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class ClayType {
     

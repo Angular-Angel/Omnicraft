@@ -12,8 +12,9 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class Substance extends PixelSource{
+public class Substance implements PixelSource {
     private PixelSource pixelSource;
     
     public Substance(PixelSource pixelSource) {

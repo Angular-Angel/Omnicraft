@@ -15,7 +15,7 @@ import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
-import net.angle.omnicraft.world.types.SoilBlock;
+import net.angle.omnicraft.world.blocks.SoilBlock;
 import net.angle.omnicraft.world.types.SoilFraction;
 import net.angle.omnicraft.world.types.SoilType;
 import static org.lwjgl.glfw.GLFW.*;
@@ -25,6 +25,7 @@ import org.lwjgl.system.MemoryStack;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class DebugClient {
     
@@ -62,7 +63,6 @@ public class DebugClient {
             Game.getMouse().setGrabbed(true);
             Game.setVsync(true);
         }
-        
     }
     
     private class StepCallback implements Game.StepCallback {
