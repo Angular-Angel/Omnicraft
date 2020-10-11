@@ -39,20 +39,6 @@ public class DebugClient {
 
         @Override
         public void init() throws IOException {
-            /*glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            
-            Vec2i resolution = Game.getResolution();
-            
-            gluPerspective(45.0f, (float)resolution.x / (float)resolution.y, 0.1f ,100.0f);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-            
-            glShadeModel(GL_SMOOTH);                        // Enables Smooth Shading
-            glClearDepth(1.0f);                         // Depth Buffer Setup
-            glEnable(GL_DEPTH_TEST);                        // Enables Depth Testing
-            glDepthFunc(GL_LEQUAL);                         // The Type Of Depth Test To Do
-            glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // Really Nice Perspective Calculations*/
             
             DGL.init();
  
@@ -107,15 +93,6 @@ public class DebugClient {
             }
             
             block.draw();
-            
-            /*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            
-            drawPyramid();
-            
-            drawCube();
-            
-            rtri+=0.2f;                     // Increase The Rotation Variable For The Triangle ( NEW )
-            rquad-=0.15f;                       // Decrease The Rotation Variable For The Quad     ( NEW )*/
         }
         
     }
