@@ -25,7 +25,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
  */
 public class Player {
     private final Vec3 position;
-    private final float SPEED = 1f;
+    private final float SPEED = 5f;
     
     private final Camera3D camera;
     private final Camera3DController cameraController;

@@ -14,11 +14,12 @@ import java.awt.Color;
 import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
-import net.angle.omnicraft.world.blocks.SoilBlock;
 import net.angle.omnicraft.world.types.SoilFraction;
 import net.angle.omnicraft.world.types.SoilType;
+import net.angle.omnicraft.world.blocks.SoilBlock;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.system.MemoryStack;
@@ -32,6 +33,7 @@ public class DebugClient {
     
     private Camera3D camera;
     private SoilBlock block;
+    private Chunk chunk;
     private Player player;
     
     private class InitCallback implements Game.InitCallback {
@@ -51,6 +53,8 @@ public class DebugClient {
             block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
                     new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
             new OmniRandom());
+            
+            chunk = new Chunk(block);
             
             glEnable(GL_TEXTURE_2D);
             
@@ -92,7 +96,7 @@ public class DebugClient {
                 glLoadMatrixf(camera.viewMat.mallocFloat(stack));
             }
             
-            block.draw();
+            chunk.draw();
         }
         
     }
