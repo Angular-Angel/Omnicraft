@@ -100,14 +100,6 @@ public class DebugClient {
         
     }
     
-    public static void gluPerspective(float fovy, float aspect, float near, float far) {
-        float bottom = -near * (float) Math.tan(fovy / 2);
-        float top = -bottom;
-        float left = aspect * bottom;
-        float right = -left;
-        glFrustum(left, right, bottom, top, near, far);
-    }
-    
     public void run() {
         Game.setTitle("Omnicraft");
         Game.setDebug(true);
