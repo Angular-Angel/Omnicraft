@@ -30,9 +30,6 @@ import org.lwjgl.system.MemoryStack;
  */
 public class DebugClient {
     
-    float     rtri;                       // Angle For The Triangle
-    float     rquad;                      // Angle For The Quad
-    
     private Camera3D camera;
     private SoilBlock block;
     private Player player;
