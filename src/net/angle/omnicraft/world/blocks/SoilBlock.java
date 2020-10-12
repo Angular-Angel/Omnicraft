@@ -28,9 +28,8 @@ import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.*;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilBlock implements PixelSource {
+public class SoilBlock extends Block implements PixelSource {
     private final SoilType soilType;
-    private final CubeTexture texture;
     
     public Texture2D generateTexture(OmniRandom random) {
         Color[][] tex = new Color[16][16];
@@ -68,22 +67,12 @@ public class SoilBlock implements PixelSource {
         return texture;
     }
     
-    public SoilBlock(SoilType soilType) {
+    public SoilBlock(SoilType soilType, OmniRandom random) {
+        super(new CubeTexture(soilType.generateTexture(random), soilType.generateTexture(random),
+                              soilType.generateTexture(random), soilType.generateTexture(random), 
+                              soilType.generateTexture(random), soilType.generateTexture(random)));
+        
         this.soilType = soilType;
-        
-        OmniRandom random = new OmniRandom();
-        
-        this.texture = new CubeTexture(generateTexture(random), generateTexture(random),
-                                       generateTexture(random), generateTexture(random), 
-                                       generateTexture(random), generateTexture(random));
-    }
-    
-    public void draw() {
-        texture.draw();
-    }
-    
-    public void delete() {
-        this.texture.delete();
     }
 
     @Override

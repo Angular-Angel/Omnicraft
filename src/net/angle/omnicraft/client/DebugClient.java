@@ -13,6 +13,7 @@ import com.samrj.devil.math.Vec2i;
 import java.awt.Color;
 import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
+import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.blocks.SoilBlock;
@@ -50,8 +51,10 @@ public class DebugClient {
             
             player = new Player(camera);
             
-            block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)));
-
+            block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
+                    new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
+            new OmniRandom());
+            
             glEnable(GL_TEXTURE_2D);
             
             glShadeModel(GL_SMOOTH);                        // Enables Smooth Shading

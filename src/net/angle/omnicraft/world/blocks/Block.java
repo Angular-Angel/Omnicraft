@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import net.angle.omnicraft.pixel.BlockTexture;
+
 /**
  *
  * @author angle
@@ -12,4 +14,17 @@ package net.angle.omnicraft.world.blocks;
  */
 public abstract class Block {
     
+    public final BlockTexture texture;
+    
+    public Block(BlockTexture texture) {
+        this.texture = texture;
+    }
+    
+    public void draw() {
+        texture.draw();
+    }
+    
+    public void delete() {
+        this.texture.delete();
+    }
 }

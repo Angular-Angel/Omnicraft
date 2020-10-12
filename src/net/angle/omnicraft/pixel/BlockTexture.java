@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public abstract class BlockTexture {
     
@@ -48,4 +49,8 @@ public abstract class BlockTexture {
         texture.unbind();
         glTranslatef(-startx, -starty, -startz);
     }
+    
+    public abstract void draw();
+    
+    public abstract void delete();
 }
