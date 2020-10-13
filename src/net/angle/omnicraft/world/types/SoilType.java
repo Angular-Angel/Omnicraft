@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.angle.omnicraft.pixel.PixelSource;
+import net.angle.omnicraft.pixel.TextureSource;
 import net.angle.omnicraft.random.OmniRandom;
 import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
@@ -29,53 +30,13 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilType implements PixelSource {
+public class SoilType extends TextureSource {
     private final List<SoilFraction> components;
     
     public SoilType(SoilFraction... components) {
         this.components = new ArrayList();
         
         this.components.addAll(Arrays.asList(components));
-    }
-    
-    public Texture2D generateTexture(OmniRandom random) {
-        return generateTexture(16, 16, random);
-    }
-    
-    public Texture2D generateTexture(int width, int height, OmniRandom random) {
-        Color[][] tex = new Color[height][width];
-        
-        for (Color[] line : tex) {
-            for (int i = 0; i < width; i++) {
-                line[i] = this.getPixelColor(random, this);
-            }
-        }
-        
-        Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
-        image.shade((x, y, band) -> {
-            if (band == 0)
-                return tex[x][y].getRed();
-            if (band == 1)
-                return tex[x][y].getGreen();
-            if (band == 2)
-                return tex[x][y].getBlue();
-            else
-                System.out.println("Asked for Band: " + band);
-                return 0;
-        });
-
-        Texture2D texture = DGL.genTex2D();
-        texture.bind();
-        texture.parami(GL_TEXTURE_WRAP_S, GL_REPEAT);
-        texture.parami(GL_TEXTURE_WRAP_T, GL_REPEAT);
-        texture.parami(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        texture.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        texture.image(image);
-        texture.generateMipmap();
-        texture.paramf(GL_TEXTURE_MAX_ANISOTROPY, 8);
-        texture.unbind();
-        DGL.delete(image);
-        return texture;
     }
     
     /*public Image generateImage() {
