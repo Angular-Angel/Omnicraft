@@ -27,7 +27,6 @@ public class Player {
     private final Vec3 position;
     private final float SPEED = 5f;
     
-    private final Camera3D camera;
     private final Camera3DController cameraController;
     float prevMouseX;
     float prevMouseY;
@@ -44,7 +43,6 @@ public class Player {
     }
     
     public Player(Camera3D camera) {
-        this.camera = camera;
         cameraController = new Camera3DController(camera);
         position = new Vec3(0, 1, 2);
         
