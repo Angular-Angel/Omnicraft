@@ -15,6 +15,7 @@ import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
@@ -32,7 +33,7 @@ import org.lwjgl.system.MemoryStack;
 public class DebugClient {
     
     private Camera3D camera;
-    private SoilBlock block;
+    private Block block;
     private Chunk chunk;
     private Player player;
     
