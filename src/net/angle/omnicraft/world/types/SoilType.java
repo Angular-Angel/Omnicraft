@@ -39,15 +39,19 @@ public class SoilType implements PixelSource {
     }
     
     public Texture2D generateTexture(OmniRandom random) {
-        Color[][] tex = new Color[16][16];
+        return generateTexture(16, 16, random);
+    }
+    
+    public Texture2D generateTexture(int width, int height, OmniRandom random) {
+        Color[][] tex = new Color[height][width];
         
         for (Color[] line : tex) {
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < width; i++) {
                 line[i] = this.getPixelColor(random, this);
             }
         }
         
-        Image image = DGL.genImage(16, 16, 3, Util.PrimType.BYTE);
+        Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
         image.shade((x, y, band) -> {
             if (band == 0)
                 return tex[x][y].getRed();
