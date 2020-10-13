@@ -26,11 +26,6 @@ public class SoilType extends TextureSource {
         
         this.components.addAll(Arrays.asList(components));
     }
-    
-    /*public Image generateImage() {
-        Image image = new Image();
-        image.
-    }*/
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
