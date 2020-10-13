@@ -16,6 +16,7 @@ import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.blocks.Block;
+import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
@@ -53,7 +54,7 @@ public class DebugClient {
             
             block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
                     new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
-            new OmniRandom());
+                new CubeShape(),new OmniRandom());
             
             chunk = new Chunk(block);
             

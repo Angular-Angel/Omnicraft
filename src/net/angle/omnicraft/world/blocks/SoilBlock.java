@@ -6,25 +6,24 @@
 package net.angle.omnicraft.world.blocks;
 
 import java.awt.Color;
-import net.angle.omnicraft.pixel.CubeTexture;
 import net.angle.omnicraft.pixel.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.SoilType;
 
 /**
- *
+ * This block represents not just dirt, but also gravel, sand, clay, silt, mud, and any mixture thereof.
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class SoilBlock extends Block implements PixelSource {
     private final SoilType soilType;
+    private final BlockShape blockShape;
     
-    public SoilBlock(SoilType soilType, OmniRandom random) {
-        super(new CubeTexture(soilType.generateTexture(random), soilType.generateTexture(random),
-                              soilType.generateTexture(random), soilType.generateTexture(random), 
-                              soilType.generateTexture(random), soilType.generateTexture(random)));
+    public SoilBlock(SoilType soilType, BlockShape blockShape, OmniRandom random) {
+        super(blockShape.generateBlockTexture(soilType, random));
         
         this.soilType = soilType;
+        this.blockShape = blockShape;
     }
 
     @Override
