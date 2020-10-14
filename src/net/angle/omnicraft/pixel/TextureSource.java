@@ -30,13 +30,22 @@ public abstract class TextureSource implements PixelSource {
     }
     
     public Texture2D generateTexture(int width, int height, OmniRandom random) {
-        Color[][] tex = new Color[height][width];
+        
+        //Pretty sure this and the following loop can be folded into a single 
+        //statement, but I don;t know how to do it right now.
+        Color[][] tex = new Color[width][height];
         
         for (Color[] line : tex) {
-            for (int i = 0; i < width; i++) {
+            for (int i = 0; i < height; i++) {
                 line[i] = this.getPixelColor(random, this);
             }
         }
+        
+        /*//This chunk of code is for testing position of texture rendering.
+        tex[0][0] = Color.red; //Top Left
+        tex[width - 1][0] = Color.blue; //Top Right
+        tex[width - 1][height - 1] = Color.green; // Bottom Right
+        tex[0][height - 1] = Color.yellow; //Bottom Left*/
         
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
         image.shade((x, y, band) -> {

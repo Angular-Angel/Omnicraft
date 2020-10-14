@@ -26,7 +26,7 @@ public abstract class BlockTexture {
         glBegin(GL_QUADS);
         
         //draw top left corner of texture
-        glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+        glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 0, 0);
         
         //draw top right corner of texture
         if (xoff == 0) {
@@ -36,7 +36,7 @@ public abstract class BlockTexture {
         }
         
         //draw bottom right corner of texture
-        glTexCoord2f(1.0f, 1.0f); glVertex3f(xoff, yoff, zoff);
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(xoff, yoff, zoff);
         
         //draw bottom left corner of texture
         if (yoff == 0) {
