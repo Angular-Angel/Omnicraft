@@ -22,6 +22,7 @@ import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
 import net.angle.omnicraft.world.types.SoilType;
 import net.angle.omnicraft.world.blocks.SoilBlock;
+import net.angle.omnicraft.world.blocks.SteppedCubeShape;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.system.MemoryStack;
@@ -54,7 +55,7 @@ public class DebugClient {
             
             block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
                     new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
-                new CubeShape(),new OmniRandom());
+                new SteppedCubeShape(12),new OmniRandom());
             
             chunk = new Chunk(block);
             
