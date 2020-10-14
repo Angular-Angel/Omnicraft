@@ -25,6 +25,11 @@ public abstract class Chunk {
         
     }
     
+    public boolean containsCoordinates(int blockx, int blocky, int blockz) {
+        return blockx >= 0 && blockx < size && blocky >= 0 && blocky < size && 
+            blockz >= 0 && blockz < size;
+    }
+    
     public abstract Block getBlock(int blockx, int blocky, int blockz);
     public abstract void setBlock(int blockx, int blocky, int blockz, Block block);
     

@@ -28,11 +28,6 @@ public class HomogenousChunk extends Chunk {
         this.block = block;
         this.parent = parent;
     }
-    
-    public boolean containsCoordinates(int blockx, int blocky, int blockz) {
-        return blockx >= 0 && blockx < size && blocky >= 0 && blocky < size && 
-            blockz >= 0 && blockz < size;
-    }
 
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
@@ -52,7 +47,6 @@ public class HomogenousChunk extends Chunk {
             } else {
                 throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
             }
-        
         
         if (parent == null)
             throw new IllegalStateException("Attempting to set single block of HomogenousChunk with no Parent!");
