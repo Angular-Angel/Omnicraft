@@ -14,9 +14,9 @@ import java.awt.Color;
 import java.io.IOException;
 import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.world.ArrayChunk;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.blocks.Block;
-import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
@@ -57,7 +57,7 @@ public class DebugClient {
                     new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
                 new SteppedCubeShape(12),new OmniRandom());
             
-            chunk = new Chunk(block);
+            chunk = new ArrayChunk(block);
             
             glEnable(GL_TEXTURE_2D);
             
