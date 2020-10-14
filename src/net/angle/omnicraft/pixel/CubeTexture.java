@@ -14,7 +14,7 @@ import com.samrj.devil.gl.Texture2D;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class CubeTexture extends BlockTexture {
-    private Texture2D top, bottom, front, back, left, right;
+    public Texture2D top, bottom, front, back, left, right;
     
     public CubeTexture(Texture2D top, Texture2D bottom, Texture2D front, Texture2D back, Texture2D left, Texture2D right) {
         this.top = top;

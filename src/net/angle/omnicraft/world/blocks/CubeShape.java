@@ -15,6 +15,8 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  */
 public class CubeShape implements BlockShape {
+    
+    @Override
     public BlockTexture generateBlockTexture(TextureSource textureSource, OmniRandom random) {
        return new CubeTexture(textureSource.generateTexture(random), textureSource.generateTexture(random),
                               textureSource.generateTexture(random), textureSource.generateTexture(random), 
