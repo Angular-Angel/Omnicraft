@@ -31,6 +31,7 @@ public class OctreeChunk extends Chunk {
 
     public OctreeChunk(Block block, int size, int x, int y, int z) {
         super(size, x, y, z);
+        if (size <= 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + size + "!");
         children = new Chunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
@@ -40,53 +41,75 @@ public class OctreeChunk extends Chunk {
             }
         }
     }
-
-    @Override
-    public Block getBlock(int x, int y, int z) {
+    
+    //It's gross that both of these use almost the same boilerplate, but I can't see any way to condense them, so. :/
+    
+    public void setOctant(int chunkx, int chunky, int chunkz, Chunk chunk) {
         int octantx = 0;
         int octanty = 0;
         int octantz = 0;
         
-        if (x >= size/2) {
+        if (chunkx >= size/2) {
             octantx = 1;
-            x = x - size/2;
         }
         
-        if (y >= size/2) {
+        if (chunky >= size/2) {
             octanty = 1;
-            y = y - size/2;
         }
         
-        if (z >= size/2) {
+        if (chunkz >= size/2) {
             octantz = 1;
-            z = z - size/2;
         }
         
-        return children[octantx][octanty][octantz].getBlock(x, y, z);
+        children[octantx][octanty][octantz] = chunk;
     }
 
     @Override
-    public void setBlock(int x, int y, int z, Block block) {
+    public Block getBlock(int blockx, int blocky, int blockz) {
         int octantx = 0;
         int octanty = 0;
         int octantz = 0;
         
-        if (x >= size/2) {
+        if (blockx >= size/2) {
             octantx = 1;
-            x = x - size/2;
+            blockx = blockx - size/2;
         }
         
-        if (y >= size/2) {
+        if (blocky >= size/2) {
             octanty = 1;
-            y = y - size/2;
+            blocky = blocky - size/2;
         }
         
-        if (z >= size/2) {
+        if (blockz >= size/2) {
             octantz = 1;
-            z = z - size/2;
+            blockz = blockz - size/2;
         }
         
-        children[octantx][octanty][octantz].setBlock(block, x, y, z);
+        return children[octantx][octanty][octantz].getBlock(blockx, blocky, blockz);
+    }
+
+    @Override
+    public void setBlock(int blockx, int blocky, int blockz, Block block) {
+        int octantx = 0;
+        int octanty = 0;
+        int octantz = 0;
+        
+        if (blockx >= size/2) {
+            octantx = 1;
+            blockx = blockx - size/2;
+        }
+        
+        if (blocky >= size/2) {
+            octanty = 1;
+            blocky = blocky - size/2;
+        }
+        
+        if (blockz >= size/2) {
+            octantz = 1;
+            blockz = blockz - size/2;
+        }
+        
+        children[octantx][octanty][octantz].setBlock(blockx, blocky, blockz, block);
     }
     
 }

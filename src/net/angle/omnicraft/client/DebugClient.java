@@ -19,6 +19,7 @@ import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.HomogenousChunk;
 import net.angle.omnicraft.world.OctreeChunk;
 import net.angle.omnicraft.world.blocks.Block;
+import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
@@ -60,6 +61,12 @@ public class DebugClient {
                 new SteppedCubeShape(12),new OmniRandom());
             
             chunk = new OctreeChunk(block);
+            
+            Block newBlock = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
+                    new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
+                new CubeShape(),new OmniRandom());
+            
+            chunk.setBlock(0, 0, 0, newBlock);
             
             glEnable(GL_TEXTURE_2D);
             

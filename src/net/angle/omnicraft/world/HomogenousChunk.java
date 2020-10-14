@@ -13,7 +13,7 @@ import net.angle.omnicraft.world.blocks.Block;
  */
 public class HomogenousChunk extends Chunk {
     
-    public final Block block;
+    private Block block;
     private final OctreeChunk parent;
     
     public HomogenousChunk(Block block) {
@@ -24,14 +24,19 @@ public class HomogenousChunk extends Chunk {
     
     public HomogenousChunk(Block block, OctreeChunk parent, int size, int x, int y, int z) {
         super(size, x, y, z);
+        System.out.println("HomogenousChunk, Size: " + size + ", Position: " + x + ", " + y + ", " + z);
         this.block = block;
         this.parent = parent;
+    }
+    
+    public boolean containsCoordinates(int blockx, int blocky, int blockz) {
+        return blockx >= 0 && blockx < size && blocky >= 0 && blocky < size && 
+            blockz >= 0 && blockz < size;
     }
 
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        if (blockx >= 0 && blockx < size && blocky >= 0 && blocky < size && 
-            blockz >= 0 && blockz < size) {
+        if (containsCoordinates(blockx, blocky, blockz)) {
             return block;
         } else {
             throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
@@ -40,7 +45,22 @@ public class HomogenousChunk extends Chunk {
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (size == 1)
+            if (containsCoordinates(blockx, blocky, blockz)) {
+                this.block = block;
+                return;
+            } else {
+                throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
+            }
+        
+        
+        if (parent == null)
+            throw new IllegalStateException("Attempting to set single block of HomogenousChunk with no Parent!");
+        
+        OctreeChunk replacement = new OctreeChunk(this.block, size, x, y, z);
+        replacement.setBlock(blockx, blocky, blockz, block);
+        parent.setOctant(x, y, z, replacement);
+        
     }
     
 }
