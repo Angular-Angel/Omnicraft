@@ -11,8 +11,20 @@ import net.angle.omnicraft.world.blocks.Block;
  *
  * @author angle
  */
-public interface Chunk {
-    public Block getBlock(int x, int y, int z);
-    public void setBlock(int x, int y, int z, Block block);
-    public void draw();
+public abstract class Chunk {
+    
+    //These describe this blocks size, and it's x, y, and z coordinates
+    public final int size, x, y, z;
+    
+    public Chunk(int size, int x, int y, int z) {
+        this.size = size;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        
+    }
+    
+    public abstract Block getBlock(int blockx, int blocky, int blockz);
+    public abstract void setBlock(int blockx, int blocky, int blockz, Block block);
+    public abstract void draw();
 }
