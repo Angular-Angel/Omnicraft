@@ -29,22 +29,22 @@ public class SteppedCubeTexture extends CubeTexture {
         //or in front looking down or up, for the top and bottom.
         
         //Draw top:
-        drawFlatTexture(top, 0.5f, 0.5f - ((16 - height)/16f), -0.5f, -1, 0, 1);
+        drawFlatTexture(top, OFFSET, OFFSET - ((16 - height)/16f), -OFFSET, -1, 0, 1);
         
         //Draw bottom:
-        drawFlatTexture(bottom, 0.5f, -0.5f, 0.5f, -1, 0, -1);
+        drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
         
         //Draw front
-        drawFlatTexture(front, 0.5f, 0.5f - (16 - height)/16f, 0.5f, -1, -height/16f, 0);
+        drawFlatTexture(front, OFFSET, OFFSET - (16 - height)/16f, OFFSET, -1, -height/16f, 0);
         
         //Draw back
-        drawFlatTexture(back, -0.5f, 0.5f - (16 - height)/16f, -0.5f, 1, -height/16f, 0);
+        drawFlatTexture(back, -OFFSET, OFFSET - (16 - height)/16f, -OFFSET, 1, -height/16f, 0);
         
         //Draw left
-        drawFlatTexture(left, -0.5f,  0.5f - (16 - height)/16f, 0.5f, 0, -height/16f, -1);
+        drawFlatTexture(left, -OFFSET,  OFFSET - (16 - height)/16f, OFFSET, 0, -height/16f, -1);
         
         //Draw right
-        drawFlatTexture(right, 0.5f,  0.5f - (16 - height)/16f, -0.5f, 0, -height/16f, 1);
+        drawFlatTexture(right, OFFSET,  OFFSET - (16 - height)/16f, -OFFSET, 0, -height/16f, 1);
     }
     
 }
