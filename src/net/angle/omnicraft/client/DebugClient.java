@@ -16,6 +16,7 @@ import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.ArrayChunk;
 import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.HomogenousChunk;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.types.MineralGrain;
 import net.angle.omnicraft.world.types.Mineraloid;
@@ -57,7 +58,7 @@ public class DebugClient {
                     new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
                 new SteppedCubeShape(12),new OmniRandom());
             
-            chunk = new ArrayChunk(block);
+            chunk = new HomogenousChunk(block);
             
             glEnable(GL_TEXTURE_2D);
             

@@ -43,20 +43,4 @@ public class ArrayChunk extends Chunk {
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         blocks[blockx][blocky][blockz] = block;
     }
-    
-    public void draw() {
-        for (int blockx = 0; blockx < size; blockx++) {
-            glTranslatef(1, 0, 0);
-            for (int blocky = 0; blocky < size; blocky++) {
-                glTranslatef(0, 1, 0);
-                for (int blockz = 0; blockz < size; blockz++) {
-                    glTranslatef(0, 0, 1);
-                    blocks[blockx][blocky][blockz].draw();
-                }
-                glTranslatef(0, 0, -size);
-            }
-            glTranslatef(0, -size, 0);
-        }
-        glTranslatef(-size, 0, 0);
-    }
 }
