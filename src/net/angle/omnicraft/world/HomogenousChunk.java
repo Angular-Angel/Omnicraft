@@ -14,15 +14,18 @@ import net.angle.omnicraft.world.blocks.Block;
 public class HomogenousChunk extends Chunk {
     
     public final Block block;
+    private final OctreeChunk parent;
     
     public HomogenousChunk(Block block) {
         super(16, 0, 0, 0);
         this.block = block;
+        this.parent = null;
     }
     
-    public HomogenousChunk(Block block, int size, int x, int y, int z) {
+    public HomogenousChunk(Block block, OctreeChunk parent, int size, int x, int y, int z) {
         super(size, x, y, z);
         this.block = block;
+        this.parent = parent;
     }
 
     @Override
