@@ -14,18 +14,16 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class MineralGrain extends SoilComponent {
-    private final Mineraloid mineraloid;
-    private final float grainSize;
+public class GranularMaterial extends SoilComponent {
+    private final Substance substance;
     
-    public MineralGrain(Mineraloid mineraloid, float grainSize) {
-        this.mineraloid = mineraloid;
-        this.grainSize = grainSize;
+    public GranularMaterial(Substance substance) {
+        this.substance = substance;
     }
     
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        Color color = this.mineraloid.getPixelColor(random, context);
+        Color color = this.substance.getPixelColor(random, context);
         
         return color;
     }

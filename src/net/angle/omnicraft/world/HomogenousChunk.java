@@ -24,7 +24,6 @@ public class HomogenousChunk extends Chunk {
     
     public HomogenousChunk(Block block, OctreeChunk parent, int size, int x, int y, int z) {
         super(size, x, y, z);
-        System.out.println("HomogenousChunk, Size: " + size + ", Position: " + x + ", " + y + ", " + z);
         this.block = block;
         this.parent = parent;
     }
