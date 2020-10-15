@@ -26,9 +26,23 @@ public class SoilType extends TextureSource {
         
         this.components.addAll(Arrays.asList(components));
     }
+    
+    public SoilFraction pickComponent(OmniRandom random) {
+        int index = 0;
+        for (int roll = random.getBoundedInt(100); roll > 0; index++) {
+            if (index >= this.components.size())
+                index = 0;
+            roll -= this.components.get(index).getFraction();
+        }
+        
+        if (index >= this.components.size())
+                index = 0;
+        
+        return this.components.get(index);
+    }
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return this.components.get(0).getPixelColor(random, context);
+        return pickComponent(random).getPixelColor(random, context);
     }
 }

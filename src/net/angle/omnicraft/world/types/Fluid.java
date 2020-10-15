@@ -8,17 +8,23 @@ package net.angle.omnicraft.world.types;
 import java.awt.Color;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.pixels.PixelVariation;
 
 /**
  *
  * @author angle
  */
-public class Fluid implements PixelSource {
+public class Fluid extends Substance {
 
+    private final PixelVariation variation;
+    
+    public Fluid(PixelVariation variation) {
+        this.variation = variation;
+    }
+    
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        Color color = context.getPixelColor(random, context);
-        return color;
+        return variation.varyPixel(context.getPixelColor(random, context), random);
     }
     
 }

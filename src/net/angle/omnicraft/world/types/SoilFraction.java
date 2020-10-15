@@ -16,11 +16,11 @@ import net.angle.omnicraft.random.OmniRandom;
  */
 public class SoilFraction implements PixelSource {
     
-    private SoilComponent component;
+    private Substance substance;
     private float fraction;
     
-    public SoilFraction(SoilComponent component, float fraction) {
-        this.component = component;
+    public SoilFraction(Substance substance, float fraction) {
+        this.substance = substance;
         this.fraction = fraction;
     }
     
@@ -40,6 +40,6 @@ public class SoilFraction implements PixelSource {
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return component.getPixelColor(random, context);
+        return substance.getPixelColor(random, context);
     }
 }

@@ -14,7 +14,7 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class GranularMaterial extends SoilComponent {
+public class GranularMaterial extends Substance {
     private final Substance substance;
     
     public GranularMaterial(Substance substance) {

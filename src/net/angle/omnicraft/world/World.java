@@ -9,11 +9,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.SoilBlock;
 import net.angle.omnicraft.world.blocks.SteppedCubeShape;
+import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.GranularMaterial;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.SoilFraction;
@@ -25,17 +27,19 @@ import net.angle.omnicraft.world.types.Substance;
  * @author angle
  */
 public class World {
-    private List<Block> blocks;
-    private List<Substance> substances;
+    private final List<Block> blocks;
+    private final List<Substance> substances;
     private Chunk chunk;
     
     public World() {
             blocks = new ArrayList<>();
             substances = new ArrayList<>();
             substances.add(new Mineraloid(new VariedColorPixelSource(Color.darkGray, 60)));
+            substances.add(new Fluid(new ColoredVariation(-5, -5, -3)));
             
             blocks.add(new SoilBlock(new SoilType(new SoilFraction(new GranularMaterial(
-                    substances.get(0)), 100.0f)), new SteppedCubeShape(12),new OmniRandom()));
+                    substances.get(0)), 75.0f), new SoilFraction(substances.get(1), 25.0f)), 
+                    new SteppedCubeShape(12), new OmniRandom()));
             
             chunk = new OctreeChunk(blocks.get(0));
             

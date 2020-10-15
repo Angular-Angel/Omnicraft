@@ -15,7 +15,7 @@ import static net.angle.omnicraft.textures.pixels.PixelVariation.checkBand;
  */
 public class ColoredVariation implements PixelVariation {
 
-    private int[] variation;
+    private final int[] variation;
     
     public ColoredVariation(int redVar, int greenVar, int blueVar) {
         this(new int[] {redVar, greenVar, blueVar});

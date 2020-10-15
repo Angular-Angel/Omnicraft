@@ -15,7 +15,7 @@ import static net.angle.omnicraft.textures.pixels.PixelVariation.checkBand;
  */
 public class GreyVariation implements PixelVariation {
     
-    private int variation;
+    private final int variation;
     
     public GreyVariation(int variation) {
         this.variation = variation;
