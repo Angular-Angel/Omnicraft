@@ -19,7 +19,8 @@ public class Mineraloid extends Substance {
     
     private final PixelSource pixelSource;
     
-    public Mineraloid(PixelSource pixelSource) {
+    public Mineraloid(String name, PixelSource pixelSource) {
+        super(name);
         this.pixelSource = pixelSource;
     }
 

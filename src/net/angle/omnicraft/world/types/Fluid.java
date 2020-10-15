@@ -18,7 +18,8 @@ public class Fluid extends Substance {
 
     private final PixelVariation variation;
     
-    public Fluid(PixelVariation variation) {
+    public Fluid(String name, PixelVariation variation) {
+        super(name);
         this.variation = variation;
     }
     

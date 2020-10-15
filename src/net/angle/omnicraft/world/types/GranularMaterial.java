@@ -17,7 +17,8 @@ import net.angle.omnicraft.random.OmniRandom;
 public class GranularMaterial extends Substance {
     private final Substance substance;
     
-    public GranularMaterial(Substance substance) {
+    public GranularMaterial(String name, Substance substance) {
+        super(name);
         this.substance = substance;
     }
     

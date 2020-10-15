@@ -34,20 +34,18 @@ public class World {
     public World() {
             blocks = new ArrayList<>();
             substances = new ArrayList<>();
-            substances.add(new Mineraloid(new VariedColorPixelSource(Color.darkGray, 60)));
-            substances.add(new Fluid(new ColoredVariation(-5, -5, -3)));
+            substances.add(new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
+            substances.add(new GranularMaterial("Grey Particles", substances.get(0)));
+            substances.add(new Fluid("Water", new ColoredVariation(-5, -5, -3)));
             
-            blocks.add(new SoilBlock(new SoilType(new SoilFraction(new GranularMaterial(
-                    substances.get(0)), 75.0f), new SoilFraction(substances.get(1), 25.0f)), 
+            blocks.add(new SoilBlock(new SoilType(new SoilFraction(substances.get(1), 75.0f), new SoilFraction(substances.get(2), 25.0f)), 
                     new SteppedCubeShape(12), new OmniRandom()));
             
             chunk = new OctreeChunk(blocks.get(0));
             
-            blocks.add(new SoilBlock(new SoilType(new SoilFraction(new GranularMaterial(
-                    substances.get(0)), 100.0f)), new CubeShape(),new OmniRandom()));
+            blocks.add(new SoilBlock(new SoilType(new SoilFraction(substances.get(1), 100.0f)), new CubeShape(),new OmniRandom()));
             
-            blocks.add(new SoilBlock(new SoilType(new SoilFraction(new GranularMaterial(
-                    substances.get(0)), 100.0f)), new SteppedCubeShape(4),new OmniRandom()));
+            blocks.add(new SoilBlock(new SoilType(new SoilFraction(substances.get(1), 100.0f)), new SteppedCubeShape(4),new OmniRandom()));
             
             chunk.setBlock(0, 0, 0, blocks.get(1));
             

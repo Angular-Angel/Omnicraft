@@ -13,4 +13,9 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public abstract class Substance implements PixelSource {
+    private final String name;
+    
+    public Substance(String name) {
+        this.name = name;
+    }
 }
