@@ -6,7 +6,7 @@
 package net.angle.omnicraft.world.blocks;
 
 import java.awt.Color;
-import net.angle.omnicraft.pixel.PixelSource;
+import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.SoilType;
 

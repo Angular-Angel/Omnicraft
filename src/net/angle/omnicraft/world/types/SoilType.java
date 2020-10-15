@@ -9,8 +9,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.angle.omnicraft.pixel.PixelSource;
-import net.angle.omnicraft.pixel.TextureSource;
+import net.angle.omnicraft.textures.pixels.PixelSource;
+import net.angle.omnicraft.textures.pixels.TextureSource;
 import net.angle.omnicraft.random.OmniRandom;
 
 /**

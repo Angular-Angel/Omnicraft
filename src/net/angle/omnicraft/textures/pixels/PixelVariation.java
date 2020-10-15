@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.pixel;
+package net.angle.omnicraft.textures.pixels;
 
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
@@ -11,9 +11,9 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
- * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public interface PixelSource {
+public interface PixelVariation {
+    public Color varyPixel(Color pixel, OmniRandom random);
     
     public static int checkBand(int value) {
         if (value < 0)
@@ -23,6 +23,4 @@ public interface PixelSource {
         else
             return value;
     }
-    
-    public Color getPixelColor(OmniRandom random, PixelSource context);
 }

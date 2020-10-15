@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.pixel;
+package net.angle.omnicraft.textures.pixels;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Image;

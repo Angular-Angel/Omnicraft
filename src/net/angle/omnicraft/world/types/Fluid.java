@@ -5,12 +5,20 @@
  */
 package net.angle.omnicraft.world.types;
 
+import java.awt.Color;
 import net.angle.omnicraft.textures.pixels.PixelSource;
+import net.angle.omnicraft.random.OmniRandom;
 
 /**
  *
  * @author angle
- * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class SoilComponent implements PixelSource {
+public class Fluid implements PixelSource {
+
+    @Override
+    public Color getPixelColor(OmniRandom random, PixelSource context) {
+        Color color = context.getPixelColor(random, context);
+        return color;
+    }
+    
 }

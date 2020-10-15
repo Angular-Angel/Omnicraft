@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.world.types;
+package net.angle.omnicraft.textures.pixels;
 
-import net.angle.omnicraft.textures.pixels.PixelSource;
+import java.awt.Color;
+import net.angle.omnicraft.random.OmniRandom;
 
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class SoilComponent implements PixelSource {
+public interface PixelSource {
+    
+    public Color getPixelColor(OmniRandom random, PixelSource context);
 }

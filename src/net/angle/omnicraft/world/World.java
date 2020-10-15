@@ -8,8 +8,8 @@ package net.angle.omnicraft.world;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import net.angle.omnicraft.pixel.GreyVariedPixelSource;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.SoilBlock;
@@ -32,7 +32,7 @@ public class World {
     public World() {
             blocks = new ArrayList<>();
             substances = new ArrayList<>();
-            substances.add(new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)));
+            substances.add(new Mineraloid(new VariedColorPixelSource(Color.darkGray, 60)));
             
             blocks.add(new SoilBlock(new SoilType(new SoilFraction(new GranularMaterial(
                     substances.get(0)), 100.0f)), new SteppedCubeShape(12),new OmniRandom()));

@@ -5,9 +5,9 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.pixel.BlockTexture;
-import net.angle.omnicraft.pixel.CubeTexture;
-import net.angle.omnicraft.pixel.TextureSource;
+import net.angle.omnicraft.textures.BlockTexture;
+import net.angle.omnicraft.textures.CubeTexture;
+import net.angle.omnicraft.textures.pixels.TextureSource;
 import net.angle.omnicraft.random.OmniRandom;
 
 /**

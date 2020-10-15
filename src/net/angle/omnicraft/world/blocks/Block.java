@@ -5,7 +5,7 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.pixel.BlockTexture;
+import net.angle.omnicraft.textures.BlockTexture;
 
 /**
  *
