@@ -27,15 +27,16 @@ import net.angle.omnicraft.world.types.Substance;
  * @author angle
  */
 public class World {
-    private final List<Block> blocks;
     private final List<Substance> substances;
     private final List<SoilType> soilTypes;
+    private final List<Block> blocks;
+    
     private Chunk chunk;
     
     public World() {
-            blocks = new ArrayList<>();
             substances = new ArrayList<>();
             soilTypes = new ArrayList<>();
+            blocks = new ArrayList<>();
             
             substances.add(new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
             substances.add(new GranularMaterial("Grey Particles", substances.get(0)));
@@ -45,15 +46,11 @@ public class World {
             soilTypes.add(new SoilType(new SoilFraction(substances.get(1), 100.0f)));
             
             blocks.add(new SoilBlock(soilTypes.get(0), new SteppedCubeShape(12), new OmniRandom()));
+            blocks.add(new SoilBlock(soilTypes.get(1), new CubeShape(), new OmniRandom()));
+            blocks.add(new SoilBlock(soilTypes.get(1), new SteppedCubeShape(4), new OmniRandom()));
             
             chunk = new OctreeChunk(blocks.get(0));
-            
-            blocks.add(new SoilBlock(soilTypes.get(1), new CubeShape(),new OmniRandom()));
-            
-            blocks.add(new SoilBlock(soilTypes.get(1), new SteppedCubeShape(4),new OmniRandom()));
-            
             chunk.setBlock(0, 0, 0, blocks.get(1));
-            
             chunk.setBlock(0, 0, 1, blocks.get(2));
     }
     
