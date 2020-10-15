@@ -6,7 +6,6 @@
 package net.angle.omnicraft.world;
 
 import net.angle.omnicraft.world.blocks.Block;
-import static org.lwjgl.opengl.GL11.glTranslatef;
 
 /**
  * This class represents a cube of blocks in the map. 

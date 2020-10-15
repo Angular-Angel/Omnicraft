@@ -18,6 +18,7 @@ import net.angle.omnicraft.world.ArrayChunk;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.HomogenousChunk;
 import net.angle.omnicraft.world.OctreeChunk;
+import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.types.MineralGrain;
@@ -38,9 +39,8 @@ import org.lwjgl.system.MemoryStack;
 public class DebugClient {
     
     private Camera3D camera;
-    private Block block;
-    private Chunk chunk;
     private Player player;
+    private World world;
     
     private class InitCallback implements Game.InitCallback {
 
@@ -56,17 +56,7 @@ public class DebugClient {
             
             player = new Player(camera);
             
-            block = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
-                    new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
-                new SteppedCubeShape(12),new OmniRandom());
-            
-            chunk = new OctreeChunk(block);
-            
-            Block newBlock = new SoilBlock(new SoilType(new SoilFraction(new MineralGrain(
-                    new Mineraloid(new GreyVariedPixelSource(Color.darkGray, 60)), 1.0f), 100.0f)),
-                new CubeShape(),new OmniRandom());
-            
-            chunk.setBlock(0, 0, 0, newBlock);
+            world = new World();
             
             glEnable(GL_TEXTURE_2D);
             
@@ -108,7 +98,7 @@ public class DebugClient {
                 glLoadMatrixf(camera.viewMat.mallocFloat(stack));
             }
             
-            chunk.draw();
+            world.draw();
         }
         
     }
@@ -125,7 +115,7 @@ public class DebugClient {
         
         Game.onDestroy(crashed ->
             {
-                block.delete();
+                world.delete();
                 DGL.destroy();
             });
         
