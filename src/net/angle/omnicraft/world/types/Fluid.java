@@ -27,5 +27,4 @@ public class Fluid extends Substance {
     public Color getPixelColor(OmniRandom random, PixelSource context) {
         return variation.varyPixel(context.getPixelColor(random, context), random);
     }
-    
 }
