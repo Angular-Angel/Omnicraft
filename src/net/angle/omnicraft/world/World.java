@@ -7,7 +7,9 @@ package net.angle.omnicraft.world;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
@@ -27,23 +29,25 @@ import net.angle.omnicraft.world.types.Substance;
  * @author angle
  */
 public class World {
-    private final List<Substance> substances;
+    private final Map<String, Substance> substances;
     private final List<SoilType> soilTypes;
     private final List<Block> blocks;
     
     private Chunk chunk;
     
     public World() {
-            substances = new ArrayList<>();
+            substances = new HashMap<>();
             soilTypes = new ArrayList<>();
             blocks = new ArrayList<>();
             
-            substances.add(new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
-            substances.add(new GranularMaterial("Grey Particles", substances.get(0)));
-            substances.add(new Fluid("Water", new ColoredVariation(-3, -3, -1)));
+            substances.put("Grey Stuff", new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
+            substances.put("Grey Particles", new GranularMaterial("Grey Particles", substances.get("Grey Stuff")));
+            substances.put("Water", new Fluid("Water", new ColoredVariation(-3, -3, -1)));
+            substances.put("Air", new Fluid("Air", new ColoredVariation(2, 2, 1)));
             
-            soilTypes.add(new SoilType(new SoilFraction(substances.get(1), 75.0f), new SoilFraction(substances.get(2), 25.0f)));
-            soilTypes.add(new SoilType(new SoilFraction(substances.get(1), 100.0f)));
+            soilTypes.add(new SoilType(new SoilFraction(substances.get("Grey Particles"), 50.0f), 
+                    new SoilFraction(substances.get("Water"), 25.0f), new SoilFraction(substances.get("Air"), 25.0f)));
+            soilTypes.add(new SoilType(new SoilFraction(substances.get("Grey Particles"), 100.0f)));
             
             blocks.add(new SoilBlock(soilTypes.get(0), new SteppedCubeShape(12), new OmniRandom()));
             blocks.add(new SoilBlock(soilTypes.get(1), new CubeShape(), new OmniRandom()));
