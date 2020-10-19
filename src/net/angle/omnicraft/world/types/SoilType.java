@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.angle.omnicraft.textures.pixels.PixelSource;
-import net.angle.omnicraft.textures.pixels.TextureSource;
 import net.angle.omnicraft.random.OmniRandom;
 
 /**
@@ -18,10 +17,11 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilType extends TextureSource {
+public class SoilType extends Substance {
     private final List<SoilFraction> components;
     
-    public SoilType(SoilFraction... components) {
+    public SoilType(String name, SoilFraction... components) {
+        super(name);
         this.components = new ArrayList();
         
         this.components.addAll(Arrays.asList(components));

@@ -12,6 +12,7 @@ import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2i;
 import java.io.IOException;
 import net.angle.omnicraft.world.World;
+import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.system.MemoryStack;
@@ -41,7 +42,7 @@ public class DebugClient {
             
             player = new Player(camera);
             
-            world = new World();
+            world = WorldGenerator.generateWorld();
             
             glEnable(GL_TEXTURE_2D);
             

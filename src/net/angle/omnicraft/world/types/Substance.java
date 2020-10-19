@@ -5,14 +5,14 @@
  */
 package net.angle.omnicraft.world.types;
 
-import net.angle.omnicraft.textures.pixels.PixelSource;
+import net.angle.omnicraft.textures.pixels.TextureSource;
 
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class Substance implements PixelSource {
+public abstract class Substance extends TextureSource {
     private final String name;
     
     public Substance(String name) {
