@@ -14,12 +14,12 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilFraction implements PixelSource {
+public class MixtureComponent implements PixelSource {
     
     private Substance substance;
     private float fraction;
     
-    public SoilFraction(Substance substance, float fraction) {
+    public MixtureComponent(Substance substance, float fraction) {
         this.substance = substance;
         this.fraction = fraction;
     }

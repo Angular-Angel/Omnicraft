@@ -10,13 +10,12 @@ import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.CubeShape;
-import net.angle.omnicraft.world.blocks.SoilBlock;
+import net.angle.omnicraft.world.blocks.HomogenousBlock;
 import net.angle.omnicraft.world.blocks.SteppedCubeShape;
 import net.angle.omnicraft.world.types.Fluid;
-import net.angle.omnicraft.world.types.GranularMaterial;
 import net.angle.omnicraft.world.types.Mineraloid;
-import net.angle.omnicraft.world.types.SoilFraction;
-import net.angle.omnicraft.world.types.SoilType;
+import net.angle.omnicraft.world.types.MixtureComponent;
+import net.angle.omnicraft.world.types.Mixture;
 
 /**
  *
@@ -25,22 +24,27 @@ import net.angle.omnicraft.world.types.SoilType;
 public class WorldGenerator {
     
     public static void generateSubstances(World world) {
-        world.substances.put("Grey Stuff", new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
-        world.substances.put("Grey Particles", new GranularMaterial("Grey Particles", world.substances.get("Grey Stuff")));
-        world.substances.put("Water", new Fluid("Water", new ColoredVariation(-3, -3, -1)));
-        world.substances.put("Air", new Fluid("Air", new ColoredVariation(2, 2, 1)));
+        world.substances.put("Gravel", new Mineraloid("Gravel", new VariedColorPixelSource(Color.darkGray, 60)));
+        world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(80, 60, 30), 60)));
+        world.substances.put("Silt", new Mineraloid("Silt", new VariedColorPixelSource(new Color(70, 40, 40), 60)));
+        world.substances.put("Clay", new Mineraloid("Clay", new VariedColorPixelSource(new Color(60, 30, 30), 60)));
+        world.substances.put("Compost", new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 30), 60)));
+        world.substances.put("Water", new Fluid("Water", new ColoredVariation(-5, -3, -2)));
+        world.substances.put("Air", new Fluid("Air", new ColoredVariation(2, 1, 2)));
     }
     
     public static void generateSoilTypes(World world) {
-        world.soilTypes.add(new SoilType("Dirt", new SoilFraction(world.substances.get("Grey Particles"), 50.0f), 
-                new SoilFraction(world.substances.get("Water"), 25.0f), new SoilFraction(world.substances.get("Air"), 25.0f)));
-        world.soilTypes.add(new SoilType("Gravel", new SoilFraction(world.substances.get("Grey Particles"), 100.0f)));
+        world.soilTypes.add(new Mixture("Dirt", new MixtureComponent(world.substances.get("Sand"), 15.0f),
+                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
+                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Gravel"), 3.0f), 
+                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f)));
+        world.soilTypes.add(new Mixture("Gravel", new MixtureComponent(world.substances.get("Gravel"), 100.0f)));
     }
     
     public static void generateBlocks(World world) {
-        world.blocks.add(new SoilBlock(world.soilTypes.get(0), new SteppedCubeShape(12), new OmniRandom()));
-        world.blocks.add(new SoilBlock(world.soilTypes.get(1), new CubeShape(), new OmniRandom()));
-        world.blocks.add(new SoilBlock(world.soilTypes.get(1), new SteppedCubeShape(4), new OmniRandom()));
+        world.blocks.add(new HomogenousBlock(world.soilTypes.get(0), new SteppedCubeShape(12), new OmniRandom()));
+        world.blocks.add(new HomogenousBlock(world.soilTypes.get(1), new CubeShape(), new OmniRandom()));
+        world.blocks.add(new HomogenousBlock(world.soilTypes.get(1), new SteppedCubeShape(4), new OmniRandom()));
     }
     
     public static void generateChunk(World world) {

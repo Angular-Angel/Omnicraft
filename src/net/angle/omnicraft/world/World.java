@@ -15,13 +15,13 @@ import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
-import net.angle.omnicraft.world.blocks.SoilBlock;
+import net.angle.omnicraft.world.blocks.HomogenousBlock;
 import net.angle.omnicraft.world.blocks.SteppedCubeShape;
 import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.GranularMaterial;
 import net.angle.omnicraft.world.types.Mineraloid;
-import net.angle.omnicraft.world.types.SoilFraction;
-import net.angle.omnicraft.world.types.SoilType;
+import net.angle.omnicraft.world.types.MixtureComponent;
+import net.angle.omnicraft.world.types.Mixture;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
@@ -30,7 +30,7 @@ import net.angle.omnicraft.world.types.Substance;
  */
 public class World {
     public final Map<String, Substance> substances;
-    public final List<SoilType> soilTypes;
+    public final List<Mixture> soilTypes;
     public final List<Block> blocks;
     
     public Chunk chunk;

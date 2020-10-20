@@ -17,17 +17,17 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class SoilType extends Substance {
-    private final List<SoilFraction> components;
+public class Mixture extends Substance {
+    private final List<MixtureComponent> components;
     
-    public SoilType(String name, SoilFraction... components) {
+    public Mixture(String name, MixtureComponent... components) {
         super(name);
         this.components = new ArrayList();
         
         this.components.addAll(Arrays.asList(components));
     }
     
-    public SoilFraction pickComponent(OmniRandom random) {
+    public MixtureComponent pickComponent(OmniRandom random) {
         int index = 0;
         for (int roll = random.getBoundedInt(100); roll > 0; index++) {
             if (index >= this.components.size())
