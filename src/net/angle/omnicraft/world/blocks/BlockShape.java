@@ -12,6 +12,7 @@ import net.angle.omnicraft.random.OmniRandom;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public interface BlockShape {
     public BlockTexture generateBlockTexture(TextureSource textureSource, OmniRandom random);

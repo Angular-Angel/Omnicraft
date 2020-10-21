@@ -20,6 +20,7 @@ import net.angle.omnicraft.world.types.Mixture;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class WorldGenerator {
     

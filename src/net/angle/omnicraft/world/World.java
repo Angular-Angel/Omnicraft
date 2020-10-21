@@ -5,28 +5,18 @@
  */
 package net.angle.omnicraft.world;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.pixels.ColoredVariation;
-import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.Block;
-import net.angle.omnicraft.world.blocks.CubeShape;
-import net.angle.omnicraft.world.blocks.HomogenousBlock;
-import net.angle.omnicraft.world.blocks.SteppedCubeShape;
-import net.angle.omnicraft.world.types.Fluid;
-import net.angle.omnicraft.world.types.GranularMaterial;
-import net.angle.omnicraft.world.types.Mineraloid;
-import net.angle.omnicraft.world.types.MixtureComponent;
 import net.angle.omnicraft.world.types.Mixture;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class World {
     public final Map<String, Substance> substances;

@@ -16,8 +16,8 @@ import net.angle.omnicraft.random.OmniRandom;
  */
 public class MixtureComponent implements PixelSource {
     
-    private Substance substance;
-    private float fraction;
+    private final Substance substance;
+    private final float fraction;
     
     public MixtureComponent(Substance substance, float fraction) {
         this.substance = substance;
@@ -29,13 +29,6 @@ public class MixtureComponent implements PixelSource {
      */
     public float getFraction() {
         return fraction;
-    }
-
-    /**
-     * @param fraction the fraction to set
-     */
-    public void setFraction(float fraction) {
-        this.fraction = fraction;
     }
 
     @Override

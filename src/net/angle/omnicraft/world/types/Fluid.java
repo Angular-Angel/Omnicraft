@@ -13,6 +13,7 @@ import net.angle.omnicraft.textures.pixels.PixelVariation;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class Fluid extends Substance {
 

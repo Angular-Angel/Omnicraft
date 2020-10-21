@@ -23,6 +23,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public abstract class TextureSource implements PixelSource {
     public Texture2D generateTexture(OmniRandom random) {
