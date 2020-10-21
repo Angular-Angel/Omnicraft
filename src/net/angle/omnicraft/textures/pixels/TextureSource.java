@@ -30,10 +30,7 @@ public abstract class TextureSource implements PixelSource {
         return generateTexture(16, 16, random);
     }
     
-    public Texture2D generateTexture(int width, int height, OmniRandom random) {
-        
-        //Pretty sure this and the following loop can be folded into a single 
-        //statement, but I don;t know how to do it right now.
+    public Color[][] getPixelColors(int width, int height, OmniRandom random) {
         Color[][] tex = new Color[width][height];
         
         for (Color[] line : tex) {
@@ -42,12 +39,10 @@ public abstract class TextureSource implements PixelSource {
             }
         }
         
-        /*//This chunk of code is for testing position of texture rendering.
-        tex[0][0] = Color.red; //Top Left
-        tex[width - 1][0] = Color.blue; //Top Right
-        tex[width - 1][height - 1] = Color.green; // Bottom Right
-        tex[0][height - 1] = Color.yellow; //Bottom Left*/
-        
+        return tex;
+    }
+    
+    public Image generateImage(int width, int height, Color[][] tex) {
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
         image.shade((x, y, band) -> {
             if (band == 0)
@@ -60,8 +55,11 @@ public abstract class TextureSource implements PixelSource {
                 System.out.println("Asked for Band: " + band);
                 return 0;
         });
-
-        Texture2D texture = DGL.genTex2D();
+        
+        return image;
+    }
+    
+    public void configureTexture(Image image, Texture2D texture) {
         texture.bind();
         texture.parami(GL_TEXTURE_WRAP_S, GL_REPEAT);
         texture.parami(GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -71,7 +69,26 @@ public abstract class TextureSource implements PixelSource {
         texture.generateMipmap();
         texture.paramf(GL_TEXTURE_MAX_ANISOTROPY, 8);
         texture.unbind();
-        DGL.delete(image);
+    }
+    
+    public Texture2D generateTexture(int width, int height, OmniRandom random) {
+        
+        //Pretty sure this and the following loop can be folded into a single 
+        //statement, but I don;t know how to do it right now.
+        Color[][] tex = getPixelColors(width, height, random);
+        
+        /*//This chunk of code is for testing position of texture rendering.
+        tex[0][0] = Color.red; //Top Left
+        tex[width - 1][0] = Color.blue; //Top Right
+        tex[width - 1][height - 1] = Color.green; // Bottom Right
+        tex[0][height - 1] = Color.yellow; //Bottom Left*/
+        
+        Image image = generateImage(width, height, tex);
+
+        Texture2D texture = DGL.genTex2D();
+        
+        configureTexture(image, texture);
+        
         return texture;
     }
 }
