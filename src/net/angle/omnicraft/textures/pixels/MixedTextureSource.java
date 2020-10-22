@@ -16,6 +16,7 @@ import static net.angle.omnicraft.textures.pixels.TextureSource.generateImage;
 /**
  *
  * @author angle
+ * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class MixedTextureSource implements TextureSource {
     private PixelSource pixelSource;

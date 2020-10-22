@@ -51,6 +51,7 @@ public interface TextureSource extends PixelSource {
         texture.parami(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         texture.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         texture.image(image);
+        DGL.delete(image);
         texture.generateMipmap();
         texture.paramf(GL_TEXTURE_MAX_ANISOTROPY, 8);
         texture.unbind();
