@@ -8,7 +8,7 @@ package net.angle.omnicraft.world.blocks;
 import java.awt.Color;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.world.types.Mixture;
+import net.angle.omnicraft.world.types.Substance;
 
 /**
  * This block represents not just dirt, but also gravel, sand, clay, silt, mud, and any mixture thereof.
@@ -16,18 +16,18 @@ import net.angle.omnicraft.world.types.Mixture;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class HomogenousBlock extends Block implements PixelSource {
-    private final Mixture soilType;
+    private final Substance substance;
     private final BlockShape blockShape;
     
-    public HomogenousBlock(Mixture soilType, BlockShape blockShape, OmniRandom random) {
-        super(blockShape.generateBlockTexture(soilType.textureSource, random));
+    public HomogenousBlock(Substance substance, BlockShape blockShape, OmniRandom random) {
+        super(blockShape.generateBlockTexture(substance, random));
         
-        this.soilType = soilType;
+        this.substance = substance;
         this.blockShape = blockShape;
     }
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return this.soilType.getPixelColor(new OmniRandom(), this);
+        return this.substance.getPixelColor(new OmniRandom(), this);
     }
 }

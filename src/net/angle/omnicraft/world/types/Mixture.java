@@ -12,7 +12,6 @@ import java.util.List;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.MixedTextureSource;
-import net.angle.omnicraft.textures.pixels.TextureSource;
 
 /**
  *
@@ -21,12 +20,11 @@ import net.angle.omnicraft.textures.pixels.TextureSource;
  */
 public class Mixture extends Substance {
     private final List<MixtureComponent> components;
-    public final TextureSource textureSource;
     
     public Mixture(String name, MixtureComponent... components) {
         super(name);
         
-        textureSource = new MixedTextureSource(this);
+        this.textureSource = new MixedTextureSource(this);
         
         this.components = new ArrayList();
         this.components.addAll(Arrays.asList(components));

@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.world.types;
 
+import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.PixelSource;
@@ -27,6 +28,16 @@ public class Mineraloid extends Substance {
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
         return pixelSource.getPixelColor(random, context);
+    }
+
+    @Override
+    public Texture2D generateTexture(OmniRandom random) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Texture2D generateTexture(int width, int height, OmniRandom random) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
