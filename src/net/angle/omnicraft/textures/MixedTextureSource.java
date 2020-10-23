@@ -11,24 +11,16 @@ import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.PixelSource;
-import static net.angle.omnicraft.textures.TextureSource.configureTexture;
-import static net.angle.omnicraft.textures.TextureSource.generateImage;
 
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class MixedTextureSource implements TextureSource {
-    private PixelSource pixelSource;
-    
+public class MixedTextureSource extends AbstractTextureSource {
+
     public MixedTextureSource(PixelSource pixelSource) {
-        this.pixelSource = pixelSource;
-    }
-    
-    @Override
-    public Texture2D generateTexture(OmniRandom random) {
-        return generateTexture(16, 16, random);
+        super(pixelSource);
     }
     
     public Color[][] getPixelColors(int width, int height, OmniRandom random) {
@@ -62,10 +54,5 @@ public class MixedTextureSource implements TextureSource {
         configureTexture(image, texture);
         
         return texture;
-    }
-    
-    @Override
-    public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return pixelSource.getPixelColor(random, context);
     }
 }
