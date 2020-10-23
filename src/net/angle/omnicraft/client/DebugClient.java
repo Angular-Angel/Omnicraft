@@ -10,7 +10,6 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2i;
-import java.io.IOException;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
@@ -28,11 +27,11 @@ public class DebugClient {
     private Player player;
     private World world;
     
-    private class InitCallback implements Game.InitCallback {
-
-        @Override
-        public void init() throws IOException {
-            
+    public void run() {
+        Game.setTitle("Omnicraft");
+        Game.setDebug(true);
+        
+        Game.onInit(() -> {
             DGL.init();
  
             camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
@@ -54,25 +53,16 @@ public class DebugClient {
             
             Game.getMouse().setGrabbed(true);
             Game.setVsync(true);
-        }
-    }
-    
-    private class StepCallback implements Game.StepCallback {
+        });
         
-        @Override
-        public void step(float dt) {
+        Game.onStep((float dt) -> {
             player.update(dt);
             if (Game.getKeyboard().isKeyDown(GLFW_KEY_ESCAPE)){
                 Game.stop();
             }
-        }
+        });
         
-    }
-    
-    private class RenderCallback implements Runnable {
-        
-        @Override
-        public void run() {
+        Game.onRender(() -> {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             //I need to add matrix toArray functions to make this easier. -Sam
@@ -85,19 +75,7 @@ public class DebugClient {
             }
             
             world.draw();
-        }
-        
-    }
-    
-    public void run() {
-        Game.setTitle("Omnicraft");
-        Game.setDebug(true);
-        
-        Game.onInit(new InitCallback());
-        
-        Game.onStep(new StepCallback());
-        
-        Game.onRender(new RenderCallback());
+        });
         
         Game.onDestroy(crashed ->
             {
