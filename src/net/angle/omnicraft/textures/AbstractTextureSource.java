@@ -32,9 +32,11 @@ public abstract class AbstractTextureSource implements TextureSource {
         this.pixelSource = pixelSource;
     }
     
+    public void setPixelSource(PixelSource pixelSource) {
+        this.pixelSource = pixelSource;
+    }
+    
     public abstract Color[][] getPixelColors(int width, int height, OmniRandom random);
-    
-    
     
     public Image generateImage(int width, int height, Color[][] tex) {
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);

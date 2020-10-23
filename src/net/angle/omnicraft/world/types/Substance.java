@@ -26,6 +26,10 @@ public abstract class Substance implements TextureSource {
         
         this.textureSource = textureSource;
     }
+    
+    public void setTextureSource(TextureSource textureSource) {
+        this.textureSource = textureSource;
+    }
 
     @Override
     public Texture2D generateTexture(OmniRandom random) {

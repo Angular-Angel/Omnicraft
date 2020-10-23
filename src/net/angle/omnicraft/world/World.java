@@ -20,14 +20,12 @@ import net.angle.omnicraft.world.types.Substance;
  */
 public class World {
     public final Map<String, Substance> substances;
-    public final List<Mixture> soilTypes;
     public final List<Block> blocks;
     
     public Chunk chunk;
     
     public World() {
         substances = new HashMap<>();
-        soilTypes = new ArrayList<>();
         blocks = new ArrayList<>();
 
 //        substances.put("Grey Stuff", new Mineraloid("Grey Stuff", new VariedColorPixelSource(Color.darkGray, 60)));
