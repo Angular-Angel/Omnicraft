@@ -13,6 +13,7 @@ import net.angle.omnicraft.random.OmniRandom;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
+@FunctionalInterface
 public interface PixelSource {
     
     public Color getPixelColor(OmniRandom random, PixelSource context);

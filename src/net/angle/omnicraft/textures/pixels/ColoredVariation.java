@@ -27,13 +27,9 @@ public class ColoredVariation implements PixelVariation {
     
     @Override
     public Color varyPixel(Color pixel, OmniRandom random) {
-        int redVar = this.variation[0];
-        int greenVar = this.variation[1];
-        int blueVar = this.variation[2];
-        
-        int red = checkBand(pixel.getRed() + random.getBoundedInt(redVar));
-        int green = checkBand(pixel.getGreen() + random.getBoundedInt(greenVar));
-        int blue = checkBand(pixel.getBlue() + random.getBoundedInt(blueVar));
+        int red = checkBand(pixel.getRed() + random.getBoundedInt(this.variation[0]));
+        int green = checkBand(pixel.getGreen() + random.getBoundedInt(this.variation[1]));
+        int blue = checkBand(pixel.getBlue() + random.getBoundedInt(this.variation[2]));
         
         return new Color(red, green, blue);
     }

@@ -8,12 +8,13 @@ package net.angle.omnicraft.world.types;
 import com.samrj.devil.gl.Texture2D;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.TextureSource;
+import net.angle.omnicraft.textures.pixels.PixelSource;
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class Substance implements TextureSource {
+public abstract class Substance implements TextureSource, PixelSource {
     private final String name;
     protected TextureSource textureSource;
     

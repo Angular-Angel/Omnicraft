@@ -12,6 +12,7 @@ import net.angle.omnicraft.random.OmniRandom;
  *
  * @author angle
  */
+@FunctionalInterface
 public interface PixelVariation {
     public Color varyPixel(Color pixel, OmniRandom random);
     

@@ -16,7 +16,7 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  *
  * @author angle
  */
-public abstract class AbstractTextureSource implements TextureSource {
+public abstract class AbstractTextureSource implements TextureSource, PixelSource {
     private PixelSource pixelSource;
     
     public AbstractTextureSource(PixelSource pixelSource) {

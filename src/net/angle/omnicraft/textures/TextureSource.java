@@ -11,7 +11,6 @@ import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.math.Util;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.pixels.PixelSource;
 import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
@@ -26,7 +25,8 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public interface TextureSource extends PixelSource {
+@FunctionalInterface
+public interface TextureSource {
     
     default Image generateImage(int width, int height, Color[][] tex) {
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
