@@ -7,7 +7,7 @@ package net.angle.omnicraft.world.blocks;
 
 import net.angle.omnicraft.textures.BlockTexture;
 import net.angle.omnicraft.textures.CubeTexture;
-import net.angle.omnicraft.textures.pixels.TextureSource;
+import net.angle.omnicraft.textures.TextureSource;
 import net.angle.omnicraft.random.OmniRandom;
 
 /**

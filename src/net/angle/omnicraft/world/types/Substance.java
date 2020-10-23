@@ -7,7 +7,7 @@ package net.angle.omnicraft.world.types;
 
 import com.samrj.devil.gl.Texture2D;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.pixels.TextureSource;
+import net.angle.omnicraft.textures.TextureSource;
 /**
  *
  * @author angle

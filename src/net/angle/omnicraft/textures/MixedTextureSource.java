@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.textures.pixels;
+package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Image;
 import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
-import static net.angle.omnicraft.textures.pixels.TextureSource.configureTexture;
-import static net.angle.omnicraft.textures.pixels.TextureSource.generateImage;
+import net.angle.omnicraft.textures.pixels.PixelSource;
+import static net.angle.omnicraft.textures.TextureSource.configureTexture;
+import static net.angle.omnicraft.textures.TextureSource.generateImage;
 
 /**
  *

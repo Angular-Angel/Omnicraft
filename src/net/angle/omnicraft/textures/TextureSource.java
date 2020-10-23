@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.textures.pixels;
+package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Image;
@@ -11,6 +11,7 @@ import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.math.Util;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.pixels.PixelSource;
 import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
