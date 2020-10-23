@@ -6,6 +6,7 @@
 package net.angle.omnicraft.textures;
 
 import java.awt.Color;
+import java.io.IOException;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 
@@ -15,8 +16,21 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  */
 public class LayeredTextureSource extends AbstractTextureSource {
     
+    public final LineVariationCallback lineVariationCallback;
+    
+    @FunctionalInterface
+    public static interface LineVariationCallback
+    {
+        public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random);
+    }
+    
     public LayeredTextureSource(PixelSource pixelSource) {
+        this(pixelSource, null);
+    }
+    
+    public LayeredTextureSource(PixelSource pixelSource, LineVariationCallback lineVariationCallback) {
         super(pixelSource);
+        this.lineVariationCallback = lineVariationCallback;
     }
     
     public Color getBaseColor(OmniRandom random) {
@@ -32,7 +46,10 @@ public class LayeredTextureSource extends AbstractTextureSource {
     }
     
     public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random) {
-        return currentLineColor;
+        if (lineVariationCallback != null)
+            return lineVariationCallback.varyLineColor(x, y, currentLineColor, random);
+        else
+            return currentLineColor;
     }
     
     @Override

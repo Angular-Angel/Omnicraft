@@ -7,7 +7,7 @@ package net.angle.omnicraft.world;
 
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.VariedLayerTextureSource;
+import net.angle.omnicraft.textures.LayeredTextureSource;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.CubeShape;
@@ -40,8 +40,16 @@ public class WorldGenerator {
                 new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
-        //Substance dirt = world.substances.get("Dirt");
-        //dirt.setTextureSource(new VariedLayerTextureSource(dirt, new ColoredVariation(6, 6, 3), 0.10f, 0.15f));
+//        Substance dirt = world.substances.get("Dirt");
+//        
+//        ColoredVariation lineVariation = new ColoredVariation(6, 6, 3);
+//        dirt.setTextureSource(new LayeredTextureSource(dirt, (int x, int y, Color currentLineColor, OmniRandom random) -> {
+//            if (random.nextFloat() <= 0.15f)
+//                return dirt.getPixelColor(random, dirt);
+//            else if (random.nextFloat() <= 0.1f)
+//                return lineVariation.varyPixel(currentLineColor, random);
+//            else return currentLineColor;
+//        }));
     }
     
     public static void generateBlocks(World world) {
