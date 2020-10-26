@@ -17,7 +17,6 @@ import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.MixtureComponent;
 import net.angle.omnicraft.world.types.Mixture;
-import net.angle.omnicraft.world.types.Substance;
 
 /**
  *
@@ -25,6 +24,8 @@ import net.angle.omnicraft.world.types.Substance;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class WorldGenerator {
+    
+    static int dirtCount;
     
     public static void generateSubstances(World world) {
         world.substances.put("Pebbles", new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60)));
@@ -34,34 +35,58 @@ public class WorldGenerator {
         world.substances.put("Compost", new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 30), 60)));
         world.substances.put("Water", new Fluid("Water", new ColoredVariation(-5, -3, -2)));
         world.substances.put("Air", new Fluid("Air", new ColoredVariation(2, 1, 2)));
-        world.substances.put("Dirt", new Mixture("Dirt", new MixtureComponent(world.substances.get("Sand"), 15.0f),
-                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
-                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
-                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
-        Substance dirt = world.substances.get("Dirt");
+        dirtCount = 0;
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                generateDirtType(world, "Dirt" + dirtCount, 6, 6, 3, 0.05f * (1 + i), 0.05f * (1 + j), 0.6f);
+                dirtCount++;
+            }
+        }
+    }
+    
+    public static Mixture generateDirtType(World world, String name, int redVar, int greenVar, int blueVar, float downChance, float upChance, float randomChance) {
+        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 15.0f),
+                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
+                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
+                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f));
         
-        ColoredVariation lineVariation = new ColoredVariation(6, 6, 3);
+        ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
+        ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
+        
         dirt.setTextureSource(new LayeredTextureSource(dirt, (int x, int y, Color currentLineColor, OmniRandom random) -> {
-            if (random.nextFloat() <= 0.45f)
+            if (random.nextFloat() <= downChance)
+                return upVariation.varyPixel(currentLineColor, random);
+            else if (random.nextFloat() <= upChance)
+                return downVariation.varyPixel(currentLineColor, random);
+            else if (random.nextFloat() <= randomChance)
                 return dirt.getPixelColor(random, dirt);
-            else if (random.nextFloat() <= 0.3f)
-                return lineVariation.varyPixel(currentLineColor, random);
             else return currentLineColor;
         }));
+        
+        world.substances.put(name, dirt);
+        
+        return dirt;
     }
     
     public static void generateBlocks(World world) {
-        world.blocks.add(new HomogenousBlock(world.substances.get("Dirt"), new SteppedCubeShape(12), new OmniRandom()));
-        world.blocks.add(new HomogenousBlock(world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
-        world.blocks.add(new HomogenousBlock(world.substances.get("Gravel"), new SteppedCubeShape(4), new OmniRandom()));
+        for (int i = 0; i < dirtCount; i++) {
+            world.blocks.add(new HomogenousBlock(world.substances.get("Dirt" + i), new CubeShape(), new OmniRandom()));
+        }
     }
     
     public static void generateChunk(World world) {
         world.chunk = new OctreeChunk(world.blocks.get(0));
-        world.chunk.setBlock(0, 0, 0, world.blocks.get(1));
-        world.chunk.setBlock(0, 0, 1, world.blocks.get(2));
+        int x = 0, y = 0, z = 0;
+        for (int i = 1; i < dirtCount; i++) {
+            z++;
+            if (z >= world.chunk.size) {
+                z = 0;
+                y++;
+            }
+            world.chunk.setBlock(x, y, z, world.blocks.get(i));
+        }
     }
     
     public static World generateWorld() {

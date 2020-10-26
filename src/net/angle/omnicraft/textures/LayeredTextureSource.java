@@ -15,10 +15,10 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  */
 public class LayeredTextureSource extends AbstractTextureSource {
     
-    public final LineVariationCallback lineVariationCallback;
+    public final LineColorVariationCallback lineColorVariationCallback;
     
     @FunctionalInterface
-    public static interface LineVariationCallback
+    public static interface LineColorVariationCallback
     {
         public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random);
     }
@@ -27,9 +27,9 @@ public class LayeredTextureSource extends AbstractTextureSource {
         this(pixelSource, null);
     }
     
-    public LayeredTextureSource(PixelSource pixelSource, LineVariationCallback lineVariationCallback) {
+    public LayeredTextureSource(PixelSource pixelSource, LineColorVariationCallback lineColorVariationCallback) {
         super(pixelSource);
-        this.lineVariationCallback = lineVariationCallback;
+        this.lineColorVariationCallback = lineColorVariationCallback;
     }
     
     public Color getBaseColor(OmniRandom random) {
@@ -45,8 +45,8 @@ public class LayeredTextureSource extends AbstractTextureSource {
     }
     
     public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random) {
-        if (lineVariationCallback != null)
-            return lineVariationCallback.varyLineColor(x, y, currentLineColor, random);
+        if (lineColorVariationCallback != null)
+            return lineColorVariationCallback.varyLineColor(x, y, currentLineColor, random);
         else
             return currentLineColor;
     }
