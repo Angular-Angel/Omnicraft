@@ -18,9 +18,9 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class BlockTexture {
+public interface BlockTexture {
     
-    public void drawFlatTexture(Texture2D texture, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+    default void drawFlatTexture(Texture2D texture, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
         glTranslatef(startx, starty, startz);
         texture.bind();
         glBegin(GL_QUADS);
@@ -50,7 +50,7 @@ public abstract class BlockTexture {
         glTranslatef(-startx, -starty, -startz);
     }
     
-    public abstract void draw();
+    public void draw();
     
-    public abstract void delete();
+    public void delete();
 }

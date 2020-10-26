@@ -23,6 +23,7 @@ public class MixedTextureSource extends AbstractTextureSource {
         super(pixelSource);
     }
     
+    @Override
     public Color[][] getPixelColors(int width, int height, OmniRandom random) {
         //Pretty sure this and the following loop can be folded into a single
         //statement, but I don;t know how to do it right now.

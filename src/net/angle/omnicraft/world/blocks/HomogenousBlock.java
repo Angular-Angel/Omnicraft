@@ -11,7 +11,7 @@ import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
- * This block represents not just dirt, but also gravel, sand, clay, silt, mud, and any mixture thereof.
+ * Instances of this class can represent any block made of a single homogenous material.
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */

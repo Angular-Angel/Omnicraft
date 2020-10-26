@@ -6,7 +6,6 @@
 package net.angle.omnicraft.textures;
 
 import java.awt.Color;
-import java.io.IOException;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 
