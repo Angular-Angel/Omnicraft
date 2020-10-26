@@ -40,16 +40,16 @@ public class WorldGenerator {
                 new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
-//        Substance dirt = world.substances.get("Dirt");
-//        
-//        ColoredVariation lineVariation = new ColoredVariation(6, 6, 3);
-//        dirt.setTextureSource(new LayeredTextureSource(dirt, (int x, int y, Color currentLineColor, OmniRandom random) -> {
-//            if (random.nextFloat() <= 0.15f)
-//                return dirt.getPixelColor(random, dirt);
-//            else if (random.nextFloat() <= 0.1f)
-//                return lineVariation.varyPixel(currentLineColor, random);
-//            else return currentLineColor;
-//        }));
+        Substance dirt = world.substances.get("Dirt");
+        
+        ColoredVariation lineVariation = new ColoredVariation(6, 6, 3);
+        dirt.setTextureSource(new LayeredTextureSource(dirt, (int x, int y, Color currentLineColor, OmniRandom random) -> {
+            if (random.nextFloat() <= 0.45f)
+                return dirt.getPixelColor(random, dirt);
+            else if (random.nextFloat() <= 0.3f)
+                return lineVariation.varyPixel(currentLineColor, random);
+            else return currentLineColor;
+        }));
     }
     
     public static void generateBlocks(World world) {

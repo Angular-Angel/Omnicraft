@@ -27,6 +27,7 @@ public class CubeTexture implements BlockTexture {
         this.right = right;
     }
     
+    @Override
     public void draw() {
         
         //sides are all drawn as though you are standing next to the block facing it, 
@@ -51,6 +52,7 @@ public class CubeTexture implements BlockTexture {
         drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
 
+    @Override
     public void delete() {
         DGL.delete(top);
         DGL.delete(bottom);
