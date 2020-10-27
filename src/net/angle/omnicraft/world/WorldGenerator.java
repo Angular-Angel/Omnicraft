@@ -25,8 +25,6 @@ import net.angle.omnicraft.world.types.Mixture;
  */
 public class WorldGenerator {
     
-    static int dirtCount;
-    
     public static void generateSubstances(World world) {
         world.substances.put("Pebbles", new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60)));
         world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(80, 60, 30), 60)));
@@ -37,13 +35,7 @@ public class WorldGenerator {
         world.substances.put("Air", new Fluid("Air", new ColoredVariation(2, 1, 2)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
-        dirtCount = 0;
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                generateDirtType(world, "Dirt" + dirtCount, 6, 6, 3, 0.05f * (1 + i), 0.05f * (1 + j), 0.6f);
-                dirtCount++;
-            }
-        }
+        generateDirtType(world, "Dirt", 6, 6, 3, 0.15f, 0.15f, 0.45f);
     }
     
     public static Mixture generateDirtType(World world, String name, int redVar, int greenVar, int blueVar, float downChance, float upChance, float randomChance) {
@@ -71,22 +63,11 @@ public class WorldGenerator {
     }
     
     public static void generateBlocks(World world) {
-        for (int i = 0; i < dirtCount; i++) {
-            world.blocks.add(new HomogenousBlock(world.substances.get("Dirt" + i), new CubeShape(), new OmniRandom()));
-        }
+        world.blocks.add(new HomogenousBlock(world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
     }
     
     public static void generateChunk(World world) {
         world.chunk = new OctreeChunk(world.blocks.get(0));
-        int x = 0, y = 0, z = 0;
-        for (int i = 1; i < dirtCount; i++) {
-            z++;
-            if (z >= world.chunk.size) {
-                z = 0;
-                y++;
-            }
-            world.chunk.setBlock(x, y, z, world.blocks.get(i));
-        }
     }
     
     public static World generateWorld() {
