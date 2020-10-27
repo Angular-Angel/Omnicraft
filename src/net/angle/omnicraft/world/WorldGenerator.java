@@ -67,7 +67,8 @@ public class WorldGenerator {
     }
     
     public static void generateChunk(World world) {
-        world.chunk = new OctreeChunk(world.blocks.get(0));
+        world.chunks.add(new OctreeChunk(world.blocks.get(0)));
+        world.chunks.add(new OctreeChunk(world.blocks.get(0), 16, 0, 0));
     }
     
     public static World generateWorld() {

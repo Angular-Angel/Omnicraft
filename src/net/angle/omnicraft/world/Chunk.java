@@ -34,6 +34,7 @@ public abstract class Chunk {
     public abstract void setBlock(int blockx, int blocky, int blockz, Block block);
     
     public void draw() {
+        glTranslatef(x, y, z);
         for (int blockx = 0; blockx < size; blockx++) {
             glTranslatef(1, 0, 0);
             for (int blocky = 0; blocky < size; blocky++) {
@@ -47,5 +48,6 @@ public abstract class Chunk {
             glTranslatef(0, -size, 0);
         }
         glTranslatef(-size, 0, 0);
+        glTranslatef(-x, -y, -z);
     }
 }
