@@ -39,16 +39,22 @@ public class HomogenousChunk extends Chunk {
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        if (size == 1)
-            if (containsCoordinates(blockx, blocky, blockz)) {
-                this.block = block;
-                return;
-            } else {
-                throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
-            }
+        if (!containsCoordinates(blockx, blocky, blockz)) {
+            //If the coordinates are outside this block, then we should throw an error.
+            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
+        }
+        
+        if (this.block == block) {
+            //trying to set our block to what it already is - no change needed!
+            return;
+        }
+        if (size == 1) {
+            this.block = block;
+            return;
+        }
         
         if (parent == null)
-            throw new IllegalStateException("Attempting to set single block of HomogenousChunk with no Parent!");
+            throw new IllegalStateException("Attempting to change a single block of multiblock HomogenousChunk with no Parent!");
         
         OctreeChunk replacement = new OctreeChunk(this.block, size, x, y, z);
         replacement.setBlock(blockx, blocky, blockz, block);

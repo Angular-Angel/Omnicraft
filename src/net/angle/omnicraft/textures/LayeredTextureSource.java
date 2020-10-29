@@ -6,6 +6,9 @@
 package net.angle.omnicraft.textures;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 
@@ -15,21 +18,12 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  */
 public class LayeredTextureSource extends AbstractTextureSource {
     
-    public final LineColorVariationCallback lineColorVariationCallback;
+    public final List<ColorVariationCallback> colorVariationCallbacks;
     
-    @FunctionalInterface
-    public static interface LineColorVariationCallback
-    {
-        public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random);
-    }
-    
-    public LayeredTextureSource(PixelSource pixelSource) {
-        this(pixelSource, null);
-    }
-    
-    public LayeredTextureSource(PixelSource pixelSource, LineColorVariationCallback lineColorVariationCallback) {
+    public LayeredTextureSource(PixelSource pixelSource, ColorVariationCallback... colorVariationCallbacks) {
         super(pixelSource);
-        this.lineColorVariationCallback = lineColorVariationCallback;
+        this.colorVariationCallbacks = new ArrayList<>();
+        this.colorVariationCallbacks.addAll(Arrays.asList(colorVariationCallbacks));
     }
     
     public Color getBaseColor(OmniRandom random) {
@@ -45,10 +39,11 @@ public class LayeredTextureSource extends AbstractTextureSource {
     }
     
     public Color varyLineColor(int x, int y, Color currentLineColor, OmniRandom random) {
-        if (lineColorVariationCallback != null)
-            return lineColorVariationCallback.varyLineColor(x, y, currentLineColor, random);
-        else
-            return currentLineColor;
+        for (ColorVariationCallback colorVariationCallback : colorVariationCallbacks) {
+            currentLineColor = colorVariationCallback.varyColor(x, y, currentLineColor, random);
+        }
+        
+        return currentLineColor;
     }
     
     @Override

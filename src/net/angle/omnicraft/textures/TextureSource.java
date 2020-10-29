@@ -28,6 +28,18 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 @FunctionalInterface
 public interface TextureSource {
     
+    @FunctionalInterface
+    public static interface ColorVariationCallback
+    {
+        public Color varyColor(int x, int y, Color currentLineColor, OmniRandom random);
+    }
+    
+    @FunctionalInterface
+    public static interface SetPixelCallback
+    {
+        public Color setPixel(int x, int y, Color[][] tex, OmniRandom random);
+    }
+    
     default Image generateImage(int width, int height, Color[][] tex) {
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
         image.shade((x, y, band) -> {

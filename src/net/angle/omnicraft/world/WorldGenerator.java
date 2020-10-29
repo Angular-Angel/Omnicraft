@@ -47,15 +47,25 @@ public class WorldGenerator {
         ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
         ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
         
-        dirt.setTextureSource(new LayeredTextureSource(dirt, (int x, int y, Color currentLineColor, OmniRandom random) -> {
-            if (random.nextFloat() <= downChance)
+        ColorVariationCallback upvarCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
+            if (random.nextFloat() <= upChance)
                 return upVariation.varyPixel(currentLineColor, random);
-            else if (random.nextFloat() <= upChance)
+            else return currentLineColor;
+        };
+                
+        ColorVariationCallback downvarCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
+            if (random.nextFloat() <= downChance)
                 return downVariation.varyPixel(currentLineColor, random);
-            else if (random.nextFloat() <= randomChance)
+            else return currentLineColor;
+        };
+                
+        ColorVariationCallback randomCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
+            if (random.nextFloat() <= randomChance)
                 return dirt.getPixelColor(random, dirt);
             else return currentLineColor;
-        }));
+        };
+        
+        dirt.setTextureSource(new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback));
         
         world.substances.put(name, dirt);
         

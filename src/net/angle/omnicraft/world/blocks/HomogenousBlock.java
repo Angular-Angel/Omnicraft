@@ -11,7 +11,7 @@ import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
- * Instances of this class can represent any block made of a single homogenous material.
+ * Instances of this class can represent any block made of a single homogenous substance.
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
