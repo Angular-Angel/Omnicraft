@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world;
 
 import net.angle.omnicraft.world.blocks.Block;
+import com.samrj.devil.math.Vec3i;
 
 /**
  *
@@ -42,74 +43,66 @@ public class OctreeChunk extends Chunk {
         }
     }
     
-    //It's gross that both of these use almost the same boilerplate, but I can't see any way to condense them, so. :/
-    
-    public void setOctant(int chunkx, int chunky, int chunkz, Chunk chunk) {
-        int octantx = 0;
-        int octanty = 0;
-        int octantz = 0;
+    public Vec3i getOctant(int chunkx, int chunky, int chunkz) {
+        Vec3i octant = new Vec3i(0, 0, 0);
         
         if (chunkx >= size/2) {
-            octantx = 1;
+            octant.x = 1;
         }
         
         if (chunky >= size/2) {
-            octanty = 1;
+            octant.y = 1;
         }
         
         if (chunkz >= size/2) {
-            octantz = 1;
+            octant.z = 1;
         }
         
-        children[octantx][octanty][octantz] = chunk;
+        return octant;
+    }
+    
+    public void setOctant(int chunkx, int chunky, int chunkz, Chunk chunk) {
+        Vec3i octant = getOctant(chunkx, chunky, chunkz);
+        
+        children[octant.x][octant.y][octant.z] = chunk;
     }
 
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        int octantx = 0;
-        int octanty = 0;
-        int octantz = 0;
+        Vec3i octant = getOctant(blockx, blocky, blockz);
         
-        if (blockx >= size/2) {
-            octantx = 1;
+        if (octant.x == 1) {
             blockx = blockx - size/2;
         }
         
-        if (blocky >= size/2) {
-            octanty = 1;
+        if (octant.y == 1) {
             blocky = blocky - size/2;
         }
         
-        if (blockz >= size/2) {
-            octantz = 1;
+        if (octant.z == 1) {
             blockz = blockz - size/2;
         }
         
-        return children[octantx][octanty][octantz].getBlock(blockx, blocky, blockz);
+        return children[octant.x][octant.y][octant.z].getBlock(blockx, blocky, blockz);
     }
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        int octantx = 0;
-        int octanty = 0;
-        int octantz = 0;
+        Vec3i octant = getOctant(blockx, blockx, blockx);
         
-        if (blockx >= size/2) {
-            octantx = 1;
+        if (octant.x == 1) {
             blockx = blockx - size/2;
         }
         
-        if (blocky >= size/2) {
-            octanty = 1;
+        if (octant.y == 1) {
             blocky = blocky - size/2;
         }
         
-        if (blockz >= size/2) {
-            octantz = 1;
+        if (octant.z == 1) {
             blockz = blockz - size/2;
         }
         
-        children[octantx][octanty][octantz].setBlock(blockx, blocky, blockz, block);
+        children[octant.x][octant.y][octant.z].setBlock(blockx, blocky, blockz, block);
     }
     
 }

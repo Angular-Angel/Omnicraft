@@ -8,11 +8,11 @@ package net.angle.omnicraft.world;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.LayeredTextureSource;
+import net.angle.omnicraft.textures.TextureSource.ColorVariationCallback;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
-import net.angle.omnicraft.world.blocks.SteppedCubeShape;
 import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.MixtureComponent;
@@ -64,10 +64,12 @@ public class WorldGenerator {
     
     public static void generateBlocks(World world) {
         world.blocks.add(new HomogenousBlock(world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
+        world.blocks.add(new HomogenousBlock(world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
     }
     
-    public static void generateChunk(World world) {
+    public static void generateChunks(World world) {
         world.chunks.add(new OctreeChunk(world.blocks.get(0)));
+        world.chunks.get(0).setBlock(0, 0, 0, world.blocks.get(1));
         world.chunks.add(new OctreeChunk(world.blocks.get(0), 16, 0, 0));
     }
     
@@ -78,7 +80,7 @@ public class WorldGenerator {
         
         generateBlocks(world);
 
-        generateChunk(world);
+        generateChunks(world);
         
         return world;
     }
