@@ -19,11 +19,13 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
 public class LayeredTextureSource extends AbstractTextureSource {
     
     public final List<ColorVariationCallback> colorVariationCallbacks;
+    public final List<SetPixelCallback> setPixelCallbacks;
     
     public LayeredTextureSource(PixelSource pixelSource, ColorVariationCallback... colorVariationCallbacks) {
         super(pixelSource);
         this.colorVariationCallbacks = new ArrayList<>();
         this.colorVariationCallbacks.addAll(Arrays.asList(colorVariationCallbacks));
+        this.setPixelCallbacks = new ArrayList<>();
     }
     
     public Color getBaseColor(OmniRandom random) {
@@ -46,6 +48,14 @@ public class LayeredTextureSource extends AbstractTextureSource {
         return currentLineColor;
     }
     
+    public Color[][] setPixel(int x, int y, Color[][] tex, Color color, OmniRandom random) {
+        for (SetPixelCallback setPixelCallback : setPixelCallbacks) {
+            tex = setPixelCallback.setPixel(x, y, tex, color, random);
+        }
+        
+        return tex;
+    }
+    
     @Override
     public Color[][] getPixelColors(int width, int height, OmniRandom random) {
         Color[][] tex = new Color[width][height];
@@ -60,6 +70,12 @@ public class LayeredTextureSource extends AbstractTextureSource {
         
         for (int i = 0; i < tex[0].length; i++) {
             colorLine(i, tex, random);
+        }
+        
+        for (int i = 0; i < tex.length; i++) {
+            for (int j = 0; j < tex[i].length; j++) {
+                tex = setPixel(i, j, tex, tex[i][j], random);
+            }
         }
         
         return tex;

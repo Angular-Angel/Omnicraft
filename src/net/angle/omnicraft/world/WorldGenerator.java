@@ -65,7 +65,21 @@ public class WorldGenerator {
             else return currentLineColor;
         };
         
-        dirt.setTextureSource(new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback));
+        LayeredTextureSource layeredTextureSource = new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback);
+        
+        layeredTextureSource.setPixelCallbacks.add((x, y, tex, color, random) -> {
+            if (random.nextFloat() <= 0.05) {
+                if (random.nextFloat() <= 0.5 && y != 0) {
+                    tex[x][y-1] = color;
+                } else if (y != tex[0].length - 1){
+                    tex[x][y+1] = color;
+                }
+            }
+            
+            return tex;
+        });
+        
+        dirt.setTextureSource(layeredTextureSource);
         
         world.substances.put(name, dirt);
         

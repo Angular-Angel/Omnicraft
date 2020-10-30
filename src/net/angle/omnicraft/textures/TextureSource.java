@@ -37,7 +37,7 @@ public interface TextureSource {
     @FunctionalInterface
     public static interface SetPixelCallback
     {
-        public Color setPixel(int x, int y, Color[][] tex, OmniRandom random);
+        public Color[][] setPixel(int x, int y, Color[][] tex, Color color, OmniRandom random);
     }
     
     default Image generateImage(int width, int height, Color[][] tex) {
