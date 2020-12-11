@@ -5,9 +5,13 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.gl.DGL;
+import com.samrj.devil.gl.FBO;
+import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.LayeredTextureSource;
+import net.angle.omnicraft.textures.PaletteLayeredTextureSource;
 import net.angle.omnicraft.textures.TextureSource.ColorVariationCallback;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
@@ -17,6 +21,7 @@ import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.MixtureComponent;
 import net.angle.omnicraft.world.types.Mixture;
+import static org.lwjgl.opengl.ARBFramebufferObject.GL_COLOR_ATTACHMENT0;
 
 /**
  *
@@ -67,7 +72,9 @@ public class WorldGenerator {
         
         LayeredTextureSource layeredTextureSource = new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback);
         
-        layeredTextureSource.setPixelCallbacks.add((x, y, tex, color, random) -> {
+        PaletteLayeredTextureSource paletteLayeredTextureSource = new PaletteLayeredTextureSource(dirt, 6, upvarCallback, downvarCallback, randomCallback);
+        
+        paletteLayeredTextureSource.setPixelCallbacks.add((x, y, tex, color, random) -> {
             if (random.nextFloat() <= 0.05) {
                 if (random.nextFloat() <= 0.5 && y != 0) {
                     tex[x][y-1] = color;
@@ -79,7 +86,7 @@ public class WorldGenerator {
             return tex;
         });
         
-        dirt.setTextureSource(layeredTextureSource);
+        dirt.setTextureSource(paletteLayeredTextureSource);
         
         world.substances.put(name, dirt);
         
@@ -105,6 +112,18 @@ public class WorldGenerator {
         generateBlocks(world);
 
         generateChunks(world);
+        
+        FBO fbo = DGL.genFBO();
+        
+        Texture2D tex = DGL.genTex2D();
+        
+        DGL.bindFBO(fbo);
+        
+        fbo.texture2D(tex, GL_COLOR_ATTACHMENT0);
+        
+        DGL.bindFBO(null);
+        
+        DGL.delete(tex, fbo);
         
         return world;
     }

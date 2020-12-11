@@ -42,7 +42,7 @@ public interface TextureSource {
     
     default Image generateImage(int width, int height, Color[][] tex) {
         Image image = DGL.genImage(width, height, 3, Util.PrimType.BYTE);
-        image.shade((x, y, band) -> {
+        image.shade((int x, int y, int band) -> {
             if (band == 0)
                 return tex[x][y].getRed();
             if (band == 1)
@@ -50,8 +50,7 @@ public interface TextureSource {
             if (band == 2)
                 return tex[x][y].getBlue();
             else
-                System.out.println("Asked for Band: " + band);
-                return 0;
+                throw new IllegalArgumentException("Asked for Band: " + band);
         });
         
         return image;
