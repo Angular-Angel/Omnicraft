@@ -11,6 +11,8 @@ import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.math.Util;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.pixels.ColoredVariation;
+import net.angle.omnicraft.textures.pixels.PixelSource;
 import static org.lwjgl.opengl.ARBTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
@@ -31,6 +33,22 @@ public interface TextureSource {
     @FunctionalInterface
     public static interface ColorVariationCallback
     {
+        public static ColorVariationCallback createVariationCallback(float chance, ColoredVariation variation) {
+            return (int x, int y, Color currentLineColor, OmniRandom random) -> {
+                if (random.nextFloat() <= chance)
+                    return variation.varyPixel(currentLineColor, random);
+                else return currentLineColor;
+            };
+        }
+        
+        public static ColorVariationCallback createRandomizationCallback(float chance, PixelSource pixelSource) {
+            return (int x, int y, Color currentLineColor, OmniRandom random) -> {
+                if (random.nextFloat() <= chance)
+                    return pixelSource.getPixelColor(random, pixelSource);
+                else return currentLineColor;
+            };
+        }
+        
         public Color varyColor(int x, int y, Color currentLineColor, OmniRandom random);
     }
     

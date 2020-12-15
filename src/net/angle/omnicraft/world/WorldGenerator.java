@@ -12,6 +12,7 @@ import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.LayeredTextureSource;
 import net.angle.omnicraft.textures.PaletteLayeredTextureSource;
+import net.angle.omnicraft.textures.TextureSource;
 import net.angle.omnicraft.textures.TextureSource.ColorVariationCallback;
 import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
@@ -52,25 +53,13 @@ public class WorldGenerator {
         ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
         ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
         
-        ColorVariationCallback upvarCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
-            if (random.nextFloat() <= upChance)
-                return upVariation.varyPixel(currentLineColor, random);
-            else return currentLineColor;
-        };
+        ColorVariationCallback upvarCallback = TextureSource.ColorVariationCallback.createVariationCallback(upChance, upVariation);
                 
-        ColorVariationCallback downvarCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
-            if (random.nextFloat() <= downChance)
-                return downVariation.varyPixel(currentLineColor, random);
-            else return currentLineColor;
-        };
+        ColorVariationCallback downvarCallback = TextureSource.ColorVariationCallback.createVariationCallback(downChance, downVariation);
                 
-        ColorVariationCallback randomCallback = (int x, int y, Color currentLineColor, OmniRandom random) -> {
-            if (random.nextFloat() <= randomChance)
-                return dirt.getPixelColor(random, dirt);
-            else return currentLineColor;
-        };
+        ColorVariationCallback randomCallback = TextureSource.ColorVariationCallback.createRandomizationCallback(randomChance, dirt);
         
-        LayeredTextureSource layeredTextureSource = new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback);
+        //LayeredTextureSource layeredTextureSource = new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback);
         
         PaletteLayeredTextureSource paletteLayeredTextureSource = new PaletteLayeredTextureSource(dirt, 6, upvarCallback, downvarCallback, randomCallback);
         
