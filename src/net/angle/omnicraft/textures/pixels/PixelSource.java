@@ -24,8 +24,8 @@ public interface PixelSource {
         for (int i = 0; i < amount; i++) {
             Color color = this.getPixelColor(random, context);
             red += color.getRed();
-            green += color.getBlue();
-            blue += color.getGreen();
+            green += color.getGreen();
+            blue += color.getBlue();
         }
         
         red /= amount;
