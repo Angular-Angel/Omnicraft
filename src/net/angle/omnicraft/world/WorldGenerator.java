@@ -34,12 +34,11 @@ public class WorldGenerator {
     
     public static void generateSubstances(World world) {
         world.substances.put("Pebbles", new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60)));
-        //world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(190, 145, 100), 60)));
-        world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(Color.blue, 0)));
-        world.substances.put("Silt", new Mineraloid("Silt", new VariedColorPixelSource(new Color(150, 65, 0), 60)));
-        world.substances.put("Clay", new Mineraloid("Clay", new VariedColorPixelSource(new Color(120, 75, 0), 60)));
-        world.substances.put("Compost", new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 30), 60)));
-        world.substances.put("Water", new Fluid("Water", new ColoredVariation(0, 0, 0)));
+        world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(190, 145, 100), 20)));
+        world.substances.put("Silt", new Mineraloid("Silt", new VariedColorPixelSource(new Color(150, 65, 0), 20)));
+        world.substances.put("Clay", new Mineraloid("Clay", new VariedColorPixelSource(new Color(120, 75, 0), 20)));
+        world.substances.put("Compost", new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 30), 20)));
+        world.substances.put("Water", new Fluid("Water", new ColoredVariation(-4, -4, -2)));
         world.substances.put("Air", new Fluid("Air", new ColoredVariation(0, 0, 0)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
@@ -47,11 +46,11 @@ public class WorldGenerator {
     }
     
     public static Mixture generateDirtType(World world, String name, int redVar, int greenVar, int blueVar, float downChance, float upChance, float randomChance) {
-//        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 15.0f),
-//                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
-//                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
-//                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f));
-        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 100.0f));
+        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 15.0f),
+                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
+                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
+                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f));
+        
         ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
         ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
         
