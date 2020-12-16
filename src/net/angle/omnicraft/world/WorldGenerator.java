@@ -10,6 +10,7 @@ import com.samrj.devil.gl.FBO;
 import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.textures.ArtisanalDirtTexture;
 import net.angle.omnicraft.textures.LayeredTextureSource;
 import net.angle.omnicraft.textures.PaletteLayeredTextureSource;
 import net.angle.omnicraft.textures.TextureSource;
@@ -33,23 +34,24 @@ public class WorldGenerator {
     
     public static void generateSubstances(World world) {
         world.substances.put("Pebbles", new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60)));
-        world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(80, 60, 30), 60)));
-        world.substances.put("Silt", new Mineraloid("Silt", new VariedColorPixelSource(new Color(70, 40, 40), 60)));
-        world.substances.put("Clay", new Mineraloid("Clay", new VariedColorPixelSource(new Color(60, 30, 30), 60)));
+        //world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(new Color(190, 145, 100), 60)));
+        world.substances.put("Sand", new Mineraloid("Sand", new VariedColorPixelSource(Color.blue, 0)));
+        world.substances.put("Silt", new Mineraloid("Silt", new VariedColorPixelSource(new Color(150, 65, 0), 60)));
+        world.substances.put("Clay", new Mineraloid("Clay", new VariedColorPixelSource(new Color(120, 75, 0), 60)));
         world.substances.put("Compost", new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 30), 60)));
-        world.substances.put("Water", new Fluid("Water", new ColoredVariation(-5, -3, -2)));
-        world.substances.put("Air", new Fluid("Air", new ColoredVariation(2, 1, 2)));
+        world.substances.put("Water", new Fluid("Water", new ColoredVariation(0, 0, 0)));
+        world.substances.put("Air", new Fluid("Air", new ColoredVariation(0, 0, 0)));
         world.substances.put("Gravel", new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         
         generateDirtType(world, "Dirt", 6, 6, 3, 0.15f, 0.15f, 0.45f);
     }
     
     public static Mixture generateDirtType(World world, String name, int redVar, int greenVar, int blueVar, float downChance, float upChance, float randomChance) {
-        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 15.0f),
-                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
-                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
-                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f));
-        
+//        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 15.0f),
+//                new MixtureComponent(world.substances.get("Silt"), 18.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
+//                new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f), 
+//                new MixtureComponent(world.substances.get("Water"), 25.0f), new MixtureComponent(world.substances.get("Air"), 25.0f));
+        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Sand"), 100.0f));
         ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
         ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
         
@@ -63,6 +65,8 @@ public class WorldGenerator {
         
         PaletteLayeredTextureSource paletteLayeredTextureSource = new PaletteLayeredTextureSource(dirt, 6, upvarCallback, downvarCallback, randomCallback);
         
+        ArtisanalDirtTexture artisanalDirtTexture = new ArtisanalDirtTexture(dirt);
+        
         paletteLayeredTextureSource.setPixelCallbacks.add((x, y, tex, color, random) -> {
             if (random.nextFloat() <= 0.05) {
                 if (random.nextFloat() <= 0.5 && y != 0) {
@@ -75,7 +79,7 @@ public class WorldGenerator {
             return tex;
         });
         
-        dirt.setTextureSource(paletteLayeredTextureSource);
+        dirt.setTextureSource(artisanalDirtTexture);
         
         world.substances.put(name, dirt);
         
