@@ -17,4 +17,21 @@ import net.angle.omnicraft.random.OmniRandom;
 public interface PixelSource {
     
     public Color getPixelColor(OmniRandom random, PixelSource context);
+    
+    public default Color getAveragedPixelColor(int amount, OmniRandom random, PixelSource context) {
+        int red = 0, green = 0, blue = 0;
+        
+        for (int i = 0; i < amount; i++) {
+            Color color = this.getPixelColor(random, context);
+            red += color.getRed();
+            green += color.getBlue();
+            blue += color.getGreen();
+        }
+        
+        red /= amount;
+        green /= amount;
+        blue /= amount;
+        
+        return new Color(red, green, blue);
+    }
 }
