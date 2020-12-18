@@ -16,13 +16,10 @@ import net.angle.omnicraft.textures.pixels.PixelVariation;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class Fluid extends Substance {
-
-    private final PixelSource pixelSource;
+public class Fluid extends HomogenousSubstance {
     
     public Fluid(String name, PixelSource pixelSource) {
-        super(name);
-        this.pixelSource = pixelSource;
+        super(name, pixelSource);
     }
     
     @Override

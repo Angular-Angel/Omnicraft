@@ -16,14 +16,12 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class Mineraloid extends Substance {
+public class Mineraloid extends HomogenousSubstance {
     
-    private final PixelSource pixelSource;
     private final int grainSize;
     
     public Mineraloid(String name, PixelSource pixelSource, int grainSize) {
-        super(name);
-        this.pixelSource = pixelSource;
+        super(name, pixelSource);
         this.grainSize = grainSize;
     }
 
