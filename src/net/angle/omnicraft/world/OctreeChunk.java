@@ -14,8 +14,6 @@ import com.samrj.devil.math.Vec3i;
  */
 public class OctreeChunk extends Chunk {
     
-    private OctreeChunk parent;
-    
     private Chunk[][][] children;
     
     public OctreeChunk() {

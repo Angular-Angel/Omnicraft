@@ -5,11 +5,9 @@
  */
 package net.angle.omnicraft.world.types;
 
-import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.pixels.PixelVariation;
 
 /**
  *

@@ -11,7 +11,6 @@ import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.textures.ArtisanalDirtTexture;
-import net.angle.omnicraft.textures.LayeredTextureSource;
 import net.angle.omnicraft.textures.PaletteLayeredTextureSource;
 import net.angle.omnicraft.textures.TextureSource;
 import net.angle.omnicraft.textures.TextureSource.ColorVariationCallback;
@@ -61,8 +60,6 @@ public class WorldGenerator {
                 
         ColorVariationCallback randomCallback = TextureSource.ColorVariationCallback.createRandomizationCallback(randomChance, dirt);
         
-        //LayeredTextureSource layeredTextureSource = new LayeredTextureSource(dirt, upvarCallback, downvarCallback, randomCallback);
-        
         PaletteLayeredTextureSource paletteLayeredTextureSource = new PaletteLayeredTextureSource(dirt, 6, upvarCallback, downvarCallback, randomCallback);
         
         ArtisanalDirtTexture artisanalDirtTexture = new ArtisanalDirtTexture(dirt, 6);
@@ -78,8 +75,6 @@ public class WorldGenerator {
             
             return tex;
         });
-        
-        //dirt.setTextureSource(paletteLayeredTextureSource);
         
         world.addSubstance(dirt);
         
