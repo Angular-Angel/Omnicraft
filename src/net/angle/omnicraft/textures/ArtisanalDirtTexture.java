@@ -13,14 +13,20 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
  *
  * @author angle
  */
-public class ArtisanalDirtTexture extends AbstractTextureSource {
+public class ArtisanalDirtTexture extends PaletteLayeredTextureSource {
 
-    public ArtisanalDirtTexture(PixelSource pixelSource) {
-        super(pixelSource);
+    public ArtisanalDirtTexture(PixelSource pixelSource, int palletteSize, ColorVariationCallback... colorVariationCallbacks) {
+        super(pixelSource, palletteSize, colorVariationCallbacks);
     }
     
     public Color getBaseColor(OmniRandom random) {
         return this.getAveragedPixelColor(5, random, this);
+    }
+    
+    public Color[][] drawClump(int x, int y, Color[][] tex) {
+        
+        
+        return tex;
     }
 
     @Override
@@ -35,13 +41,13 @@ public class ArtisanalDirtTexture extends AbstractTextureSource {
             }
         }
         
-        
+        int clumpDistance = 2;
         
         //for each line
-        for (int i = 0; i < tex[0].length; i++) {
-            //for each pixel
-            for (int j = 0; j < tex.length; j++) {
-                
+        for (int i = 0; i < tex[0].length/clumpDistance; i++) {
+            //for every few pixels
+            for (int j = 0; j < tex.length/clumpDistance; j++) {
+                tex = drawClump(j, i, tex);
             } 
         }
         
