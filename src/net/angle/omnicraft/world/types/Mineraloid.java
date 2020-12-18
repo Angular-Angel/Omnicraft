@@ -33,15 +33,5 @@ public class Mineraloid extends Substance {
         
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), grainSize);
     }
-
-    @Override
-    public Texture2D generateTexture(OmniRandom random) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Texture2D generateTexture(int width, int height, OmniRandom random) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }
