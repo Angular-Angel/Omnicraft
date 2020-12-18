@@ -28,6 +28,10 @@ public class World {
         chunks = new ArrayList<>();
     }
     
+    public  void addSubstance(Substance substance) {
+        substances.put(substance.name, substance);
+    }
+    
     public void draw() {
         for (Chunk chunk : chunks) {
             chunk.draw();
