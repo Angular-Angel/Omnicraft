@@ -31,7 +31,7 @@ public class ColoredVariation implements PixelVariation {
         int green = checkBand(pixel.getGreen() + random.getBoundedInt(this.variation[1]));
         int blue = checkBand(pixel.getBlue() + random.getBoundedInt(this.variation[2]));
         
-        return new Color(red, green, blue);
+        return new Color(red, green, blue, pixel.getAlpha());
     }
     
 }

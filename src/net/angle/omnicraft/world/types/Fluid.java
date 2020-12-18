@@ -18,15 +18,17 @@ import net.angle.omnicraft.textures.pixels.PixelVariation;
  */
 public class Fluid extends Substance {
 
-    private final PixelVariation variation;
+    private final PixelSource pixelSource;
     
-    public Fluid(String name, PixelVariation variation) {
+    public Fluid(String name, PixelSource pixelSource) {
         super(name);
-        this.variation = variation;
+        this.pixelSource = pixelSource;
     }
     
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return variation.varyPixel(context.getPixelColor(random, context), random);
+        Color color = pixelSource.getPixelColor(random, context);
+        
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 10);
     }
 }

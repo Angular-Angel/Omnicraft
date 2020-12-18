@@ -19,15 +19,19 @@ import net.angle.omnicraft.textures.pixels.PixelSource;
 public class Mineraloid extends Substance {
     
     private final PixelSource pixelSource;
+    private final int grainSize;
     
-    public Mineraloid(String name, PixelSource pixelSource) {
+    public Mineraloid(String name, PixelSource pixelSource, int grainSize) {
         super(name);
         this.pixelSource = pixelSource;
+        this.grainSize = grainSize;
     }
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return pixelSource.getPixelColor(random, context);
+        Color color = pixelSource.getPixelColor(random, context);
+        
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), grainSize);
     }
 
     @Override

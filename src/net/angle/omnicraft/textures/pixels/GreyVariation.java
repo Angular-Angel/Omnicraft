@@ -29,6 +29,6 @@ public class GreyVariation implements PixelVariation {
         int green = checkBand(pixel.getGreen() + variation);
         int blue = checkBand(pixel.getBlue() + variation);
         
-        return new Color(red, green, blue);
+        return new Color(red, green, blue, pixel.getAlpha());
     }
 }

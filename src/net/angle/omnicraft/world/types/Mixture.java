@@ -54,6 +54,23 @@ public class Mixture extends Substance {
 
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return pickComponent(random).getPixelColor(random, context);
+        Color color = new Color(0, 0, 0);
+        
+        int alpha = 0;
+        
+        while (alpha < 255) {
+            Color newColor = pickComponent(random).getPixelColor(random, context);
+            
+            int newAlpha = Math.min(newColor.getAlpha(), 255 - alpha);
+            
+            int red = (int) Math.min(color.getRed() + (newColor.getRed() * (newAlpha/255.0f)), 255);
+            int green = (int) Math.min(color.getGreen() + (newColor.getGreen() * (newAlpha/255.0f)), 255);
+            int blue = (int) Math.min(color.getBlue() + (newColor.getBlue() * (newAlpha/255.0f)), 255);
+            alpha = Math.min(alpha + newAlpha, 255);
+            
+            color = new Color(red, green, blue);
+        }
+        
+        return color;
     }
 }
