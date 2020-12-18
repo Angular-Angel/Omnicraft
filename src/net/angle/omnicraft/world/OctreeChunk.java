@@ -88,7 +88,7 @@ public class OctreeChunk extends Chunk {
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        Vec3i octant = getOctant(blockx, blockx, blockx);
+        Vec3i octant = getOctant(blockx, blocky, blockz);
         
         if (octant.x == 1) {
             blockx = blockx - size/2;
