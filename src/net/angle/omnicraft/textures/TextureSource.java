@@ -44,7 +44,7 @@ public interface TextureSource {
         public static ColorVariationCallback createRandomizationCallback(float chance, PixelSource pixelSource) {
             return (int x, int y, Color currentLineColor, OmniRandom random) -> {
                 if (random.nextFloat() <= chance)
-                    return pixelSource.getPixelColor(random, pixelSource);
+                    return pixelSource.getAveragedPixelColor(3, random, pixelSource);
                 else return currentLineColor;
             };
         }

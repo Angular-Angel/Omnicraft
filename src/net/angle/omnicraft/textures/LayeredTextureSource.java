@@ -29,7 +29,7 @@ public class LayeredTextureSource extends AbstractTextureSource {
     }
     
     public Color getBaseColor(OmniRandom random) {
-        return this.getPixelColor(random, this);
+        return this.getAveragedPixelColor(5, random, this);
     }
     
     public void colorLine(int y, Color[][] tex, OmniRandom random) {

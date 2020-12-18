@@ -29,7 +29,7 @@ public class PaletteLayeredTextureSource extends LayeredTextureSource {
     public void createPalette(OmniRandom random) {
         palette.clear();
         for (int i = 0; i < paletteSize; i++)
-            palette.add(this.getPixelColor(random, this));
+            palette.add(this.getAveragedPixelColor(3, random, this));
     }
     
     public Color getPaletteColor(OmniRandom random) {
