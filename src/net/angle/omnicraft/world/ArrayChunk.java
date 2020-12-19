@@ -17,12 +17,12 @@ public class ArrayChunk extends Chunk {
     //incredibly lazy and lame representation, but also very easy.
     private Block[][][] blocks;
     
-    public ArrayChunk(Block block) {
-        this(block, 16, 0, 0, 0);
+    public ArrayChunk(World world, Block block) {
+        this(world, block, 16, 0, 0, 0);
     }
     
-    public ArrayChunk(Block block, int size, int x, int y, int z) {
-        super(size, x, y, z);
+    public ArrayChunk(World world, Block block, int size, int x, int y, int z) {
+        super(world, size, x, y, z);
         blocks = new Block[16][16][16];
         for (int blockx = 0; blockx < size; blockx++) {
             for (int blocky = 0; blocky < size; blocky++) {
