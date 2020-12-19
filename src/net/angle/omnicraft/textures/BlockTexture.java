@@ -6,6 +6,7 @@
 package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.world.Chunk;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
@@ -50,7 +51,7 @@ public interface BlockTexture {
         glTranslatef(-startx, -starty, -startz);
     }
     
-    public void draw();
+    public void draw(Chunk chunk, int blockx, int blocky, int blockz);
     
     public void delete();
 }

@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world.blocks;
 
 import net.angle.omnicraft.textures.BlockTexture;
+import net.angle.omnicraft.world.Chunk;
 
 /**
  *
@@ -20,8 +21,8 @@ public abstract class Block {
         this.texture = texture;
     }
     
-    public void draw() {
-        texture.draw();
+    public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
+        texture.draw(chunk, blockx, blocky, blockz);
     }
     
     public void delete() {

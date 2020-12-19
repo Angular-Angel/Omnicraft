@@ -6,6 +6,7 @@
 package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.world.Chunk;
 
 /**
  *
@@ -24,7 +25,7 @@ public class SteppedCubeTexture extends CubeTexture {
     }
 
     @Override
-    public void draw() {
+    public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
         //sides are all drawn as though you are standing next to the block facing it, 
         //or in front looking down or up, for the top and bottom.
         

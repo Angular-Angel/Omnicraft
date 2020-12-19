@@ -7,6 +7,7 @@ package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.world.Chunk;
 
 /**
  *
@@ -28,28 +29,34 @@ public class CubeTexture implements BlockTexture {
     }
     
     @Override
-    public void draw() {
+    public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
         
         //sides are all drawn as though you are standing next to the block facing it, 
         //or in front looking down or up, for the top and bottom.
         
         //Draw top:
-        drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
+        if (chunk.getBlock(blockx, blocky + 1, blockz) == null)
+            drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
         
         //Draw bottom:
-        drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
+        if (chunk.getBlock(blockx, blocky - 1, blockz) == null)
+            drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
         
         //Draw front
-        drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
+        if (chunk.getBlock(blockx, blocky, blockz + 1) == null)
+            drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
         
         //Draw back
-        drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
+        if (chunk.getBlock(blockx, blocky, blockz - 1) == null)
+            drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
         
         //Draw left
-        drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
+        if (chunk.getBlock(blockx - 1, blocky, blockz) == null)
+            drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
         
         //Draw right
-        drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
+        if (chunk.getBlock(blockx + 1, blocky, blockz) == null)
+            drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
 
     @Override
