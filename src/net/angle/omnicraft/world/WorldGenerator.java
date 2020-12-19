@@ -51,31 +51,6 @@ public class WorldGenerator {
                 new MixtureComponent(world.substances.get("Sand"), 15.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
                 new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f));
         
-        ColoredVariation upVariation = new ColoredVariation(redVar, greenVar, blueVar);
-        ColoredVariation downVariation = new ColoredVariation(-redVar, -greenVar, -blueVar);
-        
-        ColorVariationCallback upvarCallback = TextureSource.ColorVariationCallback.createVariationCallback(upChance, upVariation);
-                
-        ColorVariationCallback downvarCallback = TextureSource.ColorVariationCallback.createVariationCallback(downChance, downVariation);
-                
-        ColorVariationCallback randomCallback = TextureSource.ColorVariationCallback.createRandomizationCallback(randomChance, dirt);
-        
-        PaletteLayeredTextureSource paletteLayeredTextureSource = new PaletteLayeredTextureSource(dirt, 6, upvarCallback, downvarCallback, randomCallback);
-        
-        ArtisanalDirtTexture artisanalDirtTexture = new ArtisanalDirtTexture(dirt, 6);
-        
-        paletteLayeredTextureSource.setPixelCallbacks.add((x, y, tex, color, random) -> {
-            if (random.nextFloat() <= 0.05) {
-                if (random.nextFloat() <= 0.5 && y != 0) {
-                    tex[x][y-1] = color;
-                } else if (y != tex[0].length - 1){
-                    tex[x][y+1] = color;
-                }
-            }
-            
-            return tex;
-        });
-        
         world.addSubstance(dirt);
         
         return dirt;
