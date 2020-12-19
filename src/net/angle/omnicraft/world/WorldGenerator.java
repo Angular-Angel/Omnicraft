@@ -5,16 +5,8 @@
  */
 package net.angle.omnicraft.world;
 
-import com.samrj.devil.gl.DGL;
-import com.samrj.devil.gl.FBO;
-import com.samrj.devil.gl.Texture2D;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.ArtisanalDirtTexture;
-import net.angle.omnicraft.textures.PaletteLayeredTextureSource;
-import net.angle.omnicraft.textures.TextureSource;
-import net.angle.omnicraft.textures.TextureSource.ColorVariationCallback;
-import net.angle.omnicraft.textures.pixels.ColoredVariation;
 import net.angle.omnicraft.textures.pixels.VariedColorPixelSource;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
@@ -22,7 +14,6 @@ import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.MixtureComponent;
 import net.angle.omnicraft.world.types.Mixture;
-import static org.lwjgl.opengl.ARBFramebufferObject.GL_COLOR_ATTACHMENT0;
 
 /**
  *
@@ -51,16 +42,16 @@ public class WorldGenerator {
     }
     
     public static void generateBlocks(World world) {
-        world.blocks.add(new HomogenousBlock(world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
-        world.blocks.add(new HomogenousBlock(world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
-        world.blocks.add(new HomogenousBlock(world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
+        world.blockTypes.add(new HomogenousBlock(world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
+        world.blockTypes.add(new HomogenousBlock(world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
+        world.blockTypes.add(new HomogenousBlock(world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
     }
     
     public static void generateChunks(World world) {
-        world.chunks.add(new OctreeChunk(world, world.blocks.get(0)));
-        world.chunks.get(0).setBlock(0, 0, 0, world.blocks.get(1));
-        world.chunks.get(0).setBlock(0, 0, 1, world.blocks.get(2));
-        world.chunks.add(new OctreeChunk(world, world.blocks.get(0), 16, 0, 0));
+        world.chunks.add(new OctreeChunk(world, world.blockTypes.get(0)));
+        world.chunks.get(0).setBlock(0, 0, 0, world.blockTypes.get(1));
+        world.chunks.get(0).setBlock(0, 0, 1, world.blockTypes.get(2));
+        world.chunks.add(new OctreeChunk(world, world.blockTypes.get(0), 16, 0, 0));
     }
     
     public static World generateWorld() {

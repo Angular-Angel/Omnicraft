@@ -19,12 +19,12 @@ import net.angle.omnicraft.world.types.Substance;
  */
 public class World {
     public final Map<String, Substance> substances;
-    public final List<Block> blocks;
+    public final List<Block> blockTypes;
     public final List<Chunk> chunks;
     
     public World() {
         substances = new HashMap<>();
-        blocks = new ArrayList<>();
+        blockTypes = new ArrayList<>();
         chunks = new ArrayList<>();
     }
     
@@ -39,7 +39,7 @@ public class World {
     }
     
     public void delete() {
-        for (Block block : blocks)
+        for (Block block : blockTypes)
             block.delete();
     }
 }
