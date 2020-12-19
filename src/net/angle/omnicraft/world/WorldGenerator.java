@@ -42,18 +42,12 @@ public class WorldGenerator {
         world.addSubstance(new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         world.addSubstance(new Mixture("Desert Sand", new MixtureComponent(world.substances.get("Sand"), 100.0f)));
         
-        generateDirtType(world, "Dirt", 6, 6, 3, 0.15f, 0.15f, 0.45f);
-    }
-    
-    public static Mixture generateDirtType(World world, String name, int redVar, int greenVar, int blueVar, float downChance, float upChance, float randomChance) {
-        Mixture dirt = new Mixture(name, new MixtureComponent(world.substances.get("Water"), 25.0f), 
+        Mixture dirt = new Mixture("Dirt", new MixtureComponent(world.substances.get("Water"), 25.0f), 
                 new MixtureComponent(world.substances.get("Air"), 25.0f), new MixtureComponent(world.substances.get("Silt"), 18.0f),
                 new MixtureComponent(world.substances.get("Sand"), 15.0f), new MixtureComponent(world.substances.get("Clay"), 9.0f), 
                 new MixtureComponent(world.substances.get("Compost"), 5.0f), new MixtureComponent(world.substances.get("Pebbles"), 3.0f));
         
         world.addSubstance(dirt);
-        
-        return dirt;
     }
     
     public static void generateBlocks(World world) {
