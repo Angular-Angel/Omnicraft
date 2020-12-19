@@ -103,18 +103,6 @@ public class WorldGenerator {
 
         generateChunks(world);
         
-        FBO fbo = DGL.genFBO();
-        
-        Texture2D tex = DGL.genTex2D();
-        
-        DGL.bindFBO(fbo);
-        
-        fbo.texture2D(tex, GL_COLOR_ATTACHMENT0);
-        
-        DGL.bindFBO(null);
-        
-        DGL.delete(tex, fbo);
-        
         return world;
     }
 }

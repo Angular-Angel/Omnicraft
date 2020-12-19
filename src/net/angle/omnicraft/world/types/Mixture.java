@@ -57,7 +57,7 @@ public class Mixture extends Substance {
         Color color = new Color(0, 0, 0);
         
         int alpha = 0;
-        
+        //Sample a bunch of the stuff this Mixture is made of and return a color based on the combination.
         while (alpha < 255) {
             Color newColor = pickComponent(random).getPixelColor(random, context);
             
