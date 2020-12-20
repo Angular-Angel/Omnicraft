@@ -21,11 +21,13 @@ public class World {
     public final Map<String, Substance> substances;
     public final List<Block> blockTypes;
     public final List<Chunk> loadedChunks;
+    public final Region spawnRegion;
     
     public World() {
         substances = new HashMap<>();
         blockTypes = new ArrayList<>();
         loadedChunks = new ArrayList<>();
+        spawnRegion = new Region(this, null, 32, 16);
     }
     
     public  void addSubstance(Substance substance) {

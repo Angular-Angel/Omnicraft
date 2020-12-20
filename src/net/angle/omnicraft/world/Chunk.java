@@ -14,12 +14,13 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
  */
 public abstract class Chunk {
     
-    public final World world;
-    //These describe this blocks size, and it's x, y, and z coordinates
+    public final Region region;
+    //These describe this chunks size, and it's x, y, and z coordinates within it's region. 
+    //These coords are specific to the chunk, with no regard for the wider world.
     public final int size, x, y, z;
     
-    public Chunk(World world, int size, int x, int y, int z) {
-        this.world = world;
+    public Chunk(Region region, int size, int x, int y, int z) {
+        this.region = region;
         this.size = size;
         this.x = x;
         this.y = y;

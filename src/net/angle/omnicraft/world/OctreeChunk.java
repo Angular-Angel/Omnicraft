@@ -16,26 +16,26 @@ public class OctreeChunk extends Chunk {
     
     private Chunk[][][] children;
     
-    public OctreeChunk(World world) {
-        this(world, null, 16, 0, 0, 0);
+    public OctreeChunk(Region region) {
+        this(region, null, 16, 0, 0, 0);
     }
     
-    public OctreeChunk(World world, Block block) {
-        this(world, block, 16, 0, 0, 0);
+    public OctreeChunk(Region region, Block block) {
+        this(region, block, 16, 0, 0, 0);
     }
     
-    public OctreeChunk(World world, Block block, int x, int y, int z) {
-        this(world, block, 16, x, y, z);
+    public OctreeChunk(Region region, Block block, int x, int y, int z) {
+        this(region, block, 16, x, y, z);
     }
 
-    public OctreeChunk(World world, Block block, int size, int x, int y, int z) {
-        super(world, size, x, y, z);
+    public OctreeChunk(Region region, Block block, int size, int x, int y, int z) {
+        super(region, size, x, y, z);
         if (size <= 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + size + "!");
         children = new Chunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
                 for (int octantz = 0; octantz < 2; octantz++) {
-                    children[octantx][octanty][octantz] = new HomogenousChunk(world, block, this, size/2, octantx * size/2, octanty * size/2, octantz * size/2);
+                    children[octantx][octanty][octantz] = new HomogenousChunk(region, block, this, size/2, octantx * size/2, octanty * size/2, octantz * size/2);
                 }
             }
         }

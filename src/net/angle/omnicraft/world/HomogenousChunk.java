@@ -16,14 +16,14 @@ public class HomogenousChunk extends Chunk {
     private Block block;
     private final OctreeChunk parent;
     
-    public HomogenousChunk(World world, Block block) {
-        super(world, 16, 0, 0, 0);
+    public HomogenousChunk(Region region, Block block) {
+        super(region, 16, 0, 0, 0);
         this.block = block;
         this.parent = null;
     }
     
-    public HomogenousChunk(World world, Block block, OctreeChunk parent, int size, int x, int y, int z) {
-        super(world, size, x, y, z);
+    public HomogenousChunk(Region region, Block block, OctreeChunk parent, int size, int x, int y, int z) {
+        super(region, size, x, y, z);
         this.block = block;
         this.parent = parent;
     }
@@ -56,7 +56,7 @@ public class HomogenousChunk extends Chunk {
         if (parent == null)
             throw new IllegalStateException("Attempting to change a single block of multiblock HomogenousChunk with no Parent!");
         
-        OctreeChunk replacement = new OctreeChunk(world, this.block, size, x, y, z);
+        OctreeChunk replacement = new OctreeChunk(region, this.block, size, x, y, z);
         replacement.setBlock(blockx, blocky, blockz, block);
         parent.setOctant(x, y, z, replacement);
         
