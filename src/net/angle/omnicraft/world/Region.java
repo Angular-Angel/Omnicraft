@@ -5,13 +5,14 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.world.blocks.Block;
 
 /**
  *
  * @author angle
  */
-public class Region extends BlockContainer {
+public class Region extends BlockContainer implements ChunkContainer {
     public final World world;
     //These describe this regions size in blocks, and the sizes of it's chunks.
     public final int chunkSize;
@@ -50,14 +51,20 @@ public class Region extends BlockContainer {
             blockz >= 0 && blockz < size;
     }
     
+    @Override
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
         return chunks[chunkx][chunky][chunkz];
     }
     
+    public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz) {
+        return new Vec3i(blockx / chunkSize, blocky / chunkSize, blockz / chunkSize);
+    }
+    
+    @Override
     public Chunk getChunkOfBlock(int blockx, int blocky, int blockz) {
-        int chunkx = blockx / chunkSize, chunky = blocky / chunkSize, chunkz = blockz / chunkSize;
+        Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
-        return chunks[chunkx][chunky][chunkz];
+        return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
     
     @Override
@@ -80,5 +87,18 @@ public class Region extends BlockContainer {
                 }
             }
         }
+    }
+
+    @Override
+    public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
+        chunks[chunkx][chunky][chunkz] = chunk;
+    }
+
+    @Override
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+        
+        Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
+        
+        chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z] = chunk;
     }
 }

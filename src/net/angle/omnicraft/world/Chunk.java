@@ -15,14 +15,14 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
  */
 public abstract class Chunk extends BlockContainer {
     
-    public final Region region;
+    public final ChunkContainer container;
     //These describe this chunks size, and it's x, y, and z coordinates within it's region. 
     //These coords are specific to the chunk, with no regard for the wider world.
     public final int x, y, z;
     
-    public Chunk(Region region, int size, int x, int y, int z) {
+    public Chunk(ChunkContainer container, int size, int x, int y, int z) {
         super(size);
-        this.region = region;
+        this.container = container;
         this.x = x;
         this.y = y;
         this.z = z;

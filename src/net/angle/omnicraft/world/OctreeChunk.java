@@ -12,30 +12,30 @@ import com.samrj.devil.math.Vec3i;
  *
  * @author angle
  */
-public class OctreeChunk extends Chunk {
+public class OctreeChunk extends Chunk implements ChunkContainer {
     
     private Chunk[][][] children;
     
-    public OctreeChunk(Region region) {
-        this(region, null, 16, 0, 0, 0);
+    public OctreeChunk(ChunkContainer container) {
+        this(container, null, 16, 0, 0, 0);
     }
     
-    public OctreeChunk(Region region, Block block) {
-        this(region, block, 16, 0, 0, 0);
+    public OctreeChunk(ChunkContainer container, Block block) {
+        this(container, block, 16, 0, 0, 0);
     }
     
-    public OctreeChunk(Region region, Block block, int x, int y, int z) {
-        this(region, block, 16, x, y, z);
+    public OctreeChunk(ChunkContainer container, Block block, int x, int y, int z) {
+        this(container, block, 16, x, y, z);
     }
 
-    public OctreeChunk(Region region, Block block, int size, int x, int y, int z) {
-        super(region, size, x, y, z);
+    public OctreeChunk(ChunkContainer container, Block block, int size, int x, int y, int z) {
+        super(container, size, x, y, z);
         if (size <= 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + size + "!");
         children = new Chunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
                 for (int octantz = 0; octantz < 2; octantz++) {
-                    children[octantx][octanty][octantz] = new HomogenousChunk(region, block, this, size/2, octantx * size/2, octanty * size/2, octantz * size/2);
+                    children[octantx][octanty][octantz] = new HomogenousChunk(this, block, size/2, octantx * size/2, octanty * size/2, octantz * size/2);
                 }
             }
         }
@@ -57,12 +57,6 @@ public class OctreeChunk extends Chunk {
         }
         
         return octant;
-    }
-    
-    public void setOctant(int chunkx, int chunky, int chunkz, Chunk chunk) {
-        Vec3i octant = getOctant(chunkx, chunky, chunkz);
-        
-        children[octant.x][octant.y][octant.z] = chunk;
     }
 
     @Override
@@ -116,6 +110,30 @@ public class OctreeChunk extends Chunk {
                 }
             }
         }
+    }
+
+    @Override
+    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+        return children[chunkx][chunky][chunkz];
+    }
+
+    @Override
+    public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
+        children[chunkx][chunky][chunkz] = chunk;
+    }
+
+    @Override
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+        Vec3i octant = getOctant(blockx, blocky, blockz);
+        
+        setChunk(octant.x, octant.y, octant.z, chunk);
+    }
+
+    @Override
+    public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz) {
+        Vec3i octant = new Vec3i(0, 0, 0);
+        
+        return getChunk(octant.x, octant.y, octant.z);
     }
     
 }
