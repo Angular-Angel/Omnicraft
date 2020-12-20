@@ -48,10 +48,13 @@ public class WorldGenerator {
     }
     
     public static void generateChunks(World world) {
-        world.loadedChunks.add(new OctreeChunk(world.spawnRegion, world.blockTypes.get(0)));
-        world.loadedChunks.get(0).setBlock(0, 0, 0, world.blockTypes.get(1));
-        world.loadedChunks.get(0).setBlock(0, 0, 1, world.blockTypes.get(2));
+        Chunk chunk = world.spawnRegion.getChunk(0, 0, 0);
+        chunk.setAllBlocks(world.blockTypes.get(0));
+        chunk.setBlock(0, 0, 0, world.blockTypes.get(1));
+        chunk.setBlock(0, 0, 1, world.blockTypes.get(2));
+        world.spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get(0));
         world.loadedChunks.add(new OctreeChunk(world.spawnRegion, world.blockTypes.get(0), 16, 0, 0));
+        world.loadRegion(world.spawnRegion);
     }
     
     public static World generateWorld() {

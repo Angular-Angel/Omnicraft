@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,14 @@ public class World {
     
     public  void addSubstance(Substance substance) {
         substances.put(substance.name, substance);
+    }
+    
+    public void loadRegion(Region region) {
+        for (Chunk[][] chunklayer : region.chunks) {
+            for (Chunk[] chunkRow : chunklayer) {
+                loadedChunks.addAll(Arrays.asList(chunkRow));
+            }
+        }
     }
     
     public void draw() {

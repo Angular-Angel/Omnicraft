@@ -20,7 +20,7 @@ public class Region {
     private Region up, down, north, east, south, west;
     
     //The chunks within this region
-    private Chunk[][][] chunks;
+    public Chunk[][][] chunks;
     
     public Region(World world) {
         this(world, null, 256, 16);
@@ -50,17 +50,21 @@ public class Region {
             blockz >= 0 && blockz < size;
     }
     
-    public Chunk getChunk(int blockx, int blocky, int blockz) {
+    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+        return chunks[chunkx][chunky][chunkz];
+    }
+    
+    public Chunk getChunkOfBlock(int blockx, int blocky, int blockz) {
         int chunkx = blockx / chunkSize, chunky = blocky / chunkSize, chunkz = blockz / chunkSize;
         
         return chunks[chunkx][chunky][chunkz];
     }
     
     public Block getBlock(int blockx, int blocky, int blockz) {
-        return getChunk(blockx, blocky, blockz).getBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize);
+        return getChunkOfBlock(blockx, blocky, blockz).getBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize);
     }
     
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        getChunk(blockx, blocky, blockz).setBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize, block);
+        getChunkOfBlock(blockx, blocky, blockz).setBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize, block);
     }
 }
