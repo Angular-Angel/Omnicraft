@@ -23,11 +23,11 @@ import net.angle.omnicraft.world.types.Mixture;
 public class WorldGenerator {
     
     public static void generateSubstances(World world) {
-        world.addSubstance(new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60), 240));
-        world.addSubstance(new Mineraloid("Sand", new VariedColorPixelSource(new Color(200, 150, 80), 30), 80));
-        world.addSubstance(new Mineraloid("Silt", new VariedColorPixelSource(new Color(120, 75, 0), 10), 40));
-        world.addSubstance(new Mineraloid("Clay", new VariedColorPixelSource(new Color(120, 120, 130), -25), 20));
-        world.addSubstance(new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 15), -20), 130));
+        world.addSubstance(new Mineraloid("Pebbles", new VariedColorPixelSource(Color.darkGray, 60), 80));
+        world.addSubstance(new Mineraloid("Sand", new VariedColorPixelSource(new Color(200, 150, 80), 30), 40));
+        world.addSubstance(new Mineraloid("Silt", new VariedColorPixelSource(new Color(120, 75, 0), 10), 20));
+        world.addSubstance(new Mineraloid("Clay", new VariedColorPixelSource(new Color(120, 120, 130), -25), 10));
+        world.addSubstance(new Mineraloid("Compost", new VariedColorPixelSource(new Color(80, 40, 15), -20), 50));
         world.addSubstance(new Fluid("Water", new VariedColorPixelSource(new Color(0, 0, 200, 20), -20)));
         world.addSubstance(new Fluid("Air", new VariedColorPixelSource(new Color(20, 0, 50, 25), -50)));
         world.addSubstance(new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
@@ -53,6 +53,8 @@ public class WorldGenerator {
         chunk.setBlock(0, 0, 0, world.blockTypes.get(1));
         chunk.setBlock(0, 0, 1, world.blockTypes.get(2));
         world.spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get(0));
+        world.spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get(2));
+        world.spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get(1));
         world.loadedChunks.add(new OctreeChunk(world.spawnRegion, world.blockTypes.get(0), 16, 0, 0));
         world.loadRegion(world.spawnRegion);
     }

@@ -30,7 +30,7 @@ public class World {
         blockTypes = new ArrayList<>();
         loadedChunks = new ArrayList<>();
         Block emptiness = new Emptiness();
-        spawnRegion = new Region(this, emptiness, 32, 16);
+        spawnRegion = new Region(this, emptiness, 64, 16);
     }
     
     public  void addSubstance(Substance substance) {
