@@ -41,7 +41,8 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         }
     }
     
-    public Vec3i getOctant(int chunkx, int chunky, int chunkz) {
+    @Override
+    public Vec3i getChunkCoordinatesOfBlock(int chunkx, int chunky, int chunkz) {
         Vec3i octant = new Vec3i(0, 0, 0);
         
         if (chunkx >= size/2) {
@@ -65,7 +66,7 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         if (!containsBlockCoordinates(blockx, blocky, blockz))
             return null;
         
-        Vec3i octant = getOctant(blockx, blocky, blockz);
+        Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
             blockx = blockx - size/2;
@@ -84,7 +85,7 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        Vec3i octant = getOctant(blockx, blocky, blockz);
+        Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
             blockx = blockx - size/2;
@@ -123,17 +124,17 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     }
 
     @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
-        Vec3i octant = getOctant(blockx, blocky, blockz);
-        
-        setChunk(octant.x, octant.y, octant.z, chunk);
-    }
-
-    @Override
     public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz) {
         Vec3i octant = new Vec3i(0, 0, 0);
         
         return getChunk(octant.x, octant.y, octant.z);
+    }
+
+    @Override
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+        Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
+        
+        setChunk(octant.x, octant.y, octant.z, chunk);
     }
     
 }
