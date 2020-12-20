@@ -20,12 +20,12 @@ import net.angle.omnicraft.world.types.Substance;
 public class World {
     public final Map<String, Substance> substances;
     public final List<Block> blockTypes;
-    public final List<Chunk> chunks;
+    public final List<Chunk> loadedChunks;
     
     public World() {
         substances = new HashMap<>();
         blockTypes = new ArrayList<>();
-        chunks = new ArrayList<>();
+        loadedChunks = new ArrayList<>();
     }
     
     public  void addSubstance(Substance substance) {
@@ -33,7 +33,7 @@ public class World {
     }
     
     public void draw() {
-        for (Chunk chunk : chunks) {
+        for (Chunk chunk : loadedChunks) {
             chunk.draw();
         }
     }
