@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.angle.omnicraft.world.blocks.Block;
+import net.angle.omnicraft.world.blocks.Emptiness;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
@@ -27,7 +28,8 @@ public class World {
         substances = new HashMap<>();
         blockTypes = new ArrayList<>();
         loadedChunks = new ArrayList<>();
-        spawnRegion = new Region(this, null, 32, 16);
+        Block emptiness = new Emptiness();
+        spawnRegion = new Region(this, emptiness, 32, 16);
     }
     
     public  void addSubstance(Substance substance) {
