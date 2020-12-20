@@ -16,14 +16,17 @@ import net.angle.omnicraft.random.OmniRandom;
  */
 public class Fluid extends HomogenousSubstance {
     
-    public Fluid(String name, PixelSource pixelSource) {
+    private final int opacity;
+    
+    public Fluid(String name, PixelSource pixelSource, int opacity) {
         super(name, pixelSource);
+        this.opacity = opacity;
     }
     
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
         Color color = pixelSource.getPixelColor(random, context);
         
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 10);
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
     }
 }
