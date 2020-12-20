@@ -21,20 +21,24 @@ import net.angle.omnicraft.world.types.Substance;
  */
 public class World {
     public final Map<String, Substance> substances;
-    public final List<Block> blockTypes;
+    public final Map<String, Block> blockTypes;
     public final List<Chunk> loadedChunks;
     public final Region spawnRegion;
     
     public World() {
         substances = new HashMap<>();
-        blockTypes = new ArrayList<>();
+        blockTypes = new HashMap<>();
         loadedChunks = new ArrayList<>();
         Block emptiness = new Emptiness();
         spawnRegion = new Region(this, emptiness, 64, 16);
     }
     
-    public  void addSubstance(Substance substance) {
+    public void addSubstance(Substance substance) {
         substances.put(substance.name, substance);
+    }
+    
+    public void addBlockType(Block block) {
+        blockTypes.put(block.name, block);
     }
     
     public void loadRegion(Region region) {
@@ -52,7 +56,7 @@ public class World {
     }
     
     public void delete() {
-        for (Block block : blockTypes)
+        for (Block block : blockTypes.values())
             block.delete();
     }
 }

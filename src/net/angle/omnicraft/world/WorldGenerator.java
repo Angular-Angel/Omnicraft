@@ -42,20 +42,19 @@ public class WorldGenerator {
     }
     
     public static void generateBlocks(World world) {
-        world.blockTypes.add(new HomogenousBlock("Dirt Block", world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
-        world.blockTypes.add(new HomogenousBlock("Gravel Block", world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
-        world.blockTypes.add(new HomogenousBlock("Desert Sand Block", world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Dirt Block", world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Gravel Block", world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Desert Sand Block", world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
     }
     
     public static void generateChunks(World world) {
         Chunk chunk = world.spawnRegion.getChunk(0, 0, 0);
-        chunk.setAllBlocks(world.blockTypes.get(0));
-        chunk.setBlock(0, 0, 0, world.blockTypes.get(1));
-        chunk.setBlock(0, 0, 1, world.blockTypes.get(2));
-        world.spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get(0));
-        world.spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get(2));
-        world.spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get(1));
-        world.loadedChunks.add(new OctreeChunk(world.spawnRegion, world.blockTypes.get(0), 16, 0, 0));
+        chunk.setAllBlocks(world.blockTypes.get("Dirt Block"));
+        chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
+        chunk.setBlock(0, 0, 1, world.blockTypes.get("Desert Sand Block"));
+        world.spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get("Dirt Block"));
+        world.spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
+        world.spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
         world.loadRegion(world.spawnRegion);
     }
     
