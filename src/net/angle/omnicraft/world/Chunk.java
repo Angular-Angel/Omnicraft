@@ -6,6 +6,8 @@
 package net.angle.omnicraft.world;
 
 import net.angle.omnicraft.world.blocks.Block;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
 /**
@@ -37,20 +39,22 @@ public abstract class Chunk {
     public abstract void setAllBlocks(Block block);
     
     public void draw() {
+        glPushMatrix();
         glTranslatef(x, y, z);
         for (int blockx = 0; blockx < size; blockx++) {
             glTranslatef(1, 0, 0);
+            glPushMatrix();
             for (int blocky = 0; blocky < size; blocky++) {
                 glTranslatef(0, 1, 0);
+                glPushMatrix();
                 for (int blockz = 0; blockz < size; blockz++) {
                     glTranslatef(0, 0, 1);
                     getBlock(blockx, blocky, blockz).draw(this, blockx, blocky, blockz);
                 }
-                glTranslatef(0, 0, -size);
+                glPopMatrix();
             }
-            glTranslatef(0, -size, 0);
+            glPopMatrix();
         }
-        glTranslatef(-size, 0, 0);
-        glTranslatef(-x, -y, -z);
+        glPopMatrix();
     }
 }
