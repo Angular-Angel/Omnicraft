@@ -19,8 +19,8 @@ public class HomogenousBlock extends Block implements PixelSource {
     private final Substance substance;
     private final BlockShape blockShape;
     
-    public HomogenousBlock(Substance substance, BlockShape blockShape, OmniRandom random) {
-        super(blockShape.generateBlockTexture(substance, random));
+    public HomogenousBlock(String name, Substance substance, BlockShape blockShape, OmniRandom random) {
+        super(name, blockShape.generateBlockTexture(substance, random));
         
         this.substance = substance;
         this.blockShape = blockShape;
@@ -29,5 +29,10 @@ public class HomogenousBlock extends Block implements PixelSource {
     @Override
     public Color getPixelColor(OmniRandom random, PixelSource context) {
         return this.substance.getPixelColor(new OmniRandom(), this);
+    }
+
+    @Override
+    public boolean isTransparent() {
+        return false;
     }
 }

@@ -16,8 +16,10 @@ import net.angle.omnicraft.world.Chunk;
 public abstract class Block {
     
     public final BlockTexture texture;
+    public final String name;
     
-    public Block(BlockTexture texture) {
+    public Block(String name, BlockTexture texture) {
+        this.name = name;
         this.texture = texture;
     }
     
@@ -28,4 +30,6 @@ public abstract class Block {
     public void delete() {
         this.texture.delete();
     }
+    
+    public abstract boolean isTransparent();
 }
