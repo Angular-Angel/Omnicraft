@@ -24,13 +24,7 @@ public class ArrayChunk extends Chunk {
     public ArrayChunk(Region region, Block block, int size, int x, int y, int z) {
         super(region, size, x, y, z);
         blocks = new Block[16][16][16];
-        for (int blockx = 0; blockx < size; blockx++) {
-            for (int blocky = 0; blocky < size; blocky++) {
-                for (int blockz = 0; blockz < size; blockz++) {
-                    blocks[blockx][blocky][blockz] = block;
-                }
-            }
-        }
+        setAllBlocks(block);
     }
     
     @Override
@@ -41,5 +35,16 @@ public class ArrayChunk extends Chunk {
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         blocks[blockx][blocky][blockz] = block;
+    }
+
+    @Override
+    public void setAllBlocks(Block block) {
+        for (int blockx = 0; blockx < size; blockx++) {
+            for (int blocky = 0; blocky < size; blocky++) {
+                for (int blockz = 0; blockz < size; blockz++) {
+                    blocks[blockx][blocky][blockz] = block;
+                }
+            }
+        }
     }
 }

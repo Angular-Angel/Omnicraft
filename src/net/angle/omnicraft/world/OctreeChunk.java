@@ -106,5 +106,16 @@ public class OctreeChunk extends Chunk {
         
         children[octant.x][octant.y][octant.z].setBlock(blockx, blocky, blockz, block);
     }
+
+    @Override
+    public void setAllBlocks(Block block) {
+        for (int octantx = 0; octantx < 2; octantx++) {
+            for (int octanty = 0; octanty < 2; octanty++) {
+                for (int octantz = 0; octantz < 2; octantz++) {
+                    children[octantx][octanty][octantz].setAllBlocks(block);
+                }
+            }
+        }
+    }
     
 }

@@ -34,6 +34,7 @@ public abstract class Chunk {
     
     public abstract Block getBlock(int blockx, int blocky, int blockz);
     public abstract void setBlock(int blockx, int blocky, int blockz, Block block);
+    public abstract void setAllBlocks(Block block);
     
     public void draw() {
         glTranslatef(x, y, z);

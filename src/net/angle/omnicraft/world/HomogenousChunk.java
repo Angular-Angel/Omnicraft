@@ -61,5 +61,10 @@ public class HomogenousChunk extends Chunk {
         parent.setOctant(x, y, z, replacement);
         
     }
+
+    @Override
+    public void setAllBlocks(Block block) {
+        this.block = block;
+    }
     
 }
