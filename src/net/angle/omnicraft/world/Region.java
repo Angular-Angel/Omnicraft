@@ -11,10 +11,10 @@ import net.angle.omnicraft.world.blocks.Block;
  *
  * @author angle
  */
-public class Region {
+public class Region extends BlockContainer {
     public final World world;
-    //These describe this regions size in chunks, and the sizes of it's chunks.
-    public final int size, chunkSize;
+    //These describe this regions size in blocks, and the sizes of it's chunks.
+    public final int chunkSize;
     
     //This regions neighbors
     private Region up, down, north, east, south, west;
@@ -27,8 +27,8 @@ public class Region {
     }
     
     public Region(World world, Block block, int size, int chunkSize) {
+        super(size);
         this.world = world;
-        this.size = size;
         this.chunkSize = chunkSize;
         
         int arraySize = size / chunkSize;
@@ -60,11 +60,25 @@ public class Region {
         return chunks[chunkx][chunky][chunkz];
     }
     
+    @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         return getChunkOfBlock(blockx, blocky, blockz).getBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize);
     }
     
+    @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         getChunkOfBlock(blockx, blocky, blockz).setBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize, block);
+    }
+
+    @Override
+    public void setAllBlocks(Block block) {
+        int arraySize = size / chunkSize;
+        for (int i = 0; i < arraySize; i++) {
+            for (int j = 0; j < arraySize; j++) {
+                for (int k = 0; k < arraySize; k++) {
+                    chunks[i][j][k].setAllBlocks(block);
+                }
+            }
+        }
     }
 }

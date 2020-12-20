@@ -68,7 +68,7 @@ public class OctreeChunk extends Chunk {
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         
-        if (!containsCoordinates(blockx, blocky, blockz))
+        if (!containsBlockCoordinates(blockx, blocky, blockz))
             return null;
         
         Vec3i octant = getOctant(blockx, blocky, blockz);
