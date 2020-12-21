@@ -55,6 +55,7 @@ public class WorldGenerator {
         world.spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get("Dirt Block"));
         world.spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         world.spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
+        world.spawnRegion.getChunk(3, 3, 3).setAllBlocks(world.blockTypes.get("Dirt Block"));
         world.loadRegion(world.spawnRegion);
     }
     

@@ -26,11 +26,15 @@ public class World {
     public final Region spawnRegion;
     
     public World() {
+        this(new Emptiness());
+    }
+    
+    public World(Block block) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         loadedChunks = new ArrayList<>();
-        Block emptiness = new Emptiness();
-        spawnRegion = new Region(this, emptiness, 64, 16);
+        addBlockType(block);
+        spawnRegion = new Region(this, block, 64, 16);
     }
     
     public void addSubstance(Substance substance) {
