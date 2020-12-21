@@ -30,11 +30,15 @@ public class World {
     }
     
     public World(Block block) {
+        this(block, 64, 16);
+    }
+    
+    public World(Block block, int edgeLength, int chunkEdgeLength) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         loadedChunks = new ArrayList<>();
         addBlockType(block);
-        spawnRegion = new Region(this, block, 64, 16);
+        spawnRegion = new Region(this, block, edgeLength, chunkEdgeLength);
     }
     
     public void addSubstance(Substance substance) {
