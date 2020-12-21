@@ -45,15 +45,15 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     public Vec3i getChunkCoordinatesOfBlock(int chunkx, int chunky, int chunkz) {
         Vec3i octant = new Vec3i(0, 0, 0);
         
-        if (chunkx >= size/2) {
+        if (chunkx >= edgeLength/2) {
             octant.x = 1;
         }
         
-        if (chunky >= size/2) {
+        if (chunky >= edgeLength/2) {
             octant.y = 1;
         }
         
-        if (chunkz >= size/2) {
+        if (chunkz >= edgeLength/2) {
             octant.z = 1;
         }
         
@@ -63,21 +63,22 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         
-        if (!containsBlockCoordinates(blockx, blocky, blockz))
-            return null;
+        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+            return container.getBlock(blockx + x, blocky + y, blockz + z);
+        }
         
         Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
-            blockx = blockx - size/2;
+            blockx = blockx - edgeLength/2;
         }
         
         if (octant.y == 1) {
-            blocky = blocky - size/2;
+            blocky = blocky - edgeLength/2;
         }
         
         if (octant.z == 1) {
-            blockz = blockz - size/2;
+            blockz = blockz - edgeLength/2;
         }
         
         return children[octant.x][octant.y][octant.z].getBlock(blockx, blocky, blockz);
@@ -88,15 +89,15 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
-            blockx = blockx - size/2;
+            blockx = blockx - edgeLength/2;
         }
         
         if (octant.y == 1) {
-            blocky = blocky - size/2;
+            blocky = blocky - edgeLength/2;
         }
         
         if (octant.z == 1) {
-            blockz = blockz - size/2;
+            blockz = blockz - edgeLength/2;
         }
         
         children[octant.x][octant.y][octant.z].setBlock(blockx, blocky, blockz, block);

@@ -12,10 +12,10 @@ import net.angle.omnicraft.world.blocks.Block;
  *
  * @author angle
  */
-public class Region extends BlockContainer implements ChunkContainer {
+public class Region implements ChunkContainer {
     public final World world;
     //These describe this regions size in blocks, and the sizes of it's chunks.
-    public final int chunkSize;
+    public final int chunkEdgeLength, edgeLength;
     
     //This regions neighbors
     private Region up, down, north, east, south, west;
@@ -27,43 +27,39 @@ public class Region extends BlockContainer implements ChunkContainer {
         this(world, null, 256, 16);
     }
     
-    public Region(World world, Block block, int size, int chunkSize) {
-        super(size);
+    public Region(World world, Block block, int edgeLength, int chunkEdgeLength) {
         this.world = world;
-        this.chunkSize = chunkSize;
+        this.edgeLength = edgeLength;
+        this.chunkEdgeLength = chunkEdgeLength;
         
-        int arraySize = size / chunkSize;
+        int arraySize = edgeLength / chunkEdgeLength;
         
         chunks = new Chunk[arraySize][arraySize][arraySize];
         
         for (int i = 0; i < arraySize; i++) {
             for (int j = 0; j < arraySize; j++) {
                 for (int k = 0; k < arraySize; k++) {
-                    chunks[i][j][k] = new OctreeChunk(this, block, chunkSize, i * chunkSize, j * chunkSize, k * chunkSize);
+                    chunks[i][j][k] = new OctreeChunk(this, block, chunkEdgeLength, i * chunkEdgeLength, j * chunkEdgeLength, k * chunkEdgeLength);
                 }
             }
         }
     }
     
-    public boolean containsCoordinates(int blockx, int blocky, int blockz) {
-        
-        return blockx >= 0 && blockx < size && blocky >= 0 && blocky < size && 
-            blockz >= 0 && blockz < size;
-    }
-    
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        return getChunkOfBlock(blockx, blocky, blockz).getBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize);
+        if (!containsBlockCoordinates(blockx, blocky, blockz))
+            return null;
+        return getChunkOfBlock(blockx, blocky, blockz).getBlock(blockx % chunkEdgeLength, blocky % chunkEdgeLength, blockz % chunkEdgeLength);
     }
     
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        getChunkOfBlock(blockx, blocky, blockz).setBlock(blockx % chunkSize, blocky % chunkSize, blockz % chunkSize, block);
+        getChunkOfBlock(blockx, blocky, blockz).setBlock(blockx % chunkEdgeLength, blocky % chunkEdgeLength, blockz % chunkEdgeLength, block);
     }
 
     @Override
     public void setAllBlocks(Block block) {
-        int arraySize = size / chunkSize;
+        int arraySize = edgeLength / chunkEdgeLength;
         for (int i = 0; i < arraySize; i++) {
             for (int j = 0; j < arraySize; j++) {
                 for (int k = 0; k < arraySize; k++) {
@@ -83,8 +79,9 @@ public class Region extends BlockContainer implements ChunkContainer {
         chunks[chunkx][chunky][chunkz] = chunk;
     }
     
+    @Override
     public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz) {
-        return new Vec3i(blockx / chunkSize, blocky / chunkSize, blockz / chunkSize);
+        return new Vec3i(blockx / chunkEdgeLength, blocky / chunkEdgeLength, blockz / chunkEdgeLength);
     }
     
     @Override
@@ -100,5 +97,10 @@ public class Region extends BlockContainer implements ChunkContainer {
         Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z] = chunk;
+    }
+
+    @Override
+    public int getBlockSideLegth() {
+        return edgeLength;
     }
 }

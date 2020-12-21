@@ -30,7 +30,7 @@ public class HomogenousChunk extends Chunk {
         if (containsBlockCoordinates(blockx, blocky, blockz)) {
             return block;
         } else {
-            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
+            return container.getBlock(blockx + x, blocky + y, blockz + z);
         }
     }
 
@@ -38,14 +38,14 @@ public class HomogenousChunk extends Chunk {
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsBlockCoordinates(blockx, blocky, blockz)) {
             //If the coordinates are outside this block, then we should throw an error.
-            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of size " + size);
+            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of side length " + edgeLength);
         }
         
         if (this.block == block) {
             //trying to set our block to what it already is - no change needed!
             return;
         }
-        if (size == 1) {
+        if (edgeLength == 1) {
             this.block = block;
             return;
         }
@@ -53,7 +53,7 @@ public class HomogenousChunk extends Chunk {
         if (container == null)
             throw new IllegalStateException("Attempting to change a single block of multiblock HomogenousChunk with no Parent!");
         
-        OctreeChunk replacement = new OctreeChunk(container, this.block, size, x, y, z);
+        OctreeChunk replacement = new OctreeChunk(container, this.block, edgeLength, x, y, z);
         replacement.setBlock(blockx, blocky, blockz, block);
         container.setChunkOfBlock(x, y, z, replacement);
         

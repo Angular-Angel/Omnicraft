@@ -8,6 +8,7 @@ package net.angle.omnicraft.textures;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Texture2D;
 import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.blocks.Block;
 
 /**
  *
@@ -35,27 +36,33 @@ public class CubeTexture implements BlockTexture {
         //or in front looking down or up, for the top and bottom.
         
         //Draw top:
-        if (chunk.getBlock(blockx, blocky + 1, blockz) == null)
+        Block adjacentBlock = chunk.getBlock(blockx, blocky + 1, blockz);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
         
         //Draw bottom:
-        if (chunk.getBlock(blockx, blocky - 1, blockz) == null)
+        adjacentBlock = chunk.getBlock(blockx, blocky - 1, blockz);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
         
         //Draw front
-        if (chunk.getBlock(blockx, blocky, blockz + 1) == null)
+        adjacentBlock = chunk.getBlock(blockx, blocky, blockz + 1);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
         
         //Draw back
-        if (chunk.getBlock(blockx, blocky, blockz - 1) == null)
+        adjacentBlock = chunk.getBlock(blockx, blocky, blockz - 1);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
         
         //Draw left
-        if (chunk.getBlock(blockx - 1, blocky, blockz) == null)
+        adjacentBlock = chunk.getBlock(blockx - 1, blocky, blockz);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
         
         //Draw right
-        if (chunk.getBlock(blockx + 1, blocky, blockz) == null)
+        adjacentBlock = chunk.getBlock(blockx + 1, blocky, blockz);
+        if (adjacentBlock == null || adjacentBlock.isTransparent())
             drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
 
