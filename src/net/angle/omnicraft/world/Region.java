@@ -100,7 +100,7 @@ public class Region implements ChunkContainer {
     }
 
     @Override
-    public int getBlockSideLegth() {
+    public int getBlockEdgeLegth() {
         return edgeLength;
     }
 }

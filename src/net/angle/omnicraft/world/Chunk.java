@@ -29,7 +29,7 @@ public abstract class Chunk implements BlockContainer {
     }
     
     @Override
-    public int getBlockSideLegth() {
+    public int getBlockEdgeLegth() {
         return edgeLength;
     }
     

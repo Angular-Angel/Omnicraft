@@ -13,11 +13,11 @@ import net.angle.omnicraft.world.blocks.Block;
  */
 public interface BlockContainer {
     
-    public int getBlockSideLegth();
+    public int getBlockEdgeLegth();
     
     public default boolean containsBlockCoordinates(int blockx, int blocky, int blockz) {
-        return blockx >= 0 && blockx < getBlockSideLegth() && blocky >= 0 && blocky < getBlockSideLegth() && 
-            blockz >= 0 && blockz < getBlockSideLegth();
+        return blockx >= 0 && blockx < getBlockEdgeLegth() && blocky >= 0 && blocky < getBlockEdgeLegth() && 
+            blockz >= 0 && blockz < getBlockEdgeLegth();
     }
     
     public abstract Block getBlock(int blockx, int blocky, int blockz);
