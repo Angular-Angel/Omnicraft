@@ -27,7 +27,6 @@ public class World {
     public final Map<String, Block> blockTypes;
     public final Map<String, Region> regions;
     public final List<Chunk> loadedChunks;
-    public final Region spawnRegion;
     
     public World() {
         this(new Emptiness());
@@ -45,7 +44,7 @@ public class World {
         addBlockType(block);
         this.regionEdgeLength = regionEdgeLength;
         this.chunkEdgeLength = chunkEdgeLength;
-        spawnRegion = new Region(this, block, 0, 0, 0);
+        addRegion(new Region(this, block, 0, 0, 0));
     }
     
     public void addSubstance(Substance substance) {
@@ -57,7 +56,12 @@ public class World {
     }
     
     public void addRegion(Region region) {
-        
+        String coordstring = region.x + ", " + region.y + ", " + region.z;
+        regions.put(coordstring, region);
+    }
+    
+    public Region getSpawnRegion() {
+        return regions.get("0, 0, 0");
     }
     
     public void loadRegion(Region region) {
