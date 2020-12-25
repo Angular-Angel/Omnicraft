@@ -20,8 +20,12 @@ import net.angle.omnicraft.world.types.Substance;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class World {
+    
+    public final int chunkEdgeLength, regionEdgeLength;
+    
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
+    public final Map<String, Region> regions;
     public final List<Chunk> loadedChunks;
     public final Region spawnRegion;
     
@@ -30,15 +34,18 @@ public class World {
     }
     
     public World(Block block) {
-        this(block, 64, 16);
+        this(block, 4, 16);
     }
     
-    public World(Block block, int edgeLength, int chunkEdgeLength) {
+    public World(Block block, int regionEdgeLength, int chunkEdgeLength) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
+        regions = new HashMap<>();
         loadedChunks = new ArrayList<>();
         addBlockType(block);
-        spawnRegion = new Region(this, block, edgeLength, chunkEdgeLength);
+        this.regionEdgeLength = regionEdgeLength;
+        this.chunkEdgeLength = chunkEdgeLength;
+        spawnRegion = new Region(this, block, 0, 0, 0);
     }
     
     public void addSubstance(Substance substance) {
@@ -47,6 +54,10 @@ public class World {
     
     public void addBlockType(Block block) {
         blockTypes.put(block.name, block);
+    }
+    
+    public void addRegion(Region region) {
+        
     }
     
     public void loadRegion(Region region) {
