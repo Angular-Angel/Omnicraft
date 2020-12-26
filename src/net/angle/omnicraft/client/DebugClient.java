@@ -14,7 +14,6 @@ import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.system.APIUtil;
 import org.lwjgl.system.MemoryStack;
 
 /**
@@ -22,51 +21,68 @@ import org.lwjgl.system.MemoryStack;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class DebugClient {
+public class DebugClient implements Client {
     
     private Camera3D camera;
     private Player player;
     private World world;
     
-    public void run() {
-        try
-        {
-            Game.setTitle("Omnicraft");
-            Game.setDebug(true);
+    public static void main(String args[]) {
+        DebugClient client = new DebugClient();
+        client.run();
+    }
 
-            Game.onInit(() -> {
-                DGL.init();
+    @Override
+    public void preInit() {
+        Game.setTitle("Omnicraft");
+        Game.setDebug(true);
+    }
 
-                camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
+    @Override
+    public void init() {
+        camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
 
-                Vec2i resolution = Game.getResolution();
-                camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
+        Vec2i resolution = Game.getResolution();
+        camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
 
-                player = new Player(camera);
+        player = new Player(camera);
 
-                world = WorldGenerator.generateWorld();
+        world = WorldGenerator.generateWorld();
 
-                glEnable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);
 
-                glShadeModel(GL_SMOOTH);                        // Enables Smooth Shading
-                glClearDepth(1.0f);                         // Depth Buffer Setup
-                glEnable(GL_DEPTH_TEST);                        // Enables Depth Testing
-                glDepthFunc(GL_LEQUAL);                         // The Type Of Depth Test To Do
-                glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // Really Nice Perspective Calculations*/
+        glShadeModel(GL_SMOOTH);                        // Enables Smooth Shading
+        glClearDepth(1.0f);                         // Depth Buffer Setup
+        glEnable(GL_DEPTH_TEST);                        // Enables Depth Testing
+        glDepthFunc(GL_LEQUAL);                         // The Type Of Depth Test To Do
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);          // Really Nice Perspective Calculations*/
 
-                Game.getMouse().setGrabbed(true);
-                Game.setVsync(true);
-            });
+        Game.getMouse().setGrabbed(true);
+        Game.setVsync(true);
+    }
 
-            Game.onStep((float dt) -> {
-                player.update(dt);
-                if (Game.getKeyboard().isKeyDown(GLFW_KEY_ESCAPE)){
-                    Game.stop();
-                }
-            });
+    @Override
+    public void mouseMoved(float x, float y) {
+        player.handleMouseInput(x, y);
+    }
 
-            Game.onRender(() -> {
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    @Override
+    public void key(int key, int action, int mods) {}
+
+    @Override
+    public void resize(int width, int height) {}
+
+    @Override
+    public void step(float dt) {
+        player.update(dt);
+        if (Game.getKeyboard().isKeyDown(GLFW_KEY_ESCAPE)){
+            Game.stop();
+        }
+    }
+
+    @Override
+    public void render() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 //I need to add matrix toArray functions to make this easier. -Sam
                 try (MemoryStack stack = MemoryStack.stackPush())
@@ -78,28 +94,15 @@ public class DebugClient {
                 }
 
                 world.draw();
-            });
-
-            Game.onDestroy(crashed ->
-                {
-                    world.delete();
-                    world = null;
-                    
-                    if (crashed) DGL.setDebugLeakTracking(false);
-                    
-                    DGL.destroy();
-                });
-
-            Game.run();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            APIUtil.DEBUG_STREAM.close(); //Prevent LWJGL leak message spam.
-            System.exit(-1);
-        }
     }
-    
-    public static void main(String args[]) {
-        DebugClient client = new DebugClient();
-        client.run();
+
+    @Override
+    public void destroy(Boolean crashed) {
+        world.delete();
+        world = null;
+
+        if (crashed) DGL.setDebugLeakTracking(false);
+
+        DGL.destroy();
     }
 }

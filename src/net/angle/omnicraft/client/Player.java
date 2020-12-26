@@ -31,25 +31,19 @@ public class Player {
     float prevMouseX;
     float prevMouseY;
     
-    private class CursorCallback implements Mouse.CursorCallback {
-
-        @Override
-        public void accept(float x, float y) {
-            float dx = x - prevMouseX;
-            float dy = y - prevMouseY;
-            cameraController.mouseDelta(dx, dy);
-            prevMouseX = x; prevMouseY = y;
-        }
-    }
-    
     public Player(Camera3D camera) {
         cameraController = new Camera3DController(camera);
         position = new Vec3(0, 1, 2);
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
-        
-        Game.onMouseMoved(new CursorCallback());
+    }
+    
+    public void handleMouseInput(float x, float y) {
+        float dx = x - prevMouseX;
+        float dy = y - prevMouseY;
+        cameraController.mouseDelta(dx, dy);
+        prevMouseX = x; prevMouseY = y;
     }
     
     public void update(float dt) {
