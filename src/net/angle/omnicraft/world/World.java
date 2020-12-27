@@ -21,7 +21,7 @@ import net.angle.omnicraft.world.types.Substance;
  */
 public class World {
     
-    public final int chunkEdgeLength, regionEdgeLength;
+    public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
@@ -36,14 +36,14 @@ public class World {
         this(block, 4, 16);
     }
     
-    public World(Block block, int regionEdgeLength, int chunkEdgeLength) {
+    public World(Block block, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         regions = new HashMap<>();
         loadedChunks = new ArrayList<>();
         addBlockType(block);
-        this.regionEdgeLength = regionEdgeLength;
-        this.chunkEdgeLength = chunkEdgeLength;
+        this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
+        this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
         addRegion(new Region(this, block, 0, 0, 0));
     }
     
