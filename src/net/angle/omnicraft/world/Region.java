@@ -35,7 +35,7 @@ public class Region implements ChunkContainer {
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
                 for (int k = 0; k < world.chunkEdgeLengthOfRegion; k++) {
-                    chunks[i][j][k] = new OctreeChunk(this, block, world.blockEdgeLengthOfChunk, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
+                    chunks[i][j][k] = new OctreeChunk(this, block, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
                 }
             }
         }
@@ -97,5 +97,10 @@ public class Region implements ChunkContainer {
     @Override
     public int getBlockEdgeLegth() {
         return world.blockEdgeLengthOfChunk * world.chunkEdgeLengthOfRegion;
+    }
+
+    @Override
+    public int getChunkEdgeLength() {
+        return world.blockEdgeLengthOfChunk;
     }
 }
