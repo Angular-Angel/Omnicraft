@@ -95,12 +95,12 @@ public class Region implements ChunkContainer {
     }
 
     @Override
-    public int getBlockEdgeLegth() {
+    public int getEdgeLength() {
         return world.blockEdgeLengthOfChunk * world.chunkEdgeLengthOfRegion;
     }
 
     @Override
-    public int getChunkEdgeLength() {
+    public int getEdgeLengthOfContainedChunks() {
         return world.blockEdgeLengthOfChunk;
     }
 }

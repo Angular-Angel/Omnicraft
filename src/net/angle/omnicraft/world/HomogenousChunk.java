@@ -38,14 +38,14 @@ public class HomogenousChunk extends Chunk {
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsBlockCoordinates(blockx, blocky, blockz)) {
             //If the coordinates are outside this block, then we should throw an error.
-            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of side length " + getBlockEdgeLegth());
+            throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of side length " + getEdgeLength());
         }
         
         if (this.block == block) {
             //trying to set our block to what it already is - no change needed!
             return;
         }
-        if (getBlockEdgeLegth() == 1) {
+        if (getEdgeLength() == 1) {
             this.block = block;
             return;
         }

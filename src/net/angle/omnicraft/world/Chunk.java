@@ -28,20 +28,21 @@ public abstract class Chunk implements BlockContainer {
     }
     
     @Override
-    public int getBlockEdgeLegth() {
-        return container.getChunkEdgeLength();
+    public int getEdgeLength() {
+        return container.getEdgeLengthOfContainedChunks();
     }
     
     public void draw() {
+        int edgeLength = getEdgeLength();
         glPushMatrix();
         glTranslatef(x, y, z);
-        for (int blockx = 0; blockx < getBlockEdgeLegth(); blockx++) {
+        for (int blockx = 0; blockx < edgeLength; blockx++) {
             glTranslatef(1, 0, 0);
             glPushMatrix();
-            for (int blocky = 0; blocky < getBlockEdgeLegth(); blocky++) {
+            for (int blocky = 0; blocky < edgeLength; blocky++) {
                 glTranslatef(0, 1, 0);
                 glPushMatrix();
-                for (int blockz = 0; blockz < getBlockEdgeLegth(); blockz++) {
+                for (int blockz = 0; blockz < edgeLength; blockz++) {
                     glTranslatef(0, 0, 1);
                     getBlock(blockx, blocky, blockz).draw(this, blockx, blocky, blockz);
                 }

@@ -26,8 +26,9 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
 
     public OctreeChunk(ChunkContainer container, Block block, int x, int y, int z) {
         super(container, x, y, z);
-        int edgeLength = getBlockEdgeLegth();
-        if (getBlockEdgeLegth() <= 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + edgeLength + "!");
+        int edgeLength = getEdgeLength();
+        // if edgeLength is less than 2 or an odd number, throw an exception.
+        if (edgeLength < 2 || edgeLength % 2 == 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + edgeLength + "!");
         children = new Chunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
@@ -42,15 +43,15 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     public Vec3i getChunkCoordinatesOfBlock(int chunkx, int chunky, int chunkz) {
         Vec3i octant = new Vec3i(0, 0, 0);
         
-        if (chunkx >= getBlockEdgeLegth()/2) {
+        if (chunkx >= getEdgeLength()/2) {
             octant.x = 1;
         }
         
-        if (chunky >= getBlockEdgeLegth()/2) {
+        if (chunky >= getEdgeLength()/2) {
             octant.y = 1;
         }
         
-        if (chunkz >= getBlockEdgeLegth()/2) {
+        if (chunkz >= getEdgeLength()/2) {
             octant.z = 1;
         }
         
@@ -67,15 +68,15 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
-            blockx = blockx - getBlockEdgeLegth()/2;
+            blockx = blockx - getEdgeLength()/2;
         }
         
         if (octant.y == 1) {
-            blocky = blocky - getBlockEdgeLegth()/2;
+            blocky = blocky - getEdgeLength()/2;
         }
         
         if (octant.z == 1) {
-            blockz = blockz - getBlockEdgeLegth()/2;
+            blockz = blockz - getEdgeLength()/2;
         }
         
         return children[octant.x][octant.y][octant.z].getBlock(blockx, blocky, blockz);
@@ -86,15 +87,15 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         if (octant.x == 1) {
-            blockx = blockx - getBlockEdgeLegth()/2;
+            blockx = blockx - getEdgeLength()/2;
         }
         
         if (octant.y == 1) {
-            blocky = blocky - getBlockEdgeLegth()/2;
+            blocky = blocky - getEdgeLength()/2;
         }
         
         if (octant.z == 1) {
-            blockz = blockz - getBlockEdgeLegth()/2;
+            blockz = blockz - getEdgeLength()/2;
         }
         
         children[octant.x][octant.y][octant.z].setBlock(blockx, blocky, blockz, block);
@@ -136,8 +137,8 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     }
 
     @Override
-    public int getChunkEdgeLength() {
-        return getBlockEdgeLegth()/2;
+    public int getEdgeLengthOfContainedChunks() {
+        return getEdgeLength()/2;
     }
     
 }

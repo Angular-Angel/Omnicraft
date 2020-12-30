@@ -39,9 +39,9 @@ public class ArrayChunk extends Chunk {
 
     @Override
     public void setAllBlocks(Block block) {
-        for (int blockx = 0; blockx < getBlockEdgeLegth(); blockx++) {
-            for (int blocky = 0; blocky < getBlockEdgeLegth(); blocky++) {
-                for (int blockz = 0; blockz < getBlockEdgeLegth(); blockz++) {
+        for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
+            for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
+                for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
                     blocks[blockx][blocky][blockz] = block;
                 }
             }

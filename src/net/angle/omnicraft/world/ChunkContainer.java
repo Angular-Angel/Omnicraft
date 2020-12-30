@@ -12,10 +12,12 @@ import com.samrj.devil.math.Vec3i;
  * @author angle
  */
 public interface ChunkContainer extends BlockContainer {
+    public int getEdgeLengthOfContainedChunks();
     public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz);
+    
     public Chunk getChunk(int chunkx, int chunky, int chunkz);
-    public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz);
-    public int getChunkEdgeLength();
     public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk);
+    
+    public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz);
     public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk);
 }
