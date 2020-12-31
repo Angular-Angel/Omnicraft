@@ -84,16 +84,16 @@ public class DebugClient implements Client {
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-                //I need to add matrix toArray functions to make this easier. -Sam
-                try (MemoryStack stack = MemoryStack.stackPush())
-                {
-                    glMatrixMode(GL_PROJECTION);
-                    glLoadMatrixf(camera.projMat.mallocFloat(stack));
-                    glMatrixMode(GL_MODELVIEW);
-                    glLoadMatrixf(camera.viewMat.mallocFloat(stack));
-                }
+        //I need to add matrix toArray functions to make this easier. -Sam
+        try (MemoryStack stack = MemoryStack.stackPush())
+        {
+            glMatrixMode(GL_PROJECTION);
+            glLoadMatrixf(camera.projMat.mallocFloat(stack));
+            glMatrixMode(GL_MODELVIEW);
+            glLoadMatrixf(camera.viewMat.mallocFloat(stack));
+        }
 
-                world.draw();
+        world.draw();
     }
 
     @Override
