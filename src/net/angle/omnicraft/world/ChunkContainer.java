@@ -12,6 +12,11 @@ import com.samrj.devil.math.Vec3i;
  * @author angle
  */
 public interface ChunkContainer extends BlockContainer {
+
+    /**
+     * returns the number of blocks in an edge (length, width, or height) for any of the contained chunks.
+     * @return
+     */
     public int getEdgeLengthOfContainedChunks();
     public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz);
     

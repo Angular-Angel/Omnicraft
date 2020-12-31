@@ -13,6 +13,10 @@ import net.angle.omnicraft.world.blocks.Block;
  */
 public interface BlockContainer {
     
+    /**
+     * Gets the number of blocks in an edge (length, width, or height) for this block container.
+     * @return
+     */
     public int getEdgeLength();
     
     public default boolean containsBlockCoordinates(int blockx, int blocky, int blockz) {
