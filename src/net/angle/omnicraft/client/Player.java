@@ -39,7 +39,7 @@ public class Player {
     
     private final Vec3 position;
     
-    private final Camera3D camera;
+    public final Camera3D camera;
     private final Camera3DController cameraController;
     float prevMouseX;
     float prevMouseY;
