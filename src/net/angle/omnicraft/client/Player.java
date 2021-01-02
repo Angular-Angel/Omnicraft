@@ -9,7 +9,9 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.game.Mouse;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.graphics.Camera3DController;
+import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -17,6 +19,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glLoadMatrixf;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import org.lwjgl.system.MemoryStack;
 
 /**
  *
@@ -27,11 +34,17 @@ public class Player {
     private final Vec3 position;
     private final float SPEED = 5f;
     
+    private final Camera3D camera;
     private final Camera3DController cameraController;
     float prevMouseX;
     float prevMouseY;
     
     public Player(Camera3D camera) {
+        this.camera = camera;
+
+        Vec2i resolution = Game.getResolution();
+        camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
+        
         cameraController = new Camera3DController(camera);
         position = new Vec3(0, 1, 2);
         
@@ -44,6 +57,17 @@ public class Player {
         float dy = y - prevMouseY;
         cameraController.mouseDelta(dx, dy);
         prevMouseX = x; prevMouseY = y;
+    }
+    
+    public void loadMatrixes() {
+        //I need to add matrix toArray functions to make this easier. -Sam
+        try (MemoryStack stack = MemoryStack.stackPush())
+        {
+            glMatrixMode(GL_PROJECTION);
+            glLoadMatrixf(camera.projMat.mallocFloat(stack));
+            glMatrixMode(GL_MODELVIEW);
+            glLoadMatrixf(camera.viewMat.mallocFloat(stack));
+        }
     }
     
     public void update(float dt) {

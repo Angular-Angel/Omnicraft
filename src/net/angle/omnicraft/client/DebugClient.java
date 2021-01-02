@@ -23,7 +23,6 @@ import org.lwjgl.system.MemoryStack;
  */
 public class DebugClient implements Client {
     
-    private Camera3D camera;
     private Player player;
     private World world;
     
@@ -40,10 +39,7 @@ public class DebugClient implements Client {
 
     @Override
     public void init() {
-        camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
-
-        Vec2i resolution = Game.getResolution();
-        camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
+        Camera3D camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
 
         player = new Player(camera);
 
@@ -83,14 +79,7 @@ public class DebugClient implements Client {
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //I need to add matrix toArray functions to make this easier. -Sam
-        try (MemoryStack stack = MemoryStack.stackPush())
-        {
-            glMatrixMode(GL_PROJECTION);
-            glLoadMatrixf(camera.projMat.mallocFloat(stack));
-            glMatrixMode(GL_MODELVIEW);
-            glLoadMatrixf(camera.viewMat.mallocFloat(stack));
-        }
+        player.loadMatrixes();
 
         world.draw();
     }
