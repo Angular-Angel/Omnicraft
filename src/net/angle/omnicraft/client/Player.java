@@ -61,7 +61,7 @@ public class Player {
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
     }
     
-    public void handleMouseInput(float x, float y) {
+    public void mouseMoved(float x, float y) {
         float dx = x - prevMouseX;
         float dy = y - prevMouseY;
         cameraController.mouseDelta(dx, dy);

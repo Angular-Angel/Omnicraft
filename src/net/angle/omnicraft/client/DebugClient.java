@@ -55,7 +55,7 @@ public class DebugClient implements Client {
 
     @Override
     public void mouseMoved(float x, float y) {
-        player.handleMouseInput(x, y);
+        player.mouseMoved(x, y);
     }
 
     @Override
