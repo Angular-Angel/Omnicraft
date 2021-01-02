@@ -67,7 +67,9 @@ public class DebugClient implements Client {
     }
 
     @Override
-    public void key(int key, int action, int mods) {}
+    public void key(int key, int action, int mods) {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
+    }
 
     @Override
     public void resize(int width, int height) {}
@@ -75,9 +77,6 @@ public class DebugClient implements Client {
     @Override
     public void step(float dt) {
         player.update(dt);
-        if (Game.getKeyboard().isKeyDown(GLFW_KEY_ESCAPE)){
-            Game.stop();
-        }
     }
 
     @Override
