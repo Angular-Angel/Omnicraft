@@ -31,19 +31,28 @@ import org.lwjgl.system.MemoryStack;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class Player {
+    
+    private static final float CAMERA_NEAR_Z = 0.1f;
+    private static final float CAMERA_FAR_Z = 100.0f;
+    private static final float CAMERA_FOV = Util.toRadians(90.0f);
+    private static final float MOVE_SPEED = 5.0f;
+    
     private final Vec3 position;
-    private final float SPEED = 5f;
     
     private final Camera3D camera;
     private final Camera3DController cameraController;
     float prevMouseX;
     float prevMouseY;
     
-    public Player(Camera3D camera) {
-        this.camera = camera;
+    public Player() {
+        this(CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
+    }
+    
+    public Player(float camera_near_z, float camera_far_z, float camera_fov) {
+        camera = new Camera3D(camera_near_z, camera_far_z, camera_fov, 1.0f);
 
         Vec2i resolution = Game.getResolution();
-        camera.setFOV(resolution.x, resolution.y, Util.toRadians(90.0f));
+        camera.setFOV(resolution.x, resolution.y, camera_fov);
         
         cameraController = new Camera3DController(camera);
         position = new Vec3(0, 1, 2);
@@ -111,7 +120,7 @@ public class Player {
         
         if (moving) {
             direction.normalize();
-            direction.mult(SPEED * dt);
+            direction.mult(MOVE_SPEED * dt);
             position.add(direction);
         }
 

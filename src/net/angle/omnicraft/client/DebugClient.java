@@ -9,12 +9,10 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.math.Util;
-import com.samrj.devil.math.Vec2i;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import org.lwjgl.system.MemoryStack;
 
 /**
  *
@@ -39,9 +37,7 @@ public class DebugClient implements Client {
 
     @Override
     public void init() {
-        Camera3D camera = new Camera3D(0.1f, 100.0f, Util.toRadians(90.0f), 1.0f);
-
-        player = new Player(camera);
+        player = new Player();
 
         world = WorldGenerator.generateWorld();
 
