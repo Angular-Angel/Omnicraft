@@ -16,7 +16,7 @@ import net.angle.omnicraft.world.blocks.Block;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class CubeTexture implements BlockTexture {
-    public Texture2D top, bottom, front, back, left, right;
+    public final Texture2D top, bottom, front, back, left, right;
     
     public final float OFFSET = 0.5f;
     
