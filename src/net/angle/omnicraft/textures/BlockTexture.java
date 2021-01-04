@@ -10,6 +10,8 @@ import net.angle.omnicraft.world.Chunk;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
@@ -22,6 +24,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 public interface BlockTexture {
     
     default void drawFlatTexture(Texture2D texture, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+        glPushMatrix();
         glTranslatef(startx, starty, startz);
         texture.bind();
         glBegin(GL_QUADS);
@@ -48,7 +51,7 @@ public interface BlockTexture {
         
         glEnd();
         texture.unbind();
-        glTranslatef(-startx, -starty, -startz);
+        glPopMatrix();
     }
     
     public void draw(Chunk chunk, int blockx, int blocky, int blockz);
