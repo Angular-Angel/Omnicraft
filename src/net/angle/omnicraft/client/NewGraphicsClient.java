@@ -16,10 +16,13 @@ import com.samrj.devil.math.Vec3;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static net.angle.omnicraft.textures.BlockTexture.OFFSET;
 import net.angle.omnicraft.textures.CubeTexture;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11C.*;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
 
@@ -32,7 +35,7 @@ public class NewGraphicsClient implements Client {
     
     private Vec2i resolution;
     private ShaderProgram shader;
-    private VertexBuffer buffer;
+    private VertexBuffer topBuffer, bottomBuffer, leftBuffer, rightBuffer, frontBuffer, backBuffer;
     private Player player;
     private World world;
     
@@ -73,9 +76,14 @@ public class NewGraphicsClient implements Client {
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
-            buffer = DGL.genVertexBuffer(6, -1);
+            topBuffer = DGL.genVertexBuffer(6, -1);
+            bottomBuffer = DGL.genVertexBuffer(6, -1);
+            leftBuffer = DGL.genVertexBuffer(6, -1);
+            rightBuffer = DGL.genVertexBuffer(6, -1);
+            frontBuffer = DGL.genVertexBuffer(6, -1);
+            backBuffer = DGL.genVertexBuffer(6, -1);
             
-            bufferVertices(buffer);
+            bufferVertices(topBuffer);
             
             Game.getMouse().setGrabbed(true);
             
@@ -97,6 +105,10 @@ public class NewGraphicsClient implements Client {
     }
     
     public void bufferVertices(VertexBuffer buffer) {
+        bufferVertices(buffer, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
+    }
+    
+    public void bufferVertices(VertexBuffer buffer, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
             
             //Set up the variable names used by the vertex shader. Each vertex can
             //have multiple kinds of data: floats, vectors, or matrices.
@@ -105,13 +117,35 @@ public class NewGraphicsClient implements Client {
             
             //Build a square out of two triangles.
             buffer.begin();
-            vPos.set(0.0f, 0.0f, 0.0f); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-            vPos.set(1.0f, 0.0f, 0.0f); vTexCoord.set(1.0f, 0.0f); buffer.vertex();
-            vPos.set(1.0f, 0.0f, 1.0f); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
             
-            vPos.set(0.0f, 0.0f, 0.0f); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-            vPos.set(1.0f, 0.0f, 1.0f); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
-            vPos.set(0.0f, 0.0f, 1.0f); vTexCoord.set(0.0f, 1.0f); buffer.vertex();
+            Vec3 topLeft, topRight, bottomLeft, bottomRight;
+            
+            topLeft = new Vec3(0, 0, 0);
+            
+            if (xoff == 0) {
+                topRight = new Vec3(0, 0, zoff);
+            } else {
+                topRight = new Vec3(xoff, 0, 0);
+            }
+            
+            bottomRight = new Vec3(xoff, yoff, zoff);
+            
+            if (yoff == 0) {
+                bottomLeft = new Vec3(0, 0, zoff);
+            } else{
+                bottomLeft = new Vec3(0, yoff, 0);
+            }
+            
+            //add first trangle, starting at top left corner, then top right, then bottom right
+            vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
+            vPos.set(topRight); vTexCoord.set(1.0f, 0.0f); buffer.vertex();
+            vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
+            
+            //add second triangle, starting at top left corner, then bottom right, then bottom left
+            vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
+            vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
+            vPos.set(bottomLeft); vTexCoord.set(0.0f, 1.0f); buffer.vertex();
+            
             buffer.end();
     }
     
@@ -153,14 +187,14 @@ public class NewGraphicsClient implements Client {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        DGL.draw(buffer, GL_TRIANGLES);
+        DGL.draw(topBuffer, GL_TRIANGLES);
     }
 
     @Override
     public void destroy(Boolean crashed) {
         world.delete();
         
-        DGL.delete(shader, buffer);
+        DGL.delete(shader, topBuffer, bottomBuffer, leftBuffer, rightBuffer, frontBuffer, backBuffer);
         
         if (crashed) DGL.setDebugLeakTracking(false);
 

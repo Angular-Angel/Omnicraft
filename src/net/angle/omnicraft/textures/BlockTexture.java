@@ -6,7 +6,9 @@
 package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
