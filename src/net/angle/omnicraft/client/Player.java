@@ -36,8 +36,9 @@ public class Player {
     private static final float CAMERA_FAR_Z = 100.0f;
     private static final float CAMERA_FOV = Util.toRadians(90.0f);
     private static final float MOVE_SPEED = 5.0f;
+    public static Player player; //Making player global in an incredibly lazy way. Will change later.
     
-    private final Vec3 position;
+    public final Vec3 position;
     
     public final Camera3D camera;
     private final Camera3DController cameraController;
@@ -59,6 +60,7 @@ public class Player {
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
+        player = this;
     }
     
     public void mouseMoved(float x, float y) {

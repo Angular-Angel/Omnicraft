@@ -7,6 +7,7 @@ package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.blocks.Block;
 
@@ -29,6 +30,30 @@ public class CubeTexture implements BlockTexture {
         this.right = right;
     }
     
+    public boolean playerIsAbove(int blocky) {
+        return Player.player.position.y > blocky + 1.5;
+    }
+    
+    public boolean playerIsBelow(int blocky) {
+        return Player.player.position.y < blocky + 0.5;
+    }
+    
+    public boolean playerIsInFront(int blockz) {
+        return Player.player.position.z > blockz + 1.5;
+    }
+    
+    public boolean playerIsBehind(int blockz) {
+        return Player.player.position.z < blockz + 0.5;
+    }
+    
+    public boolean playerIsToTheLeft(int blockx) {
+        return Player.player.position.x < blockx + 0.5;
+    }
+    
+    public boolean playerIsToTheRight(int blockx) {
+        return Player.player.position.x > blockx + 1.5;
+    }
+    
     @Override
     public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
         
@@ -37,32 +62,32 @@ public class CubeTexture implements BlockTexture {
         
         //Draw top:
         Block adjacentBlock = chunk.getBlock(blockx, blocky + 1, blockz);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsAbove(blocky + chunk.y) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
         
         //Draw bottom:
         adjacentBlock = chunk.getBlock(blockx, blocky - 1, blockz);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsBelow(blocky + chunk.y) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
         
         //Draw front
         adjacentBlock = chunk.getBlock(blockx, blocky, blockz + 1);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsInFront(blockz + chunk.z) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
         
         //Draw back
         adjacentBlock = chunk.getBlock(blockx, blocky, blockz - 1);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsBehind(blockz + chunk.z) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
         
         //Draw left
         adjacentBlock = chunk.getBlock(blockx - 1, blocky, blockz);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsToTheLeft(blockx + chunk.x) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
         
         //Draw right
         adjacentBlock = chunk.getBlock(blockx + 1, blocky, blockz);
-        if (adjacentBlock == null || adjacentBlock.isTransparent())
+        if (playerIsToTheRight(blockx + chunk.x) && (adjacentBlock == null || adjacentBlock.isTransparent()))
             drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
 
