@@ -7,9 +7,7 @@ package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Texture2D;
-import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.Chunk;
-import net.angle.omnicraft.world.blocks.Block;
 
 /**
  *
@@ -28,26 +26,32 @@ public class CubeTexture implements BlockTexture {
         this.right = right;
     }
     
+    @Override
     public void drawTop() {
         drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
     }
     
+    @Override
     public void drawBottom() {
         drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
     }
     
+    @Override
     public void drawFront() {
         drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
     }
     
+    @Override
     public void drawBack() {
         drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
     }
     
+    @Override
     public void drawLeftSide() {
         drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
     }
     
+    @Override
     public void drawRightSide() {
         drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
