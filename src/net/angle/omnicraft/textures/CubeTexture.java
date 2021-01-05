@@ -19,8 +19,6 @@ import net.angle.omnicraft.world.blocks.Block;
 public class CubeTexture implements BlockTexture {
     public final Texture2D top, bottom, front, back, left, right;
     
-    public final float OFFSET = 0.5f;
-    
     public CubeTexture(Texture2D top, Texture2D bottom, Texture2D front, Texture2D back, Texture2D left, Texture2D right) {
         this.top = top;
         this.bottom = bottom;
@@ -30,28 +28,28 @@ public class CubeTexture implements BlockTexture {
         this.right = right;
     }
     
-    public boolean playerIsAbove(int blocky) {
-        return Player.player.position.y > blocky + 1.5;
+    public void drawTop() {
+        drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
     }
     
-    public boolean playerIsBelow(int blocky) {
-        return Player.player.position.y < blocky + 0.5;
+    public void drawBottom() {
+        drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
     }
     
-    public boolean playerIsInFront(int blockz) {
-        return Player.player.position.z > blockz + 1.5;
+    public void drawFront() {
+        drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
     }
     
-    public boolean playerIsBehind(int blockz) {
-        return Player.player.position.z < blockz + 0.5;
+    public void drawBack() {
+        drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
     }
     
-    public boolean playerIsToTheLeft(int blockx) {
-        return Player.player.position.x < blockx + 0.5;
+    public void drawLeftSide() {
+        drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
     }
     
-    public boolean playerIsToTheRight(int blockx) {
-        return Player.player.position.x > blockx + 1.5;
+    public void drawRightSide() {
+        drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
     }
     
     @Override
@@ -61,34 +59,28 @@ public class CubeTexture implements BlockTexture {
         //or in front looking down or up, for the top and bottom.
         
         //Draw top:
-        Block adjacentBlock = chunk.getBlock(blockx, blocky + 1, blockz);
-        if (playerIsAbove(blocky + chunk.y) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(top, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
+        if (topIsVisible(chunk, blockx, blocky, blockz))
+            drawTop();
         
         //Draw bottom:
-        adjacentBlock = chunk.getBlock(blockx, blocky - 1, blockz);
-        if (playerIsBelow(blocky + chunk.y) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
+        if (bottomIsVisible(chunk, blockx, blocky, blockz))
+            drawBottom();
         
         //Draw front
-        adjacentBlock = chunk.getBlock(blockx, blocky, blockz + 1);
-        if (playerIsInFront(blockz + chunk.z) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(front, OFFSET, OFFSET, OFFSET, -1, -1, 0);
+        if (frontIsVisible(chunk, blockx, blocky, blockz))
+            drawFront();
         
         //Draw back
-        adjacentBlock = chunk.getBlock(blockx, blocky, blockz - 1);
-        if (playerIsBehind(blockz + chunk.z) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(back, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
+        if (backIsVisible(chunk, blockx, blocky, blockz))
+            drawBack();
         
         //Draw left
-        adjacentBlock = chunk.getBlock(blockx - 1, blocky, blockz);
-        if (playerIsToTheLeft(blockx + chunk.x) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(left, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
+        if (leftSideIsVisible(chunk, blockx, blocky, blockz))
+            drawLeftSide();
         
         //Draw right
-        adjacentBlock = chunk.getBlock(blockx + 1, blocky, blockz);
-        if (playerIsToTheRight(blockx + chunk.x) && (adjacentBlock == null || adjacentBlock.isTransparent()))
-            drawFlatTexture(right, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
+        if (rightSideIsVisible(chunk, blockx, blocky, blockz))
+            drawRightSide();
     }
 
     @Override

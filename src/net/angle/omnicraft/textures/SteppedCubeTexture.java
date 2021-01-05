@@ -6,6 +6,8 @@
 package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.Texture2D;
+import net.angle.omnicraft.client.Player;
+import static net.angle.omnicraft.textures.BlockTexture.OFFSET;
 import net.angle.omnicraft.world.Chunk;
 
 /**
@@ -23,28 +25,46 @@ public class SteppedCubeTexture extends CubeTexture {
         super(top, bottom, front, back, left, right);
         this.height = height;
     }
-
+    
     @Override
-    public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
-        //sides are all drawn as though you are standing next to the block facing it, 
-        //or in front looking down or up, for the top and bottom.
-        
-        //Draw top:
+    public boolean playerIsAbove(int blocky) {
+        return Player.player.position.y > blocky + height/16f + OFFSET;
+    }
+    
+    @Override
+    public boolean topIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+        return playerIsAbove(blocky + chunk.y);
+    }
+    
+    @Override
+    public boolean bottomIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+        return playerIsBelow(blocky + chunk.y);
+    }
+    
+    @Override
+    public void drawTop() {
         drawFlatTexture(top, OFFSET, OFFSET - ((16 - height)/16f), -OFFSET, -1, 0, 1);
-        
-        //Draw bottom:
-        drawFlatTexture(bottom, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
-        
-        //Draw front
+    }
+    
+    //drawBottom is inherited unchanged from CubeTexture.
+    
+    @Override
+    public void drawFront() {
         drawFlatTexture(front, OFFSET, OFFSET - (16 - height)/16f, OFFSET, -1, -height/16f, 0);
-        
-        //Draw back
+    }
+    
+    @Override
+    public void drawBack() {
         drawFlatTexture(back, -OFFSET, OFFSET - (16 - height)/16f, -OFFSET, 1, -height/16f, 0);
-        
-        //Draw left
+    }
+    
+    @Override
+    public void drawLeftSide() {
         drawFlatTexture(left, -OFFSET,  OFFSET - (16 - height)/16f, OFFSET, 0, -height/16f, -1);
-        
-        //Draw right
+    }
+    
+    @Override
+    public void drawRightSide() {
         drawFlatTexture(right, OFFSET,  OFFSET - (16 - height)/16f, -OFFSET, 0, -height/16f, 1);
     }
     
