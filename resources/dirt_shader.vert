@@ -1,4 +1,3 @@
-#version 140
 
 uniform mat4 u_projection_matrix; //Supplied once per frame.
 uniform mat4 u_view_matrix;

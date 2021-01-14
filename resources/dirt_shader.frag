@@ -1,5 +1,3 @@
-#version 140
-
 in vec2 v_tex_coord;
 
 out vec3 out_color; //The color of a pixel/fragment.

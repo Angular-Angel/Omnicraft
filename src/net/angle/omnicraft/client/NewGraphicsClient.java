@@ -96,6 +96,12 @@ public class NewGraphicsClient implements Client {
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1.0);
             
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LEQUAL);
+
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            
             glfwMaximizeWindow(Game.getWindow());
             
             DGL.useProgram(shader);
@@ -136,12 +142,6 @@ public class NewGraphicsClient implements Client {
     public void render() {
         shader.uniformMat4("u_projection_matrix", player.camera.projMat);
         shader.uniformMat4("u_view_matrix", player.camera.viewMat);
-        
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-        
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
