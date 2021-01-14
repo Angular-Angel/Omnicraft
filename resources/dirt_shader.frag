@@ -1,3 +1,5 @@
+#version 140
+
 in vec2 v_tex_coord;
 
 out vec3 out_color; //The color of a pixel/fragment.
@@ -12,7 +14,7 @@ float random (in vec2 st) {
 void main() {
     vec2 st = floor(v_tex_coord.xy * 16);
 
-    // Use the noise function
+    // Use the random function
     float n = random(st);
 
     out_color = new vec3(n);
