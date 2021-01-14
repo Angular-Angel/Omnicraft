@@ -6,6 +6,9 @@
 package net.angle.omnicraft.textures;
 
 import com.samrj.devil.gl.Texture2D;
+import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.blocks.Block;
@@ -26,6 +29,45 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 public interface BlockTexture {
     
     public final float OFFSET = 0.5f;
+    
+    default void bufferFlatVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+
+        //Build a square out of two triangles.
+
+        Vec3 topLeft, topRight, bottomLeft, bottomRight;
+
+        topLeft = new Vec3(0, 0, 0);
+
+        if (xoff == 0) {
+            topRight = new Vec3(0, 0, zoff);
+        } else {
+            topRight = new Vec3(xoff, 0, 0);
+        }
+
+        bottomRight = new Vec3(xoff, yoff, zoff);
+
+        if (yoff == 0) {
+            bottomLeft = new Vec3(0, 0, zoff);
+        } else{
+            bottomLeft = new Vec3(0, yoff, 0);
+        }
+        
+        //adjust positions for where our starts are.
+        topLeft.add(new Vec3(startx, starty, startz));
+        topRight.add(new Vec3(startx, starty, startz));
+        bottomLeft.add(new Vec3(startx, starty, startz));
+        bottomRight.add(new Vec3(startx, starty, startz));
+
+        //add first trangle, starting at top left corner, then top right, then bottom right
+        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
+        vPos.set(topRight); vTexCoord.set(1.0f, 0.0f); buffer.vertex();
+        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
+
+        //add second triangle, starting at top left corner, then bottom right, then bottom left
+        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
+        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
+        vPos.set(bottomLeft); vTexCoord.set(0.0f, 1.0f); buffer.vertex();
+    }
     
     default void drawFlatTexture(Texture2D texture, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
         glPushMatrix();

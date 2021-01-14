@@ -7,8 +7,6 @@ package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
-import com.samrj.devil.graphics.Camera3D;
-import com.samrj.devil.math.Util;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;

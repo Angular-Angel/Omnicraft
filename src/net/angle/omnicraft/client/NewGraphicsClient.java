@@ -22,7 +22,6 @@ import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11C.*;
-import static org.lwjgl.opengl.GL13C.*;
 
 
 public class NewGraphicsClient implements Client {
@@ -33,7 +32,7 @@ public class NewGraphicsClient implements Client {
     
     private Vec2i resolution;
     private ShaderProgram shader;
-    private VertexBuffer topBuffer, bottomBuffer, leftBuffer, rightBuffer, frontBuffer, backBuffer;
+    private VertexBuffer buffer;
     private Player player;
     private World world;
     
@@ -70,23 +69,27 @@ public class NewGraphicsClient implements Client {
             
             //This method loads shader.vert and shader.frag, as the vertex and
             //fragment shaders respectively.
-            shader = DGL.loadProgram("resources/shader");
+            shader = DGL.loadProgram("resources/dirt_shader");
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
-            topBuffer = DGL.genVertexBuffer(6, -1);
-            bottomBuffer = DGL.genVertexBuffer(6, -1);
-            leftBuffer = DGL.genVertexBuffer(6, -1);
-            rightBuffer = DGL.genVertexBuffer(6, -1);
-            frontBuffer = DGL.genVertexBuffer(6, -1);
-            backBuffer = DGL.genVertexBuffer(6, -1);
+            buffer = DGL.genVertexBuffer(36, -1);
             
-            bufferVertices(topBuffer, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
-            bufferVertices(bottomBuffer, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
-            bufferVertices(frontBuffer, OFFSET, OFFSET, OFFSET, -1, -1, 0);
-            bufferVertices(backBuffer, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
-            bufferVertices(leftBuffer, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
-            bufferVertices(rightBuffer, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
+            //Set up the variable names used by the vertex shader. Each vertex can
+            //have multiple kinds of data: floats, vectors, or matrices.
+            Vec3 vPos = buffer.vec3("in_pos");
+            Vec2 vTexCoord = buffer.vec2("in_tex_coord");
+            
+            buffer.begin();
+            
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, OFFSET, OFFSET, -OFFSET, -1, 0, 1);
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, OFFSET, -OFFSET, OFFSET, -1, 0, -1);
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, OFFSET, OFFSET, OFFSET, -1, -1, 0);
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, -OFFSET, OFFSET, -OFFSET, 1, -1, 0);
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, -OFFSET, OFFSET, OFFSET, 0, -1, -1);
+            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bufferFlatVertices(buffer, vPos, vTexCoord, OFFSET, OFFSET, -OFFSET, 0, -1, 1);
+            
+            buffer.end();
             
             Game.getMouse().setGrabbed(true);
             
@@ -96,65 +99,9 @@ public class NewGraphicsClient implements Client {
             glfwMaximizeWindow(Game.getWindow());
             
             DGL.useProgram(shader);
-
-            //Assigning the texture variable to texture unit 0.
-            //Don't really need to do this every frame.
-
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).top.bind(GL_TEXTURE0);
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).bottom.bind(GL_TEXTURE1);
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).front.bind(GL_TEXTURE2);
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).back.bind(GL_TEXTURE3);
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).left.bind(GL_TEXTURE4);
-            ((CubeTexture)world.blockTypes.get("Dirt Block").texture).right.bind(GL_TEXTURE5);
         } catch (IOException ex) {
             Logger.getLogger(NewGraphicsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void bufferVertices(VertexBuffer buffer, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
-        //Set up the variable names used by the vertex shader. Each vertex can
-        //have multiple kinds of data: floats, vectors, or matrices.
-        Vec3 vPos = buffer.vec3("in_pos");
-        Vec2 vTexCoord = buffer.vec2("in_tex_coord");
-
-        //Build a square out of two triangles.
-        buffer.begin();
-
-        Vec3 topLeft, topRight, bottomLeft, bottomRight;
-
-        topLeft = new Vec3(0, 0, 0);
-
-        if (xoff == 0) {
-            topRight = new Vec3(0, 0, zoff);
-        } else {
-            topRight = new Vec3(xoff, 0, 0);
-        }
-
-        bottomRight = new Vec3(xoff, yoff, zoff);
-
-        if (yoff == 0) {
-            bottomLeft = new Vec3(0, 0, zoff);
-        } else{
-            bottomLeft = new Vec3(0, yoff, 0);
-        }
-        
-        //adjust positions for where our starts are.
-        topLeft.add(new Vec3(startx, starty, startz));
-        topRight.add(new Vec3(startx, starty, startz));
-        bottomLeft.add(new Vec3(startx, starty, startz));
-        bottomRight.add(new Vec3(startx, starty, startz));
-
-        //add first trangle, starting at top left corner, then top right, then bottom right
-        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-        vPos.set(topRight); vTexCoord.set(1.0f, 0.0f); buffer.vertex();
-        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
-
-        //add second triangle, starting at top left corner, then bottom right, then bottom left
-        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
-        vPos.set(bottomLeft); vTexCoord.set(0.0f, 1.0f); buffer.vertex();
-
-        buffer.end();
     }
     
     public static void main(String args[]) {
@@ -193,38 +140,19 @@ public class NewGraphicsClient implements Client {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
         
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        shader.uniform1i("u_texture", 0);
-        
-        DGL.draw(topBuffer, GL_TRIANGLES);
-        
-        shader.uniform1i("u_texture", 1);
-        
-        DGL.draw(bottomBuffer, GL_TRIANGLES);
-        
-        shader.uniform1i("u_texture", 2);
-        
-        DGL.draw(frontBuffer, GL_TRIANGLES);
-        
-        shader.uniform1i("u_texture", 3);
-        
-        DGL.draw(backBuffer, GL_TRIANGLES);
-        
-        shader.uniform1i("u_texture", 4);
-        
-        DGL.draw(leftBuffer, GL_TRIANGLES);
-        
-        shader.uniform1i("u_texture", 5);
-        
-        DGL.draw(rightBuffer, GL_TRIANGLES);
+        DGL.draw(buffer, GL_TRIANGLES);
     }
 
     @Override
     public void destroy(Boolean crashed) {
         world.delete();
         
-        DGL.delete(shader, topBuffer, bottomBuffer, leftBuffer, rightBuffer, frontBuffer, backBuffer);
+        DGL.delete(shader, buffer);
         
         if (crashed) DGL.setDebugLeakTracking(false);
 
