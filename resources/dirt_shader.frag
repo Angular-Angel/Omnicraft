@@ -12,7 +12,7 @@ float random (in vec2 st) {
 }
 
 void main() {
-    vec2 st = floor(v_tex_coord.xy * 16);
+    vec2 st = floor(v_tex_coord * 16);
 
     // Use the random function
     float n = random(st);
