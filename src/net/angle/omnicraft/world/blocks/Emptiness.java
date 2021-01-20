@@ -5,9 +5,6 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.textures.BlockTexture;
-import net.angle.omnicraft.world.Chunk;
-
 /**
  *
  * @author angle
@@ -15,19 +12,7 @@ import net.angle.omnicraft.world.Chunk;
 public class Emptiness extends Block {
 
     public Emptiness() {
-        super("Emptiness", null);
-    }
-    
-    private Emptiness(BlockTexture texture) {
-        super("Emptiness", null);
-    }
-    
-    @Override
-    public void draw(Chunk chunk, int blockx, int blocky, int blockz) {
-    }
-    
-    @Override
-    public void delete() {
+        super("Emptiness");
     }
 
     @Override

@@ -20,7 +20,7 @@ public class HomogenousBlock extends Block implements PixelSource {
     private final BlockShape blockShape;
     
     public HomogenousBlock(String name, Substance substance, BlockShape blockShape, OmniRandom random) {
-        super(name, blockShape.generateBlockTexture(substance, random));
+        super(name);
         
         this.substance = substance;
         this.blockShape = blockShape;

@@ -5,16 +5,10 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.textures.BlockTexture;
-import net.angle.omnicraft.textures.TextureSource;
-import net.angle.omnicraft.random.OmniRandom;
-
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-@FunctionalInterface
 public interface BlockShape {
-    public BlockTexture generateBlockTexture(TextureSource textureSource, OmniRandom random);
 }

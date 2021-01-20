@@ -71,15 +71,4 @@ public class World {
             }
         }
     }
-    
-    public void draw() {
-        for (Chunk chunk : loadedChunks) {
-            chunk.draw();
-        }
-    }
-    
-    public void delete() {
-        for (Block block : blockTypes.values())
-            block.delete();
-    }
 }

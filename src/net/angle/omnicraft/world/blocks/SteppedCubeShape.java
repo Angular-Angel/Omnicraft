@@ -5,11 +5,6 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.textures.BlockTexture;
-import net.angle.omnicraft.textures.SteppedCubeTexture;
-import net.angle.omnicraft.textures.TextureSource;
-import net.angle.omnicraft.random.OmniRandom;
-
 /**
  *
  * @author angle
@@ -20,12 +15,5 @@ public class SteppedCubeShape implements BlockShape {
     
     public SteppedCubeShape(int height) {
         this.height = height;
-    }
-    
-    @Override
-    public BlockTexture generateBlockTexture(TextureSource textureSource, OmniRandom random) {
-       return new SteppedCubeTexture(height, textureSource.generateTexture(random), textureSource.generateTexture(random),
-                              textureSource.generateTexture(16, height, random), textureSource.generateTexture(16, height, random), 
-                              textureSource.generateTexture(16, height, random), textureSource.generateTexture(16, height, random));
     }
 }
