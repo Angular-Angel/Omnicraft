@@ -74,21 +74,7 @@ public class DebugClient implements Client {
             //Could use VertexStream if we wanted something more dynamic.
             buffer = DGL.genVertexBuffer(36, -1);
             
-            //Set up the variable names used by the vertex shader. Each vertex can
-            //have multiple kinds of data: floats, vectors, or matrices.
-            Vec3 vPos = buffer.vec3("in_pos");
-            Vec2 vTexCoord = buffer.vec2("in_tex_coord");
-            
-            buffer.begin();
-            
-            bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, -1, 0, 1);
-            bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, -DRAW_OFFSET, DRAW_OFFSET, -1, 0, -1);
-            bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, -1, -1, 0);
-            bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 1, -1, 0);
-            bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, 0, -1, -1);
-            bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 0, -1, 1);
-            
-            buffer.end();
+            bufferVertices();
             
             Game.getMouse().setGrabbed(true);
             
@@ -145,6 +131,24 @@ public class DebugClient implements Client {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         DGL.draw(buffer, GL_TRIANGLES);
+    }
+    
+    public void bufferVertices() {
+         //Set up the variable names used by the vertex shader. Each vertex can
+        //have multiple kinds of data: floats, vectors, or matrices.
+        Vec3 vPos = buffer.vec3("in_pos");
+        Vec2 vTexCoord = buffer.vec2("in_tex_coord");
+
+        buffer.begin();
+
+        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, -1, 0, 1);
+        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, -DRAW_OFFSET, DRAW_OFFSET, -1, 0, -1);
+        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, -1, -1, 0);
+        bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 1, -1, 0);
+        bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, 0, -1, -1);
+        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 0, -1, 1);
+
+        buffer.end();
     }
     
     public void bufferFlatVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
