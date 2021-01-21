@@ -5,10 +5,6 @@
  */
 package net.angle.omnicraft.world.types;
 
-import java.awt.Color;
-import net.angle.omnicraft.textures.pixels.PixelSource;
-import net.angle.omnicraft.random.OmniRandom;
-
 /**
  *
  * @author angle
@@ -18,15 +14,8 @@ public class Fluid extends HomogenousSubstance {
     
     private final int opacity;
     
-    public Fluid(String name, PixelSource pixelSource, int opacity) {
-        super(name, pixelSource);
+    public Fluid(String name, int opacity) {
+        super(name);
         this.opacity = opacity;
-    }
-    
-    @Override
-    public Color getPixelColor(OmniRandom random, PixelSource context) {
-        Color color = pixelSource.getPixelColor(random, context);
-        
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
     }
 }

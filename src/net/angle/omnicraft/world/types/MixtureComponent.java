@@ -5,16 +5,12 @@
  */
 package net.angle.omnicraft.world.types;
 
-import java.awt.Color;
-import net.angle.omnicraft.textures.pixels.PixelSource;
-import net.angle.omnicraft.random.OmniRandom;
-
 /**
  *
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class MixtureComponent implements PixelSource {
+public class MixtureComponent {
     
     private final Substance substance;
     private final float fraction;
@@ -29,10 +25,5 @@ public class MixtureComponent implements PixelSource {
      */
     public float getFraction() {
         return fraction;
-    }
-
-    @Override
-    public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return substance.getPixelColor(random, context);
     }
 }

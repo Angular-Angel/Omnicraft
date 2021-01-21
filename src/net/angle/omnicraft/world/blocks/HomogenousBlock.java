@@ -5,8 +5,6 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import java.awt.Color;
-import net.angle.omnicraft.textures.pixels.PixelSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.types.Substance;
 
@@ -15,7 +13,7 @@ import net.angle.omnicraft.world.types.Substance;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class HomogenousBlock extends Block implements PixelSource {
+public class HomogenousBlock extends Block {
     private final Substance substance;
     private final BlockShape blockShape;
     
@@ -24,11 +22,6 @@ public class HomogenousBlock extends Block implements PixelSource {
         
         this.substance = substance;
         this.blockShape = blockShape;
-    }
-
-    @Override
-    public Color getPixelColor(OmniRandom random, PixelSource context) {
-        return this.substance.getPixelColor(new OmniRandom(), this);
     }
 
     @Override

@@ -5,10 +5,6 @@
  */
 package net.angle.omnicraft.world.types;
 
-import java.awt.Color;
-import net.angle.omnicraft.random.OmniRandom;
-import net.angle.omnicraft.textures.pixels.PixelSource;
-
 /**
  * I'm going to have to rewrite this if I ever want transparent minerals... 
  * Oh well, I'll deal with it then.
@@ -19,16 +15,8 @@ public class Mineraloid extends HomogenousSubstance {
     
     private final int grainSize;
     
-    public Mineraloid(String name, PixelSource pixelSource, int grainSize) {
-        super(name, pixelSource);
+    public Mineraloid(String name, int grainSize) {
+        super(name);
         this.grainSize = grainSize;
     }
-
-    @Override
-    public Color getPixelColor(OmniRandom random, PixelSource context) {
-        Color color = pixelSource.getPixelColor(random, context);
-        
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), grainSize);
-    }
-    
 }
