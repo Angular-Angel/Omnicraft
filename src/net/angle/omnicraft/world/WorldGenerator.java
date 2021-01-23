@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world;
 
+import java.awt.Color;
+import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
@@ -21,13 +23,13 @@ import net.angle.omnicraft.world.types.Mixture;
 public class WorldGenerator {
     
     public static void generateSubstances(World world) {
-        world.addSubstance(new Mineraloid("Pebbles", 160));
-        world.addSubstance(new Mineraloid("Sand", 60));
-        world.addSubstance(new Mineraloid("Silt", 40));
-        world.addSubstance(new Mineraloid("Clay", 20));
-        world.addSubstance(new Mineraloid("Compost", 80));
-        world.addSubstance(new Fluid("Water", 30));
-        world.addSubstance(new Fluid("Air", 15));
+        world.addSubstance(new Mineraloid("Pebbles", new ColorSource.FlatColorSource(Color.gray)));
+        world.addSubstance(new Mineraloid("Sand", new ColorSource.FlatColorSource(Color.yellow)));
+        world.addSubstance(new Mineraloid("Silt", new ColorSource.FlatColorSource(new Color(128, 0, 0))));
+        world.addSubstance(new Mineraloid("Clay", new ColorSource.FlatColorSource(new Color(128, 128, 200))));
+        world.addSubstance(new Mineraloid("Compost", new ColorSource.FlatColorSource(new Color(128, 128, 0))));
+        world.addSubstance(new Fluid("Water", new ColorSource.FlatColorSource(new Color(0, 0, 255, 20))));
+        world.addSubstance(new Fluid("Air", new ColorSource.FlatColorSource(new Color(255, 0, 0, 20))));
         world.addSubstance(new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         world.addSubstance(new Mixture("Desert Sand", new MixtureComponent(world.substances.get("Sand"), 100.0f)));
         

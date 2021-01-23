@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.types;
 
+import net.angle.omnicraft.graphics.ColorSource;
+
 /**
  * I'm going to have to rewrite this if I ever want transparent minerals... 
  * Oh well, I'll deal with it then.
@@ -13,10 +15,9 @@ package net.angle.omnicraft.world.types;
  */
 public class Mineraloid extends HomogenousSubstance {
     
-    private final int grainSize;
-    
-    public Mineraloid(String name, int grainSize) {
-        super(name);
-        this.grainSize = grainSize;
+    public Mineraloid(String name, ColorSource colorSource) {
+        super(name, colorSource);
     }
+    
+    
 }

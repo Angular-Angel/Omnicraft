@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.types;
 
+import net.angle.omnicraft.graphics.ColorSource;
+
 /**
  *
  * @author angle
@@ -12,10 +14,8 @@ package net.angle.omnicraft.world.types;
  */
 public class Fluid extends HomogenousSubstance {
     
-    private final int opacity;
-    
-    public Fluid(String name, int opacity) {
-        super(name);
-        this.opacity = opacity;
+    public Fluid(String name, ColorSource colorSource) {
+        super(name, colorSource);
     }
+    
 }

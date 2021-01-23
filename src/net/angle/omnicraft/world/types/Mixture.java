@@ -39,4 +39,9 @@ public class Mixture extends Substance {
         
         return this.components.get(index);
     }
+
+    @Override
+    public Color getColor(OmniRandom random) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
