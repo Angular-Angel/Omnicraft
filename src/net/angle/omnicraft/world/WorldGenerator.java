@@ -28,8 +28,8 @@ public class WorldGenerator {
         world.addSubstance(new Mineraloid("Silt", new ColorSource.FlatColorSource(new Color(128, 0, 0))));
         world.addSubstance(new Mineraloid("Clay", new ColorSource.FlatColorSource(new Color(128, 128, 200))));
         world.addSubstance(new Mineraloid("Compost", new ColorSource.FlatColorSource(new Color(128, 128, 0))));
-        world.addSubstance(new Fluid("Water", new ColorSource.FlatColorSource(new Color(0, 0, 255, 20))));
-        world.addSubstance(new Fluid("Air", new ColorSource.FlatColorSource(new Color(255, 0, 0, 20))));
+        world.addSubstance(new Fluid("Water", new ColorSource.FlatColorSource(new Color(0, 0, 128, 20))));
+        world.addSubstance(new Fluid("Air", new ColorSource.FlatColorSource(new Color(128, 0, 0, 20))));
         world.addSubstance(new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         world.addSubstance(new Mixture("Desert Sand", new MixtureComponent(world.substances.get("Sand"), 100.0f)));
         

@@ -31,7 +31,7 @@ public class Mixture extends Substance {
         for (int roll = random.getBoundedInt(100); roll > 0; index++) {
             if (index >= this.components.size())
                 index = 0;
-            roll -= this.components.get(index).getFraction();
+            roll -= this.components.get(index).fraction;
         }
         
         if (index >= this.components.size())
@@ -42,6 +42,6 @@ public class Mixture extends Substance {
 
     @Override
     public Color getColor(OmniRandom random) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pickComponent(random).substance.getColor(random);
     }
 }

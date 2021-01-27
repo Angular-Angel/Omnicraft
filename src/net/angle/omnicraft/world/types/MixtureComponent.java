@@ -12,18 +12,11 @@ package net.angle.omnicraft.world.types;
  */
 public class MixtureComponent {
     
-    private final Substance substance;
-    private final float fraction;
+    public final Substance substance;
+    public final float fraction;
     
     public MixtureComponent(Substance substance, float fraction) {
         this.substance = substance;
         this.fraction = fraction;
-    }
-    
-    /**
-     * @return the fraction
-     */
-    public float getFraction() {
-        return fraction;
     }
 }

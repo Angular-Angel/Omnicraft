@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import net.angle.omnicraft.graphics.RenderData;
+
 /**
  *
  * @author angle
@@ -13,6 +15,7 @@ package net.angle.omnicraft.world.blocks;
 public abstract class Block {
     
     public final String name;
+    public RenderData renderData;
     
     public Block(String name) {
         this.name = name;

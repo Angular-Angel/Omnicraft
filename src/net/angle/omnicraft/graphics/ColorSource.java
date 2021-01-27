@@ -16,6 +16,14 @@ import net.angle.omnicraft.random.OmniRandom;
 public interface ColorSource {
     public Color getColor(OmniRandom random);
     
+    public default Color[] getPalette(int paletteSize, OmniRandom random) {
+        Color[] palette = new Color[paletteSize];
+        for (int i = 0; i < paletteSize; i++) {
+            palette[i] = getColor(random);
+        }
+        return palette;
+    }
+    
     public static class FlatColorSource implements ColorSource {
 
         public final Color color;

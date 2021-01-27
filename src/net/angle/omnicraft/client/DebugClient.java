@@ -127,6 +127,7 @@ public class DebugClient implements Client {
     public void render() {
         shader.uniformMat4("u_projection_matrix", player.camera.projMat);
         shader.uniformMat4("u_view_matrix", player.camera.viewMat);
+        world.blockTypes.get("Dirt Block").renderData.prepareShader(shader);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
