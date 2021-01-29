@@ -22,7 +22,6 @@ public class RenderData {
     public RenderData(Color... colors) {
         ArrayList<Vec3> palette = new ArrayList<>();
         for (Color color : colors) {
-            System.out.println(new Vec3((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
             palette.add(new Vec3((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
         }
         
@@ -31,6 +30,7 @@ public class RenderData {
         while (palette.size() < 20) {
             palette.add(new Vec3());
         }
+        
         this.palette = palette.toArray(new Vec3[0]);
     }
     

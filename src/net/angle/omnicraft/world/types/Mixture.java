@@ -42,6 +42,24 @@ public class Mixture extends Substance {
 
     @Override
     public Color getColor(OmniRandom random) {
-        return pickComponent(random).substance.getColor(random);
+        
+        Color color = new Color(0, 0, 0);
+        
+        int alpha = 0;
+        //Sample a bunch of the stuff this Mixture is made of and return a color based on the combination.
+        while (alpha < 255) {
+            Color newColor = pickComponent(random).substance.getColor(random);
+            
+            int newAlpha = Math.min(newColor.getAlpha(), 255 - alpha);
+            
+            int red = (int) Math.min(color.getRed() + (newColor.getRed() * (newAlpha/255.0f)), 255);
+            int green = (int) Math.min(color.getGreen() + (newColor.getGreen() * (newAlpha/255.0f)), 255);
+            int blue = (int) Math.min(color.getBlue() + (newColor.getBlue() * (newAlpha/255.0f)), 255);
+            alpha = Math.min(alpha + newAlpha, 255);
+            
+            color = new Color(red, green, blue);
+        }
+        
+        return color;
     }
 }
