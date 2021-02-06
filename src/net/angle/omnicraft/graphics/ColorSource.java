@@ -38,4 +38,22 @@ public interface ColorSource {
         }
         
     }
+    
+    public static class GreyVariedColorSource extends ColorSource.FlatColorSource {
+        public final int variation;
+
+        public GreyVariedColorSource(Color color, int variation) {
+            super(color);
+            this.variation = variation;
+        }
+        
+        @Override
+        public Color getColor(OmniRandom random) {
+            int local_variation = random.getBoundedInt(this.variation);
+            return new Color(Math.max(0, color.getRed() + local_variation), 
+                             Math.max(0, color.getGreen() + local_variation), 
+                             Math.max(0, color.getBlue() + local_variation), color.getAlpha());
+        }
+        
+    }
 }

@@ -23,7 +23,7 @@ public class HomogenousBlock extends Block {
         
         this.substance = substance;
         this.blockShape = blockShape;
-        this.renderData = new RenderData(substance.getPalette(10, random));
+        this.renderData = new RenderData(substance.getPalette(20, random));
     }
 
     @Override

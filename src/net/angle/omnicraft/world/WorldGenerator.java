@@ -23,13 +23,13 @@ import net.angle.omnicraft.world.types.Mixture;
 public class WorldGenerator {
     
     public static void generateSubstances(World world) {
-        world.addSubstance(new Mineraloid("Pebbles", new ColorSource.FlatColorSource(new Color(64, 0, 0, 30))));
-        world.addSubstance(new Mineraloid("Sand", new ColorSource.FlatColorSource(new Color(64, 0, 0, 30))));
-        world.addSubstance(new Mineraloid("Silt", new ColorSource.FlatColorSource(new Color(64, 0, 0, 30))));
-        world.addSubstance(new Mineraloid("Clay", new ColorSource.FlatColorSource(new Color(128, 128, 200, 50))));
-        world.addSubstance(new Mineraloid("Compost", new ColorSource.FlatColorSource(new Color(64, 64, 0, 40))));
-        world.addSubstance(new Fluid("Water", new ColorSource.FlatColorSource(new Color(0, 0, 128, 20))));
-        world.addSubstance(new Fluid("Air", new ColorSource.FlatColorSource(new Color(128, 0, 0, 20))));
+        world.addSubstance(new Mineraloid("Pebbles", new ColorSource.GreyVariedColorSource(new Color(64, 64, 64, 30), 60)));
+        world.addSubstance(new Mineraloid("Sand", new ColorSource.GreyVariedColorSource(new Color(200, 150, 80, 60), 30)));
+        world.addSubstance(new Mineraloid("Silt", new ColorSource.GreyVariedColorSource(new Color(120, 75, 0, 40), 10)));
+        world.addSubstance(new Mineraloid("Clay", new ColorSource.GreyVariedColorSource(new Color(120, 120, 130, 20), -25)));
+        world.addSubstance(new Mineraloid("Compost", new ColorSource.GreyVariedColorSource(new Color(80, 40, 15, 80), -20)));
+        world.addSubstance(new Fluid("Water", new ColorSource.GreyVariedColorSource(new Color(0, 0, 150, 30), -20)));
+        world.addSubstance(new Fluid("Air", new ColorSource.GreyVariedColorSource(new Color(120, 100, 150, 15), -50)));
         world.addSubstance(new Mixture("Gravel", new MixtureComponent(world.substances.get("Pebbles"), 100.0f)));
         world.addSubstance(new Mixture("Desert Sand", new MixtureComponent(world.substances.get("Sand"), 100.0f)));
         
