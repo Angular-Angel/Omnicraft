@@ -5,6 +5,9 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec3;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,7 +36,7 @@ public class World {
     }
     
     public World(Block block) {
-        this(block, 4, 16);
+        this(block, 16, 16);
     }
     
     public World(Block block, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
@@ -70,5 +73,11 @@ public class World {
                 loadedChunks.addAll(Arrays.asList(chunkRow));
             }
         }
+    }
+    
+    public void bufferLoadedChunks(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord) {
+        loadedChunks.forEach(chunk -> {
+            chunk.bufferBlocks(buffer, vPos, vTexCoord);
+        });
     }
 }

@@ -5,6 +5,11 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec3;
+import net.angle.omnicraft.world.Chunk;
+
 /**
  *
  * @author angle
@@ -18,6 +23,11 @@ public class Emptiness extends Block {
     @Override
     public boolean isTransparent() {
         return true;
+    }
+    
+    @Override
+    public void bufferVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, Chunk chunk, int blockx, int blocky, int blockz) {
+        
     }
     
 }

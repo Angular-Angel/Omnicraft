@@ -27,7 +27,6 @@ public class DebugClient implements Client {
     private static final float CAMERA_NEAR_Z = 0.125f;
     private static final float CAMERA_FAR_Z = 1024.0f;
     private static final float CAMERA_FOV = Util.toRadians(90.0f);
-    public static final float DRAW_OFFSET = 0.5f;
     
     private Vec2i resolution;
     private ShaderProgram shader;
@@ -72,7 +71,7 @@ public class DebugClient implements Client {
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
-            buffer = DGL.genVertexBuffer(36, -1);
+            buffer = DGL.genVertexBuffer(7200000, -1);
             
             bufferVertices();
             
@@ -141,54 +140,10 @@ public class DebugClient implements Client {
         Vec2 vTexCoord = buffer.vec2("in_tex_coord");
 
         buffer.begin();
-
-        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, -1, 0, 1);
-        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, -DRAW_OFFSET, DRAW_OFFSET, -1, 0, -1);
-        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, -1, -1, 0);
-        bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 1, -1, 0);
-        bufferFlatVertices(buffer, vPos, vTexCoord, -DRAW_OFFSET, DRAW_OFFSET, DRAW_OFFSET, 0, -1, -1);
-        bufferFlatVertices(buffer, vPos, vTexCoord, DRAW_OFFSET, DRAW_OFFSET, -DRAW_OFFSET, 0, -1, 1);
+        
+        world.bufferLoadedChunks(buffer, vPos, vTexCoord);
 
         buffer.end();
-    }
-    
-    public void bufferFlatVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
-
-        //Build a square out of two triangles.
-
-        Vec3 topLeft, topRight, bottomLeft, bottomRight;
-
-        topLeft = new Vec3(0, 0, 0);
-
-        if (xoff == 0) {
-            topRight = new Vec3(0, 0, zoff);
-        } else {
-            topRight = new Vec3(xoff, 0, 0);
-        }
-
-        bottomRight = new Vec3(xoff, yoff, zoff);
-
-        if (yoff == 0) {
-            bottomLeft = new Vec3(0, 0, zoff);
-        } else{
-            bottomLeft = new Vec3(0, yoff, 0);
-        }
-        
-        //adjust positions for where our starts are.
-        topLeft.add(new Vec3(startx, starty, startz));
-        topRight.add(new Vec3(startx, starty, startz));
-        bottomLeft.add(new Vec3(startx, starty, startz));
-        bottomRight.add(new Vec3(startx, starty, startz));
-
-        //add first trangle, starting at top left corner, then top right, then bottom right
-        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-        vPos.set(topRight); vTexCoord.set(1.0f, 0.0f); buffer.vertex();
-        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
-
-        //add second triangle, starting at top left corner, then bottom right, then bottom left
-        vPos.set(topLeft); vTexCoord.set(0.0f, 0.0f); buffer.vertex();
-        vPos.set(bottomRight); vTexCoord.set(1.0f, 1.0f); buffer.vertex();
-        vPos.set(bottomLeft); vTexCoord.set(0.0f, 1.0f); buffer.vertex();
     }
 
     @Override

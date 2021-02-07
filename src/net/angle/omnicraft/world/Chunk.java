@@ -5,9 +5,9 @@
  */
 package net.angle.omnicraft.world;
 
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
+import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec3;
 
 /**
  *
@@ -30,5 +30,15 @@ public abstract class Chunk implements BlockContainer {
     @Override
     public int getEdgeLength() {
         return container.getEdgeLengthOfContainedChunks();
+    }
+    
+    public void bufferBlocks(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord) {
+        for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
+            for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
+                for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
+                    getBlock(blockx, blocky, blockz).bufferVertices(buffer, vPos, vTexCoord, this, blockx, blocky, blockz);
+                }
+            }
+        }
     }
 }
