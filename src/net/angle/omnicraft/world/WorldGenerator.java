@@ -49,6 +49,8 @@ public class WorldGenerator {
     
     public static void generateChunks(World world) {
         Region spawnRegion = world.getSpawnRegion();
+        for (int i = 2; i < world.chunkEdgeLengthOfRegion; i++)
+            spawnRegion.getChunk(i, i, i).setAllBlocks(world.blockTypes.get("Dirt Block"));
         Chunk chunk = spawnRegion.getChunk(0, 0, 0);
         chunk.setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
@@ -56,8 +58,6 @@ public class WorldGenerator {
         spawnRegion.getChunk(1, 0, 0).setAllBlocks(world.blockTypes.get("Dirt Block"));
         spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
-        for (int i = 2; i < world.chunkEdgeLengthOfRegion; i++)
-            spawnRegion.getChunk(i, i, i).setAllBlocks(world.blockTypes.get("Dirt Block"));
             
         world.loadRegion(spawnRegion);
     }

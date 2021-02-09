@@ -1,9 +1,10 @@
 #version 140
 
-uniform vec3 u_palette[20];
+uniform sampler2DRect u_palette;
 uniform int u_palette_size;
 
 in vec2 v_tex_coord;
+flat in int i_palette_index;
 
 out vec3 out_color; //The color of a pixel/fragment.
 
@@ -19,5 +20,5 @@ void main() {
 
     // Use the random function, times the palette_size and then floored, 
     //and then use that to select a color from the palette and return that color.
-    out_color = u_palette[int(floor(random(st) * u_palette_size))];
+    out_color = texelFetch(u_palette, ivec2(int(floor(random(st) * u_palette_size)), i_palette_index)).rgb;
 }

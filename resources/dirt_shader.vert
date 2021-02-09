@@ -5,11 +5,14 @@ uniform mat4 u_view_matrix;
 
 in vec3 in_pos; //Supplied by the vertex buffer.
 in vec2 in_tex_coord;
+in int in_palette_index;
 
+flat out int i_palette_index;
 out vec2 v_tex_coord;
 
 void main()
 {
+    i_palette_index = in_palette_index;
     v_tex_coord = in_tex_coord;
 
     //Position should be a vec4 because matrix transformations require homogeneous coordinates.

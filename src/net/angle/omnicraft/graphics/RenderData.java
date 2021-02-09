@@ -22,7 +22,7 @@ public class RenderData {
     public RenderData(Color... colors) {
         ArrayList<Vec3> palette = new ArrayList<>();
         for (Color color : colors) {
-            palette.add(new Vec3((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
+            palette.add(new Vec3(color.getRed(), color.getGreen(), color.getBlue()));
         }
         
         palette_size = palette.size();

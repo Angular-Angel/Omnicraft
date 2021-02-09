@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world.blocks;
 
 import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.world.Chunk;
@@ -26,7 +27,7 @@ public class Emptiness extends Block {
     }
     
     @Override
-    public void bufferVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, Chunk chunk, int blockx, int blocky, int blockz) {
+    public void bufferVertices(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, VertexBuilder.IntAttribute palette_index, Chunk chunk, int blockx, int blocky, int blockz) {
         
     }
     

@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 
@@ -32,11 +33,11 @@ public abstract class Chunk implements BlockContainer {
         return container.getEdgeLengthOfContainedChunks();
     }
     
-    public void bufferBlocks(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord) {
+    public void bufferBlocks(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, VertexBuilder.IntAttribute palette_index) {
         for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
             for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
                 for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
-                    getBlock(blockx, blocky, blockz).bufferVertices(buffer, vPos, vTexCoord, this, blockx, blocky, blockz);
+                    getBlock(blockx, blocky, blockz).bufferVertices(buffer, vPos, vTexCoord, palette_index, this, blockx, blocky, blockz);
                 }
             }
         }

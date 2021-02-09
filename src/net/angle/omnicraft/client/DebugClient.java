@@ -9,6 +9,7 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.VertexBuffer;
+import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11C.*;
+import static org.lwjgl.opengl.GL11.*;
 
 
 public class DebugClient implements Client {
@@ -88,6 +89,8 @@ public class DebugClient implements Client {
             
             glfwMaximizeWindow(Game.getWindow());
             
+            world.prepare_palette();
+            
             DGL.useProgram(shader);
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +129,8 @@ public class DebugClient implements Client {
     public void render() {
         shader.uniformMat4("u_projection_matrix", player.camera.projMat);
         shader.uniformMat4("u_view_matrix", player.camera.viewMat);
-        world.blockTypes.get("Dirt Block").renderData.prepareShader(shader);
+        //world.blockTypes.get("Dirt Block").renderData.prepareShader(shader);
+        world.prepareShader(shader);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
@@ -138,16 +142,19 @@ public class DebugClient implements Client {
         //have multiple kinds of data: floats, vectors, or matrices.
         Vec3 vPos = buffer.vec3("in_pos");
         Vec2 vTexCoord = buffer.vec2("in_tex_coord");
+        VertexBuilder.IntAttribute palette_index = buffer.aint("in_palette_index");
 
         buffer.begin();
         
-        world.bufferLoadedChunks(buffer, vPos, vTexCoord);
+        world.bufferLoadedChunks(buffer, vPos, vTexCoord, palette_index);
 
         buffer.end();
     }
 
     @Override
     public void destroy(Boolean crashed) {
+        
+        world.delete();
         
         DGL.delete(shader, buffer);
         
