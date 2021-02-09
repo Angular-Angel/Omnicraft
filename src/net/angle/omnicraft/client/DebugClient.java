@@ -31,9 +31,14 @@ public class DebugClient implements Client {
     
     private Vec2i resolution;
     private ShaderProgram shader;
-    private VertexBuffer buffer;
     private Player player;
     private World world;
+    
+    public VertexBuffer buffer;
+    public Vec3 vPos;
+    public Vec2 vTexCoord;
+    public VertexBuilder.IntAttribute palette_index;
+    public Vec3 vRandom;
     
     @Override
     public void preInit() {
@@ -129,7 +134,7 @@ public class DebugClient implements Client {
     public void render() {
         shader.uniformMat4("u_projection_matrix", player.camera.projMat);
         shader.uniformMat4("u_view_matrix", player.camera.viewMat);
-        //world.blockTypes.get("Dirt Block").renderData.prepareShader(shader);
+        
         world.prepareShader(shader);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -140,13 +145,14 @@ public class DebugClient implements Client {
     public void bufferVertices() {
          //Set up the variable names used by the vertex shader. Each vertex can
         //have multiple kinds of data: floats, vectors, or matrices.
-        Vec3 vPos = buffer.vec3("in_pos");
-        Vec2 vTexCoord = buffer.vec2("in_tex_coord");
-        VertexBuilder.IntAttribute palette_index = buffer.aint("in_palette_index");
+        vPos = buffer.vec3("in_pos");
+        vTexCoord = buffer.vec2("in_tex_coord");
+        palette_index = buffer.aint("in_palette_index");
+        vRandom = buffer.vec3("in_random");
 
         buffer.begin();
         
-        world.bufferLoadedChunks(buffer, vPos, vTexCoord, palette_index);
+        world.bufferLoadedChunks(this);
 
         buffer.end();
     }

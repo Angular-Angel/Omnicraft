@@ -5,6 +5,7 @@ uniform int u_palette_size;
 
 in vec2 v_tex_coord;
 flat in int i_palette_index;
+flat in float f_random;
 
 out vec3 out_color; //The color of a pixel/fragment.
 
@@ -12,7 +13,7 @@ out vec3 out_color; //The color of a pixel/fragment.
 float random (in vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(234.66, 32.4)))
-                 * 98765.234567);
+                 * 983.234567 * f_random);
 }
 
 void main() {

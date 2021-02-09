@@ -9,16 +9,13 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.Image;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.TextureRectangle;
-import com.samrj.devil.gl.VertexBuffer;
-import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.math.Util;
-import com.samrj.devil.math.Vec2;
-import com.samrj.devil.math.Vec3;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Emptiness;
 import net.angle.omnicraft.world.types.Substance;
@@ -124,9 +121,9 @@ public class World {
         shader.uniform1i("u_palette_size", 20);
     }
     
-    public void bufferLoadedChunks(VertexBuffer buffer, Vec3 vPos, Vec2 vTexCoord, VertexBuilder.IntAttribute palette_index) {
+    public void bufferLoadedChunks(DebugClient client) {
         loadedChunks.forEach(chunk -> {
-            chunk.bufferBlocks(buffer, vPos, vTexCoord, palette_index);
+            chunk.bufferBlocks(client);
         });
     }
     
