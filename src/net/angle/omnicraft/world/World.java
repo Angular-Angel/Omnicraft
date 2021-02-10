@@ -31,6 +31,8 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
  */
 public class World {
     
+    public static final int PALETTE_SIZE = 40;
+    
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
     public final Map<String, Substance> substances;
@@ -92,7 +94,7 @@ public class World {
     
     public void prepare_palette() {
         palettes = DGL.genTexRect();
-        Image image = DGL.genImage(20, 3, 3, Util.PrimType.BYTE);
+        Image image = DGL.genImage(PALETTE_SIZE, 3, 3, Util.PrimType.BYTE);
         image.shade((int x, int y, int band) -> {
             if (band == 0)
                 return block_ids.get(y).renderData.palette[x].x;
@@ -118,7 +120,7 @@ public class World {
         
         shader.uniform1i("u_palette", 0);
         
-        shader.uniform1i("u_palette_size", 20);
+        shader.uniform1i("u_palette_size", PALETTE_SIZE);
     }
     
     public void bufferLoadedChunks(DebugClient client) {

@@ -7,6 +7,7 @@ package net.angle.omnicraft.world.blocks;
 
 import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.random.OmniRandom;
+import static net.angle.omnicraft.world.World.PALETTE_SIZE;
 import net.angle.omnicraft.world.types.Substance;
 
 /**
@@ -23,7 +24,7 @@ public class HomogenousBlock extends Block {
         
         this.substance = substance;
         this.blockShape = blockShape;
-        this.renderData = new RenderData(substance.getPalette(20, random));
+        this.renderData = new RenderData(substance.getPalette(PALETTE_SIZE, random));
     }
 
     @Override
