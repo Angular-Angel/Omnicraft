@@ -119,8 +119,6 @@ public class World {
     public void prepareShader(ShaderProgram shader) {
         
         shader.uniform1i("u_palette", 0);
-        
-        shader.uniform1i("u_palette_size", PALETTE_SIZE);
     }
     
     public void bufferLoadedChunks(DebugClient client) {
