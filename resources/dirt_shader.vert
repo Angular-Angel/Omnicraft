@@ -11,6 +11,7 @@ in vec3 in_random;
 flat out int i_palette_index;
 out vec2 v_tex_coord;
 flat out float f_random;
+out float f_distance;
 
 float random (in vec3 st) {
     return fract(sin(dot(st.xyz,
@@ -30,4 +31,6 @@ void main()
     
     //gl_Position is one of the few built-in variables in GLSL.
     gl_Position = u_projection_matrix*u_view_matrix*pos;
+
+    f_distance = length(gl_Position);
 }
