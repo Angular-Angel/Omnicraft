@@ -94,7 +94,7 @@ public class World {
     
     public void prepare_palette() {
         palettes = DGL.genTexRect();
-        Image image = DGL.genImage(PALETTE_SIZE, 3, 3, Util.PrimType.BYTE);
+        Image image = DGL.genImage(PALETTE_SIZE, block_ids.size(), 3, Util.PrimType.BYTE);
         image.shade((int x, int y, int band) -> {
             if (band == 0)
                 return block_ids.get(y).renderData.palette[x].x;
