@@ -16,8 +16,14 @@ float random (in vec2 st) {
                  * 983.234567 * f_random);
 }
 
+vec3 getPaletteColor(int index, int palette_length) {
+    return texelFetch(u_palette, ivec2(index, palette_length - i_palette_index)).rgb;
+}
+
+// Use the random function, times the palette_size and then floored, 
+// and then use that to select a color from the palette and return that color.
 vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
-    return texelFetch(u_palette, ivec2(int(floor(random(texel_coords) * palette_size)), palette_length - i_palette_index)).rgb;
+    return getPaletteColor(int(floor(random(texel_coords) * palette_size)), palette_length).rgb;
 }
 
 void main() {
@@ -26,11 +32,10 @@ void main() {
 
     ivec2 texture_size = textureSize(u_palette);
 
-    int palette_size = texture_size.x;
+    int palette_size = texture_size.x - 1;
     int palette_length = texture_size.y - 1;
 
-    // Use the random function, times the palette_size and then floored, 
-    //and then use that to select a color from the palette and return that color.
+    
     out_color = getTexel(texel_position, palette_size, palette_length);
 
     vec2 texel_above = vec2(texel_position.x, texel_position.y - 1);
@@ -53,6 +58,6 @@ void main() {
 
     out_color = mix(blur_color, out_color, 0.4);
 
-    out_color = mix(vec3(0, 0, 0), out_color, blur_factor);
+    out_color = mix(getPaletteColor(palette_size, palette_length), out_color, blur_factor);
     
 }

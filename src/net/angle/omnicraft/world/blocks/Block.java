@@ -5,7 +5,6 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.graphics.RenderData;

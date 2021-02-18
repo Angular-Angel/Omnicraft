@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.graphics;
 
+import com.samrj.devil.math.Vec3i;
 import java.awt.Color;
 import net.angle.omnicraft.random.OmniRandom;
 
@@ -17,10 +18,21 @@ public interface ColorSource {
     public Color getColor(OmniRandom random);
     
     public default Color[] getPalette(int paletteSize, OmniRandom random) {
-        Color[] palette = new Color[paletteSize];
+        Color[] palette = new Color[paletteSize + 1];
+        
+        Vec3i average = new Vec3i();
         for (int i = 0; i < paletteSize; i++) {
             palette[i] = getColor(random);
+            average.x += palette[i].getRed();
+            average.y += palette[i].getGreen();
+            average.z += palette[i].getBlue();
         }
+        System.out.println(average);
+        average = average.div(paletteSize);
+        System.out.println(average);
+        
+        palette[paletteSize] = new Color(average.x, average.y, average.z);
+        
         return palette;
     }
     
