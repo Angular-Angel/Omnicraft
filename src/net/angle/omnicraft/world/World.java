@@ -127,6 +127,12 @@ public class World {
         });
     }
     
+    public void bufferOptimizedMesh(DebugClient client) {
+        loadedChunks.forEach(chunk -> {
+            chunk.bufferOptimizedMesh(client);
+        });
+    }
+    
     public void delete() {
         DGL.delete(palettes);
     }

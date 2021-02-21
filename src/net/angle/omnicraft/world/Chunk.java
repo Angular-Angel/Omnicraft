@@ -36,7 +36,6 @@ public abstract class Chunk implements BlockContainer {
     }
     
     public void bufferBlocks(DebugClient client) {
-        //bufferOptimizedMesh(client);
         for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
             for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
                 for (int blockz = 0; blockz < getEdgeLength(); blockz++) {

@@ -64,7 +64,7 @@ public abstract class Block {
                     direction.z = dimensions.y;
                 case bottom:
                 case front:
-                    direction.x = dimensions.x;
+                    direction.z = dimensions.x;
                     direction.y = dimensions.y;
                 case back:
                 case left:
