@@ -5,7 +5,9 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
+import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.world.Chunk;
@@ -21,6 +23,58 @@ public abstract class Block {
     public RenderData renderData;
     public int id;
     
+    public enum BlockFace {
+        top, bottom, front, back, left, right;
+        
+        public Vec3i moveDown(Vec3i coord) {
+            switch(this) {
+                case top:
+                case bottom:
+                    coord.x += 1;
+                case front: 
+                case back:
+                case left:
+                case right:
+                    coord.y += 1;
+            }
+            
+            return coord;
+        }
+        
+        public Vec3i moveAcross(Vec3i coord) {
+            switch(this) {
+                case top:
+                case bottom:
+                    coord.z += 1;
+                case front: 
+                case back:
+                case left:
+                case right:
+                    coord.x += 1;
+            }
+            
+            return coord;
+        }
+        
+        public Vec3i orientFace(Vec2i dimensions) {
+            Vec3i direction = new Vec3i();
+            switch(this) {
+                case top:
+                    direction.x = dimensions.x;
+                    direction.z = dimensions.y;
+                case bottom:
+                case front:
+                    direction.x = dimensions.x;
+                    direction.y = dimensions.y;
+                case back:
+                case left:
+                case right:
+            }
+            
+            return direction;
+        }
+    }
+    
     public Block(String name) {
         this.name = name;
     }
@@ -29,6 +83,22 @@ public abstract class Block {
     
     public boolean isVisibleThrough(Block adjacentBlock) {
         return adjacentBlock == null || adjacentBlock.isTransparent();
+    }
+    
+    public boolean faceIsVisible(BlockFace face, Chunk chunk, Vec3i coord) {
+        return faceIsVisible(face, chunk, coord.x, coord.y, coord.z);
+    }
+    
+    public boolean faceIsVisible(BlockFace face, Chunk chunk, int blockx, int blocky, int blockz) {
+        switch(face) {
+            case top: return topIsVisible(chunk, blockx, blocky, blockz);
+            case bottom: return bottomIsVisible(chunk, blockx, blocky, blockz);
+            case front: return frontIsVisible(chunk, blockx, blocky, blockz);
+            case back: return backIsVisible(chunk, blockx, blocky, blockz);
+            case left: return leftSideIsVisible(chunk, blockx, blocky, blockz);
+            case right: return rightSideIsVisible(chunk, blockx, blocky, blockz);
+            default: throw new IllegalArgumentException("Checking visibility of face: " + face);
+        }
     }
     
     public boolean topIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
