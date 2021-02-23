@@ -27,9 +27,7 @@ public interface ColorSource {
             average.y += palette[i].getGreen();
             average.z += palette[i].getBlue();
         }
-        System.out.println(average);
         average = average.div(paletteSize);
-        System.out.println(average);
         
         palette[paletteSize] = new Color(average.x, average.y, average.z);
         

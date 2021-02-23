@@ -26,16 +26,30 @@ public abstract class Block {
     public enum BlockFace {
         top, bottom, front, back, left, right;
         
+        public Vec3i getStartingPosition(Chunk chunk) {
+            switch(this) {
+                case top:
+                case bottom:
+                case front: return new Vec3i(0, 0, chunk.getEdgeLength() - 1);
+                case back:
+                case left: return new Vec3i(0, 0, 0);
+                case right: return new Vec3i(chunk.getEdgeLength() - 1, 0, chunk.getEdgeLength() - 1);
+            }
+            return new Vec3i(-1, -1, -1);
+        }
+        
         public Vec3i moveDown(Vec3i coord) {
             switch(this) {
                 case top:
                 case bottom:
                     coord.x += 1;
+                    break;
                 case front: 
                 case back:
                 case left:
                 case right:
                     coord.y += 1;
+                    break;
             }
             
             return coord;
@@ -45,15 +59,62 @@ public abstract class Block {
             switch(this) {
                 case top:
                 case bottom:
-                    coord.z += 1;
-                case front: 
+                case front:
+                    coord.x += 1;
+                    break;
                 case back:
                 case left:
+                    coord.z += 1;
+                    break;
                 case right:
-                    coord.x += 1;
+                    coord.z -= 1;
+                    break;
             }
             
             return coord;
+        }
+        
+        public Vec3i moveIn(Vec3i coord) {
+            switch(this) {
+                case top:
+                case bottom:
+                case front:
+                    coord.z -= 1;
+                    break;
+                case back:
+                case left:
+                    coord.x += 1;
+                    break;
+                case right:
+                    coord.x -= 1;
+                    break;
+            }
+            
+            return coord;
+        }
+        
+        public boolean continueAcross(Vec3i coord, Chunk chunk) {
+            switch(this) {
+                case top:
+                case bottom:
+                case front: return coord.x < chunk.getEdgeLength() - 1;
+                case back:
+                case left: return coord.z < chunk.getEdgeLength() - 1;
+                case right: return coord.z > 0;
+            }
+            return false;
+        }
+        
+        public boolean continueDown(Vec3i coord, Chunk chunk) {
+            switch(this) {
+                case top:
+                case bottom:
+                case front:
+                case back:
+                case left:
+                case right: return coord.y < chunk.getEdgeLength() - 1;
+            }
+            return false;
         }
         
         public Vec3i orientFace(Vec2i dimensions) {
@@ -62,13 +123,21 @@ public abstract class Block {
                 case top:
                     direction.x = dimensions.x;
                     direction.z = dimensions.y;
+                    break;
                 case bottom:
                 case front:
-                    direction.z = dimensions.x;
+                    direction.x = dimensions.x;
                     direction.y = dimensions.y;
+                    break;
                 case back:
                 case left:
+                    direction.z = dimensions.x;
+                    direction.y = dimensions.y;
+                    break;
                 case right:
+                    direction.z = -dimensions.x;
+                    direction.y = dimensions.y;
+                    break;
             }
             
             return direction;
@@ -184,21 +253,27 @@ public abstract class Block {
         //Build a square out of two triangles.
 
         Vec3 topLeft, topRight, bottomLeft, bottomRight;
+        
+        int width, height;
 
         topLeft = new Vec3(0, 0, 0);
 
         if (xoff == 0) {
             topRight = new Vec3(0, 0, zoff);
+            width = (int) zoff;
         } else {
             topRight = new Vec3(xoff, 0, 0);
+            width = (int) xoff;
         }
 
         bottomRight = new Vec3(xoff, yoff, zoff);
 
         if (yoff == 0) {
             bottomLeft = new Vec3(0, 0, zoff);
+            height = (int) zoff;
         } else{
             bottomLeft = new Vec3(0, yoff, 0);
+            height = (int) yoff;
         }
         
         //adjust positions for where our starts are.
@@ -209,12 +284,12 @@ public abstract class Block {
 
         //add first trangle, starting at top left corner, then top right, then bottom right
         client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(topRight); client.vTexCoord.set(1.0f, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomRight); client.vTexCoord.set(1.0f, 1.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(topRight); client.vTexCoord.set(width, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
 
         //add second triangle, starting at top left corner, then bottom right, then bottom left
         client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomRight); client.vTexCoord.set(1.0f, 1.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, 1.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
     }
 }

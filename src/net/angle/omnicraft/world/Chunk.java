@@ -46,20 +46,30 @@ public abstract class Chunk implements BlockContainer {
     }
     
     public void bufferOptimizedMesh(DebugClient client) {
-        greedyMeshExpansion(client, BlockFace.front, new Vec3i());
+//        for (BlockFace face : BlockFace.values()) {
+//            optimizeMeshes(client, face);
+//        }
+//        greedyMeshExpansion(client, BlockFace.top, new Vec3i());
+//        greedyMeshExpansion(client, BlockFace.bottom, new Vec3i());
+//        greedyMeshExpansion(client, BlockFace.front, new Vec3i());
+//        greedyMeshExpansion(client, BlockFace.back, new Vec3i());
+        optimizeMeshes(client, BlockFace.front);
+        optimizeMeshes(client, BlockFace.left);
+        optimizeMeshes(client, BlockFace.right);
     }
     
     public boolean checkMesh(Block block, BlockFace face, Vec3i coord, int width, int height) {
         
         //Goes down relative to the block face, not the chunks y coordinate
         Vec3i workingCoordy = new Vec3i(coord);
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < height; i++) {
             
             //Goes across relative to the block face, not the chunks x coordinate
             Vec3i workingCoordx = new Vec3i(workingCoordy);
-            for (int j = 0; j < height; j++) {
-                if (getBlock(workingCoordx) != block || !block.faceIsVisible(face, this, workingCoordx))
+            for (int j = 0; j < width; j++) {
+                if (getBlock(workingCoordx) != block || !block.faceIsVisible(face, this, workingCoordx)) {
                     return false;
+                }
                 face.moveAcross(workingCoordx);
             }
             face.moveDown(workingCoordy);
@@ -68,36 +78,67 @@ public abstract class Chunk implements BlockContainer {
         return true;
     }
     
-    public void greedyMeshExpansion(DebugClient client, BlockFace face, Vec3i coord) {
+    public void optimizeMeshes(DebugClient client, BlockFace face) {
+        Vec3i coord1 = face.getStartingPosition(this);
+        for (int i = 0; i < getEdgeLength(); i++) {
+            boolean[][] checked = new boolean[getEdgeLength()][getEdgeLength()];
+            Vec3i coord2 = new Vec3i(coord1);
+            for (int j = 0; j < getEdgeLength(); j++) {
+                Vec3i coord3 = new Vec3i(coord2);
+                for (int k = 0; k < getEdgeLength(); k++) {
+                    if (checked[j][k] == false) {
+                        Vec2i dimensions = greedyMeshExpansion(client, face, coord3);
+                        for (int l = 0; l < dimensions.y; l++) {
+                            for (int m = 0; m < dimensions.x; m++) {
+                                checked[j+l][k+m] = true;
+                            }
+                        }
+                    }
+                    face.moveAcross(coord3);
+                }
+                face.moveDown(coord2);
+            }
+            face.moveIn(coord1);
+        }
+    }
+    
+    public Vec2i greedyMeshExpansion(DebugClient client, BlockFace face, Vec3i coord) {
         
         Block block = getBlock(coord);
+        
+        if (block == null || block.isTransparent() || !block.faceIsVisible(face, this, coord))
+            return new Vec2i(1, 1);
         
         boolean expandDown = true, expandAcross = true;
         
         int width = 1, height = 1;
         
-        Vec3i workingCoordx = new Vec3i(coord);
+        Vec3i workingCoord = new Vec3i(coord);
         
-        while (expandAcross) {
-            face.moveAcross(workingCoordx);
-            if (checkMesh(block, face, workingCoordx, 1, height)) 
+        while (expandAcross && face.continueAcross(workingCoord, this)) {
+            face.moveAcross(workingCoord);
+            if (checkMesh(block, face, workingCoord, 1, height)) {
                 width++;
-            else
+            } else
                 expandAcross = false;
         }
         
-        Vec3i workingCoordy = new Vec3i(coord);
+        workingCoord = new Vec3i(coord);
         
-        while (expandDown) {
-            face.moveAcross(workingCoordy);
-            if (checkMesh(block, face, workingCoordy, width, 1)) 
+        while (expandDown && face.continueDown(workingCoord, this)) {
+            face.moveDown(workingCoord);
+            if (checkMesh(block, face, workingCoord, width, 1)) {
                 height++;
-            else
+            } else
                 expandDown = false;
         }
         
-        Vec3i orientFace = face.orientFace(new Vec2i(width, height));
+        Vec2i dimensions = new Vec2i(width, height);
         
-        block.bufferFlatVertices(client, x, y, z, orientFace.x, orientFace.y, orientFace.z);
+        Vec3i orientFace = face.orientFace(dimensions);
+        
+        block.bufferFlatVertices(client, x + coord.x, y + coord.y, z + coord.z, orientFace.x, orientFace.y, orientFace.z);
+        
+        return dimensions;
     }
 }
