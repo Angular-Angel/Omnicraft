@@ -28,19 +28,58 @@ public abstract class Block {
         
         public Vec3i getStartingPosition(Chunk chunk) {
             switch(this) {
-                case top:
-                case bottom:
+                case top: return new Vec3i(chunk.getEdgeLength() - 1, chunk.getEdgeLength() - 1, 0);
+                case bottom: return new Vec3i(0, 0, 0);
                 case front: return new Vec3i(0, 0, chunk.getEdgeLength() - 1);
-                case back:
+                case back: return new Vec3i(chunk.getEdgeLength() - 1, 0, 0);
                 case left: return new Vec3i(0, 0, 0);
                 case right: return new Vec3i(chunk.getEdgeLength() - 1, 0, chunk.getEdgeLength() - 1);
             }
             return new Vec3i(-1, -1, -1);
         }
         
+        public Vec3 getDrawStart(int x, int y, int z) {
+            switch(this) {
+                case top: return new Vec3(x + 1, y + 1, z);
+                case bottom: return new Vec3(x, y, z);
+                case front: return new Vec3(x, y, z + 1);
+                case back: return new Vec3(x + 1, y, z);
+                case left: return new Vec3(x, y, z);
+                case right: return new Vec3(x + 1, y, z + 1);
+            }
+            return new Vec3(x, y, z);
+        }
+        
+        public Vec3i moveAcross(Vec3i coord) {
+            switch(this) {
+                case top:
+                    coord.z += 1;
+                    break;
+                case bottom:
+                    coord.z += 1;
+                    break;
+                case front:
+                    coord.x += 1;
+                    break;
+                case back:
+                    coord.x -= 1;
+                    break;
+                case left:
+                    coord.z += 1;
+                    break;
+                case right:
+                    coord.z -= 1;
+                    break;
+            }
+            
+            return coord;
+        }
+        
         public Vec3i moveDown(Vec3i coord) {
             switch(this) {
                 case top:
+                    coord.x -= 1;
+                    break;
                 case bottom:
                     coord.x += 1;
                     break;
@@ -55,33 +94,20 @@ public abstract class Block {
             return coord;
         }
         
-        public Vec3i moveAcross(Vec3i coord) {
-            switch(this) {
-                case top:
-                case bottom:
-                case front:
-                    coord.x += 1;
-                    break;
-                case back:
-                case left:
-                    coord.z += 1;
-                    break;
-                case right:
-                    coord.z -= 1;
-                    break;
-            }
-            
-            return coord;
-        }
-        
         public Vec3i moveIn(Vec3i coord) {
             switch(this) {
                 case top:
+                    coord.y -= 1;
+                    break;
                 case bottom:
+                    coord.y += 1;
+                    break;
                 case front:
                     coord.z -= 1;
                     break;
                 case back:
+                    coord.z += 1;
+                    break;
                 case left:
                     coord.x += 1;
                     break;
@@ -95,10 +121,10 @@ public abstract class Block {
         
         public boolean continueAcross(Vec3i coord, Chunk chunk) {
             switch(this) {
-                case top:
-                case bottom:
+                case top: return coord.z < chunk.getEdgeLength() - 1;
+                case bottom: return coord.z < chunk.getEdgeLength() - 1;
                 case front: return coord.x < chunk.getEdgeLength() - 1;
-                case back:
+                case back: return coord.x > 0;
                 case left: return coord.z < chunk.getEdgeLength() - 1;
                 case right: return coord.z > 0;
             }
@@ -107,8 +133,8 @@ public abstract class Block {
         
         public boolean continueDown(Vec3i coord, Chunk chunk) {
             switch(this) {
-                case top:
-                case bottom:
+                case top: return coord.x > 0;
+                case bottom: return coord.x < chunk.getEdgeLength() - 1;
                 case front:
                 case back:
                 case left:
@@ -121,15 +147,21 @@ public abstract class Block {
             Vec3i direction = new Vec3i();
             switch(this) {
                 case top:
-                    direction.x = dimensions.x;
-                    direction.z = dimensions.y;
+                    direction.z = dimensions.x;
+                    direction.x = -dimensions.y;
                     break;
                 case bottom:
+                    direction.z = dimensions.x;
+                    direction.x = dimensions.y;
+                    break;
                 case front:
                     direction.x = dimensions.x;
                     direction.y = dimensions.y;
                     break;
                 case back:
+                    direction.x = -dimensions.x;
+                    direction.y = dimensions.y;
+                    break;
                 case left:
                     direction.z = dimensions.x;
                     direction.y = dimensions.y;

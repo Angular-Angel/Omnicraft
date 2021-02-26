@@ -46,16 +46,9 @@ public abstract class Chunk implements BlockContainer {
     }
     
     public void bufferOptimizedMesh(DebugClient client) {
-//        for (BlockFace face : BlockFace.values()) {
-//            optimizeMeshes(client, face);
-//        }
-//        greedyMeshExpansion(client, BlockFace.top, new Vec3i());
-//        greedyMeshExpansion(client, BlockFace.bottom, new Vec3i());
-//        greedyMeshExpansion(client, BlockFace.front, new Vec3i());
-//        greedyMeshExpansion(client, BlockFace.back, new Vec3i());
-        optimizeMeshes(client, BlockFace.front);
-        optimizeMeshes(client, BlockFace.left);
-        optimizeMeshes(client, BlockFace.right);
+        for (BlockFace face : BlockFace.values()) {
+            optimizeMeshes(client, face);
+        }
     }
     
     public boolean checkMesh(Block block, BlockFace face, Vec3i coord, int width, int height) {
@@ -137,7 +130,9 @@ public abstract class Chunk implements BlockContainer {
         
         Vec3i orientFace = face.orientFace(dimensions);
         
-        block.bufferFlatVertices(client, x + coord.x, y + coord.y, z + coord.z, orientFace.x, orientFace.y, orientFace.z);
+        Vec3 drawStart = face.getDrawStart(x + coord.x, y + coord.y, z + coord.z);
+        
+        block.bufferFlatVertices(client, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
     }
