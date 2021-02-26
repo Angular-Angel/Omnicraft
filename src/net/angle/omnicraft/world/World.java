@@ -121,12 +121,6 @@ public class World {
         shader.uniform1i("u_palette", 0);
     }
     
-    public void bufferLoadedChunks(DebugClient client) {
-        loadedChunks.forEach(chunk -> {
-            chunk.bufferBlocks(client);
-        });
-    }
-    
     public void bufferOptimizedMesh(DebugClient client) {
         loadedChunks.forEach(chunk -> {
             chunk.bufferOptimizedMesh(client);

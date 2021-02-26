@@ -35,16 +35,6 @@ public abstract class Chunk implements BlockContainer {
         return container.getEdgeLengthOfContainedChunks();
     }
     
-    public void bufferBlocks(DebugClient client) {
-        for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
-            for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
-                for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
-                    getBlock(blockx, blocky, blockz).bufferVertices(client, this, blockx, blocky, blockz);
-                }
-            }
-        }
-    }
-    
     public void bufferOptimizedMesh(DebugClient client) {
         for (BlockFace face : BlockFace.values()) {
             optimizeMeshes(client, face);

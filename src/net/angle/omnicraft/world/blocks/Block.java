@@ -226,60 +226,6 @@ public abstract class Block {
         return isVisibleThrough(chunk.getBlock(blockx + 1, blocky, blockz));
     }
     
-    public void bufferTop(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x, y, z - 1, -1, 0, 1);
-    }
-    
-    public void bufferBottom(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x, y - 1, z, -1, 0, -1);
-    }
-    
-    public void bufferFront(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x, y, z, -1, -1, 0);
-    }
-    
-    public void bufferBack(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x - 1, y, z - 1, 1, -1, 0);
-    }
-    
-    public void bufferLeftSide(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x - 1, y, z, 0, -1, -1);
-    }
-    
-    public void bufferRightSide(DebugClient client, float x, float y, float z) {
-        bufferFlatVertices(client, x, y, z - 1, 0, -1, 1);
-    }
-    
-    public void bufferVertices(DebugClient client, Chunk chunk, int blockx, int blocky, int blockz) {
-        
-        //sides are all drawn as though you are standing next to the block facing it, 
-        //or in front looking down or up, for the top and bottom.
-        
-        //Draw top:
-        if (topIsVisible(chunk, blockx, blocky, blockz))
-            bufferTop(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-        
-        //Draw bottom:
-        if (bottomIsVisible(chunk, blockx, blocky, blockz))
-            bufferBottom(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-        
-        //Draw front
-        if (frontIsVisible(chunk, blockx, blocky, blockz))
-            bufferFront(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-        
-        //Draw back
-        if (backIsVisible(chunk, blockx, blocky, blockz))
-            bufferBack(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-        
-        //Draw left
-        if (leftSideIsVisible(chunk, blockx, blocky, blockz))
-            bufferLeftSide(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-        
-        //Draw right
-        if (rightSideIsVisible(chunk, blockx, blocky, blockz))
-            bufferRightSide(client, chunk.x + blockx, chunk.y + blocky, chunk.z + blockz);
-    }
-    
     public void bufferFlatVertices(DebugClient client, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
 
         //Build a square out of two triangles.

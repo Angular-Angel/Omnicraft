@@ -152,7 +152,6 @@ public class DebugClient implements Client {
 
         buffer.begin();
         
-        //world.bufferLoadedChunks(this);
         world.bufferOptimizedMesh(this);
 
         buffer.end();

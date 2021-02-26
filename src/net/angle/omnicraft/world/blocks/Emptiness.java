@@ -5,9 +5,6 @@
  */
 package net.angle.omnicraft.world.blocks;
 
-import net.angle.omnicraft.client.DebugClient;
-import net.angle.omnicraft.world.Chunk;
-
 /**
  *
  * @author angle
@@ -21,11 +18,6 @@ public class Emptiness extends Block {
     @Override
     public boolean isTransparent() {
         return true;
-    }
-    
-    @Override
-    public void bufferVertices(DebugClient client, Chunk chunk, int blockx, int blocky, int blockz) {
-        
     }
     
 }
