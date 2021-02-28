@@ -37,7 +37,7 @@ public class World {
     
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
-    public final Map<String, Region> regions;
+    public final Map<String, ChunkContainer> regions;
     public final List<Chunk> loadedChunks;
     public final List<Block> block_ids;
     
@@ -75,21 +75,18 @@ public class World {
         }
     }
     
-    public void addRegion(Region region) {
-        String coordstring = region.x + ", " + region.y + ", " + region.z;
+    public void addRegion(ChunkContainer region) {
+        region.getCoordinates().toString();
+        String coordstring = region.getCoordinates().toString();
         regions.put(coordstring, region);
     }
     
-    public Region getSpawnRegion() {
-        return regions.get("0, 0, 0");
+    public ChunkContainer getSpawnRegion() {
+        return regions.get("(0, 0, 0)");
     }
     
-    public void loadRegion(Region region) {
-        for (Chunk[][] chunklayer : region.chunks) {
-            for (Chunk[] chunkRow : chunklayer) {
-                loadedChunks.addAll(Arrays.asList(chunkRow));
-            }
-        }
+    public void loadRegion(ChunkContainer region) {
+        loadedChunks.addAll(region.getChunks());
     }
     
     public void prepare_palette() {

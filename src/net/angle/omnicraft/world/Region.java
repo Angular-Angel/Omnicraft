@@ -6,6 +6,9 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.math.Vec3i;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.angle.omnicraft.world.blocks.Block;
 
 /**
@@ -15,7 +18,7 @@ import net.angle.omnicraft.world.blocks.Block;
 public class Region implements ChunkContainer {
     public final World world;
     //These describe this regions size in blocks, and the sizes of it's chunks.
-    public final int x, y, z;
+    public final Vec3i coords;
     
     //The chunks within this region
     public Chunk[][][] chunks;
@@ -26,9 +29,7 @@ public class Region implements ChunkContainer {
     
     public Region(World world, Block block, int x, int y, int z) {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.coords = new Vec3i(x, y, z);
         
         chunks = new Chunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
         
@@ -102,5 +103,18 @@ public class Region implements ChunkContainer {
     @Override
     public int getEdgeLengthOfContainedChunks() {
         return world.blockEdgeLengthOfChunk;
+    }
+
+    @Override
+    public Vec3i getCoordinates() {
+        return new Vec3i(coords);
+    }
+
+    @Override
+    public List<Chunk> getChunks() {
+        return Arrays.stream(chunks)
+        .flatMap(Arrays::stream)
+        .flatMap(Arrays::stream)
+        .collect(Collectors.toList());
     }
 }

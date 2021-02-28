@@ -48,7 +48,7 @@ public class WorldGenerator {
     }
     
     public static void generateChunks(World world) {
-        Region spawnRegion = world.getSpawnRegion();
+        ChunkContainer spawnRegion = world.getSpawnRegion();
         int farEdge = world.chunkEdgeLengthOfRegion - 1;
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++)
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++)

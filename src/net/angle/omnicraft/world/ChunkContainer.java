@@ -6,6 +6,7 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.math.Vec3i;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,8 @@ public interface ChunkContainer extends BlockContainer {
      * returns the number of blocks in an edge (length, width, or height) for any of the contained chunks.
      * @return
      */
+    public Vec3i getCoordinates();
+    
     public int getEdgeLengthOfContainedChunks();
     public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz);
     
@@ -25,4 +28,6 @@ public interface ChunkContainer extends BlockContainer {
     
     public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz);
     public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk);
+    
+    public List<Chunk> getChunks();
 }

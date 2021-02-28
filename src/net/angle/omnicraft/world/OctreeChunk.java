@@ -7,6 +7,9 @@ package net.angle.omnicraft.world;
 
 import net.angle.omnicraft.world.blocks.Block;
 import com.samrj.devil.math.Vec3i;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -141,4 +144,16 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         return getEdgeLength()/2;
     }
     
+    @Override
+    public Vec3i getCoordinates() {
+        return new Vec3i(x, y, z);
+    }
+
+    @Override
+    public List<Chunk> getChunks() {
+        return Arrays.stream(children)
+        .flatMap(Arrays::stream)
+        .flatMap(Arrays::stream)
+        .collect(Collectors.toList());
+    }
 }
