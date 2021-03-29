@@ -18,12 +18,12 @@ import net.angle.omnicraft.world.blocks.Block.BlockFace;
  */
 public abstract class BlockChunk implements BlockContainer {
     
-    public final ChunkContainer container;
+    public final BlockChunkContainer container;
     //These describe this chunks size, and it's x, y, and z coordinates within it's region. 
     //These coords are specific to the chunk, with no regard for the wider world.
     public final int x, y, z;
     
-    public BlockChunk(ChunkContainer container, int x, int y, int z) {
+    public BlockChunk(BlockChunkContainer container, int x, int y, int z) {
         this.container = container;
         this.x = x;
         this.y = y;

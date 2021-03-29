@@ -15,12 +15,12 @@ public class HomogenousChunk extends BlockChunk {
     
     private Block block;
     
-    public HomogenousChunk(ChunkContainer container, Block block) {
+    public HomogenousChunk(BlockChunkContainer container, Block block) {
         super(container, 0, 0, 0);
         this.block = block;
     }
     
-    public HomogenousChunk(ChunkContainer container, Block block, int size, int x, int y, int z) {
+    public HomogenousChunk(BlockChunkContainer container, Block block, int size, int x, int y, int z) {
         super(container, x, y, z);
         this.block = block;
     }

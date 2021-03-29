@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec3i;
+
 /**
  *
  * @author angle
@@ -24,5 +26,9 @@ public abstract class AbstractChunk {
 
     public int getEdgeLength() {
         return container.getEdgeLengthOfContainedChunks();
+    }
+    
+    public Vec3i getCoordinates() {
+        return new Vec3i(x, y, z);
     }
 }

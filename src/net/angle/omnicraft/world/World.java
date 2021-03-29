@@ -38,7 +38,7 @@ public class World {
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
     public final Map<String, ChunkContainer> regions;
-    public final List<BlockChunk> loadedChunks;
+    public final List<Chunk> loadedChunks;
     public final List<Block> block_ids;
     
     private TextureRectangle palettes;

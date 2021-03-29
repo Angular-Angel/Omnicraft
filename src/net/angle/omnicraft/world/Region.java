@@ -21,7 +21,7 @@ public class Region implements ChunkContainer {
     public final Vec3i coords;
     
     //The chunks within this region
-    public BlockChunk[][][] chunks;
+    public Chunk[][][] chunks;
     
     public Region(World world) {
         this(world, null, 0, 0, 0);
@@ -31,12 +31,12 @@ public class Region implements ChunkContainer {
         this.world = world;
         this.coords = new Vec3i(x, y, z);
         
-        chunks = new BlockChunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
+        chunks = new Chunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
         
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
                 for (int k = 0; k < world.chunkEdgeLengthOfRegion; k++) {
-                    chunks[i][j][k] = new OctreeChunk(this, block, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
+                    chunks[i][j][k] = new Chunk(this, block, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
                 }
             }
         }
@@ -66,12 +66,12 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
+    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
         return chunks[chunkx][chunky][chunkz];
     }
 
     @Override
-    public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk) {
+    public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
         chunks[chunkx][chunky][chunkz] = chunk;
     }
     
@@ -81,14 +81,14 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public BlockChunk getChunkOfBlock(int blockx, int blocky, int blockz) {
+    public Chunk getChunkOfBlock(int blockx, int blocky, int blockz) {
         Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
 
     @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, BlockChunk chunk) {
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
         
         Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
@@ -111,7 +111,7 @@ public class Region implements ChunkContainer {
     }
 
     @Override
-    public List<BlockChunk> getChunks() {
+    public List<Chunk> getChunks() {
         return Arrays.stream(chunks)
         .flatMap(Arrays::stream)
         .flatMap(Arrays::stream)

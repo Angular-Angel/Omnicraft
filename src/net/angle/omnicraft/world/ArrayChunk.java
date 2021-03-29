@@ -17,12 +17,12 @@ public class ArrayChunk extends BlockChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Block[][][] blocks;
     
-    public ArrayChunk(Region region, Block block) {
-        this(region, block, 0, 0, 0);
+    public ArrayChunk(BlockChunkContainer container, Block block) {
+        this(container, block, 0, 0, 0);
     }
     
-    public ArrayChunk(Region region, Block block, int x, int y, int z) {
-        super(region, x, y, z);
+    public ArrayChunk(BlockChunkContainer container, Block block, int x, int y, int z) {
+        super(container, x, y, z);
         blocks = new Block[16][16][16];
         setAllBlocks(block);
     }
