@@ -11,7 +11,7 @@ import net.angle.omnicraft.world.blocks.Block;
  *
  * @author angle
  */
-public class HomogenousChunk extends Chunk {
+public class HomogenousChunk extends BlockChunk {
     
     private Block block;
     

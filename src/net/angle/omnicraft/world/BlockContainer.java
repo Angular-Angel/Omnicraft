@@ -37,5 +37,13 @@ public interface BlockContainer {
         setBlock(coord.x, coord.y, coord.z, block);
     }
     
-    public abstract void setAllBlocks(Block block);
+    public default void setAllBlocks(Block block) {
+        for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
+            for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
+                for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
+                    setBlock(blockx, blocky, blockz, block);
+                }
+            }
+        }
+    }
 }

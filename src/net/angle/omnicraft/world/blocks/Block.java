@@ -10,7 +10,7 @@ import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.graphics.RenderData;
-import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.BlockChunk;
 
 /**
  *
@@ -26,7 +26,7 @@ public abstract class Block {
     public enum BlockFace {
         top, bottom, front, back, left, right;
         
-        public Vec3i getStartingPosition(Chunk chunk) {
+        public Vec3i getStartingPosition(BlockChunk chunk) {
             switch(this) {
                 case top: return new Vec3i(chunk.getEdgeLength() - 1, chunk.getEdgeLength() - 1, 0);
                 case bottom: return new Vec3i(0, 0, 0);
@@ -119,7 +119,7 @@ public abstract class Block {
             return coord;
         }
         
-        public boolean continueAcross(Vec3i coord, Chunk chunk) {
+        public boolean continueAcross(Vec3i coord, BlockChunk chunk) {
             switch(this) {
                 case top: return coord.z < chunk.getEdgeLength() - 1;
                 case bottom: return coord.z < chunk.getEdgeLength() - 1;
@@ -131,7 +131,7 @@ public abstract class Block {
             return false;
         }
         
-        public boolean continueDown(Vec3i coord, Chunk chunk) {
+        public boolean continueDown(Vec3i coord, BlockChunk chunk) {
             switch(this) {
                 case top: return coord.x > 0;
                 case bottom: return coord.x < chunk.getEdgeLength() - 1;
@@ -186,11 +186,11 @@ public abstract class Block {
         return adjacentBlock == null || adjacentBlock.isTransparent();
     }
     
-    public boolean faceIsVisible(BlockFace face, Chunk chunk, Vec3i coord) {
+    public boolean faceIsVisible(BlockFace face, BlockChunk chunk, Vec3i coord) {
         return faceIsVisible(face, chunk, coord.x, coord.y, coord.z);
     }
     
-    public boolean faceIsVisible(BlockFace face, Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean faceIsVisible(BlockFace face, BlockChunk chunk, int blockx, int blocky, int blockz) {
         switch(face) {
             case top: return topIsVisible(chunk, blockx, blocky, blockz);
             case bottom: return bottomIsVisible(chunk, blockx, blocky, blockz);
@@ -202,27 +202,27 @@ public abstract class Block {
         }
     }
     
-    public boolean topIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean topIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx, blocky + 1, blockz));
     }
     
-    public boolean bottomIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean bottomIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx, blocky - 1, blockz));
     }
     
-    public boolean frontIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean frontIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx, blocky, blockz + 1));
     }
     
-    public boolean backIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean backIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx, blocky, blockz - 1));
     }
     
-    public boolean leftSideIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean leftSideIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx - 1, blocky, blockz));
     }
     
-    public boolean rightSideIsVisible(Chunk chunk, int blockx, int blocky, int blockz) {
+    public boolean rightSideIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
         return isVisibleThrough(chunk.getBlock(blockx + 1, blocky, blockz));
     }
     

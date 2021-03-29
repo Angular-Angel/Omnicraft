@@ -13,7 +13,7 @@ import net.angle.omnicraft.world.blocks.Block;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class ArrayChunk extends Chunk {
+public class ArrayChunk extends BlockChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Block[][][] blocks;
     

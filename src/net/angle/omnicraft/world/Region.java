@@ -21,7 +21,7 @@ public class Region implements ChunkContainer {
     public final Vec3i coords;
     
     //The chunks within this region
-    public Chunk[][][] chunks;
+    public BlockChunk[][][] chunks;
     
     public Region(World world) {
         this(world, null, 0, 0, 0);
@@ -31,7 +31,7 @@ public class Region implements ChunkContainer {
         this.world = world;
         this.coords = new Vec3i(x, y, z);
         
-        chunks = new Chunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
+        chunks = new BlockChunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
         
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
@@ -66,12 +66,12 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+    public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
         return chunks[chunkx][chunky][chunkz];
     }
 
     @Override
-    public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
+    public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk) {
         chunks[chunkx][chunky][chunkz] = chunk;
     }
     
@@ -81,14 +81,14 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public Chunk getChunkOfBlock(int blockx, int blocky, int blockz) {
+    public BlockChunk getChunkOfBlock(int blockx, int blocky, int blockz) {
         Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
 
     @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, BlockChunk chunk) {
         
         Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
@@ -111,7 +111,7 @@ public class Region implements ChunkContainer {
     }
 
     @Override
-    public List<Chunk> getChunks() {
+    public List<BlockChunk> getChunks() {
         return Arrays.stream(chunks)
         .flatMap(Arrays::stream)
         .flatMap(Arrays::stream)

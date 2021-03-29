@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
  *
  * @author angle
  */
-public class OctreeChunk extends Chunk implements ChunkContainer {
+public class OctreeChunk extends BlockChunk implements ChunkContainer {
     
-    private Chunk[][][] children;
+    private BlockChunk[][][] children;
     
     public OctreeChunk(ChunkContainer container) {
         this(container, null, 0, 0, 0);
@@ -32,7 +32,7 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
         int edgeLength = getEdgeLength();
         // if edgeLength is less than 2 or an odd number, throw an exception.
         if (edgeLength < 2 || edgeLength % 2 == 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + edgeLength + "!");
-        children = new Chunk[2][2][2];
+        children = new BlockChunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
                 for (int octantz = 0; octantz < 2; octantz++) {
@@ -116,24 +116,24 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     }
 
     @Override
-    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+    public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
         return children[chunkx][chunky][chunkz];
     }
 
     @Override
-    public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
+    public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk) {
         children[chunkx][chunky][chunkz] = chunk;
     }
 
     @Override
-    public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz) {
+    public BlockChunk getChunkOfBlock(int chunkx, int chunky, int chunkz) {
         Vec3i octant = new Vec3i(0, 0, 0);
         
         return getChunk(octant.x, octant.y, octant.z);
     }
 
     @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+    public void setChunkOfBlock(int blockx, int blocky, int blockz, BlockChunk chunk) {
         Vec3i octant = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
         
         setChunk(octant.x, octant.y, octant.z, chunk);
@@ -150,7 +150,7 @@ public class OctreeChunk extends Chunk implements ChunkContainer {
     }
 
     @Override
-    public List<Chunk> getChunks() {
+    public List<BlockChunk> getChunks() {
         return Arrays.stream(children)
         .flatMap(Arrays::stream)
         .flatMap(Arrays::stream)
