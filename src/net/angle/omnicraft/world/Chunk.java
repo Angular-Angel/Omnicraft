@@ -16,14 +16,23 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-public class Chunk extends AbstractChunk implements BlockChunkContainer, BlockContainer, SideContainer {
+public class Chunk extends Positionable implements BlockChunkContainer, BlockContainer, SideContainer {
+    
+    public final ChunkContainer container;
+    
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
 
     public Chunk(ChunkContainer container, Block block, int x, int y, int z) {
-        super(container, x, y, z);
+        super(x, y, z);
+        this.container = container;
         
-        blockChunk = new OctreeChunk(this, block, x, y, z);
+        blockChunk = new OctreeChunk(this, block, 0, 0, 0);
+    }
+
+    @Override
+    public int getEdgeLength() {
+        return container.getEdgeLengthOfContainedChunks();
     }
     
     public void setBlockChunk(BlockChunk blockChunk) {
@@ -40,6 +49,9 @@ public class Chunk extends AbstractChunk implements BlockChunkContainer, BlockCo
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
+        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+            container.setBlock(blockx + x, blocky + y, blockz + z, block);
+        }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
 
@@ -157,11 +169,6 @@ public class Chunk extends AbstractChunk implements BlockChunkContainer, BlockCo
 
     @Override
     public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

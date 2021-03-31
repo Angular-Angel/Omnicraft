@@ -33,7 +33,7 @@ public class OctreeChunk extends BlockChunk implements BlockChunkContainer {
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {
                 for (int octantz = 0; octantz < 2; octantz++) {
-                    children[octantx][octanty][octantz] = new HomogenousChunk(this, block, edgeLength/2, octantx * edgeLength/2, octanty * edgeLength/2, octantz * edgeLength/2);
+                    children[octantx][octanty][octantz] = new HomogenousChunk(this, block, octantx * edgeLength/2, octanty * edgeLength/2, octantz * edgeLength/2);
                 }
             }
         }
@@ -116,8 +116,8 @@ public class OctreeChunk extends BlockChunk implements BlockChunkContainer {
     public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
         return children[chunkx][chunky][chunkz];
     }
-
-    @Override
+    
+    
     public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk) {
         children[chunkx][chunky][chunkz] = chunk;
     }
@@ -139,10 +139,5 @@ public class OctreeChunk extends BlockChunk implements BlockChunkContainer {
     @Override
     public int getEdgeLengthOfContainedChunks() {
         return getEdgeLength()/2;
-    }
-    
-    @Override
-    public Vec3i getCoordinates() {
-        return new Vec3i(x, y, z);
     }
 }

@@ -20,7 +20,7 @@ public class HomogenousChunk extends BlockChunk {
         this.block = block;
     }
     
-    public HomogenousChunk(BlockChunkContainer container, Block block, int size, int x, int y, int z) {
+    public HomogenousChunk(BlockChunkContainer container, Block block, int x, int y, int z) {
         super(container, x, y, z);
         this.block = block;
     }

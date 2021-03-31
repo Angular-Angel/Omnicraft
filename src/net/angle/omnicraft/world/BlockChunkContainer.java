@@ -24,7 +24,6 @@ public interface BlockChunkContainer extends BlockContainer {
     public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz);
     
     public BlockChunk getChunk(int chunkx, int chunky, int chunkz);
-    public void setChunk(int chunkx, int chunky, int chunkz, BlockChunk chunk);
     
     public BlockChunk getChunkOfBlock(int chunkx, int chunky, int chunkz);
     public void setChunkOfBlock(int blockx, int blocky, int blockz, BlockChunk chunk);
