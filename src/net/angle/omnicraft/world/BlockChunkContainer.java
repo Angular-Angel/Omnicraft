@@ -6,7 +6,6 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.math.Vec3i;
-import java.util.List;
 
 /**
  *

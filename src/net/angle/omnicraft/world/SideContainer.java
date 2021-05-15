@@ -6,7 +6,6 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Block.BlockFace;
 import net.angle.omnicraft.world.blocks.Side;
 

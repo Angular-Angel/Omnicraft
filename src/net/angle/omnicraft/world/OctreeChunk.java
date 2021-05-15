@@ -29,6 +29,7 @@ public class OctreeChunk extends BlockChunk implements BlockChunkContainer {
         int edgeLength = getEdgeLength();
         // if edgeLength is less than 2 or an odd number, throw an exception.
         if (edgeLength < 2 || edgeLength % 2 == 1) throw new IllegalArgumentException("Attempting to create OctreeChunk with size of " + edgeLength + "!");
+        
         children = new BlockChunk[2][2][2];
         for (int octantx = 0; octantx < 2; octantx++) {
             for (int octanty = 0; octanty < 2; octanty++) {

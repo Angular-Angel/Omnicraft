@@ -5,14 +5,11 @@
  */
 package net.angle.omnicraft.world;
 
-import net.angle.omnicraft.world.blocks.Block;
-import net.angle.omnicraft.world.blocks.Side;
-
 /**
  *
  * @author angle
  */
-public abstract class SideChunk implements SideContainer{
+public abstract class SideChunk implements SideContainer {
 
     public final ChunkContainer container;
     
