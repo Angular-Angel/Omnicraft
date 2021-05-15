@@ -11,7 +11,6 @@ import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.TextureRectangle;
 import com.samrj.devil.math.Util;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

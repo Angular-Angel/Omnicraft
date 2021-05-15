@@ -27,7 +27,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, BlockCon
         super(x, y, z);
         this.container = container;
         
-        blockChunk = new OctreeChunk(this, block, 0, 0, 0);
+        blockChunk = new ArrayChunk(this, block, 0, 0, 0);
     }
 
     @Override
