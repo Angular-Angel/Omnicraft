@@ -37,7 +37,7 @@ public class DebugClient implements Client {
     public VertexBuffer buffer;
     public Vec3 vPos;
     public Vec2 vTexCoord;
-    public VertexBuilder.IntAttribute palette_index;
+    public VertexBuilder.IntAttribute block_palette_index;
     public Vec3 vRandom;
     
     @Override
@@ -73,7 +73,7 @@ public class DebugClient implements Client {
             
             //This method loads shader.vert and shader.frag, as the vertex and
             //fragment shaders respectively.
-            shader = DGL.loadProgram("resources/dirt_shader");
+            shader = DGL.loadProgram("resources/shader");
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
@@ -147,7 +147,7 @@ public class DebugClient implements Client {
         //have multiple kinds of data: floats, vectors, or matrices.
         vPos = buffer.vec3("in_pos");
         vTexCoord = buffer.vec2("in_tex_coord");
-        palette_index = buffer.aint("in_palette_index");
+        block_palette_index = buffer.aint("in_block_palette_index");
         vRandom = buffer.vec3("in_random");
 
         buffer.begin();

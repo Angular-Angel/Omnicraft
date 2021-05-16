@@ -261,13 +261,13 @@ public abstract class Block {
         bottomRight.add(new Vec3(startx, starty, startz));
 
         //add first trangle, starting at top left corner, then top right, then bottom right
-        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(topRight); client.vTexCoord.set(width, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(topRight); client.vTexCoord.set(width, 0.0f); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
 
         //add second triangle, starting at top left corner, then bottom right, then bottom left
-        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
-        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, height); client.palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, height); client.block_palette_index.x = id; client.vRandom.set(topRight); client.buffer.vertex();
     }
 }

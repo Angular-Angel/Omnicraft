@@ -3,7 +3,7 @@
 uniform sampler2DRect u_palette;
 
 in vec2 v_tex_coord;
-flat in int i_palette_index;
+flat in int i_block_palette_index;
 flat in float f_random;
 in float f_distance;
 
@@ -17,7 +17,7 @@ float random (in vec2 st) {
 }
 
 vec3 getPaletteColor(int index, int palette_length) {
-    return texelFetch(u_palette, ivec2(index, palette_length - i_palette_index)).rgb;
+    return texelFetch(u_palette, ivec2(index, palette_length - i_block_palette_index)).rgb;
 }
 
 // Use the random function, times the palette_size and then floored, 
