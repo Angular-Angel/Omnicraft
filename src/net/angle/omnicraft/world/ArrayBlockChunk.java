@@ -30,7 +30,7 @@ public class ArrayBlockChunk extends BlockChunk {
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         
-        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (!containsCoordinates(blockx, blocky, blockz)) {
             return container.getBlock(blockx + x, blocky + y, blockz + z);
         }
         return blocks[blockx][blocky][blockz];

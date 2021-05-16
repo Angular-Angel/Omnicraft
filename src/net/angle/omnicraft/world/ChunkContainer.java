@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author angle
  */
-public interface ChunkContainer extends BlockContainer {
+public interface ChunkContainer extends BlockContainer, SideContainer {
 
     /**
      * returns the number of blocks in an edge (length, width, or height) for any of the contained chunks.
@@ -26,7 +26,7 @@ public interface ChunkContainer extends BlockContainer {
     public Chunk getChunk(int chunkx, int chunky, int chunkz);
     public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk);
     
-    public Chunk getChunkOfBlock(int chunkx, int chunky, int chunkz);
+    public Chunk getChunkOfCoords(int chunkx, int chunky, int chunkz);
     public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk);
     
     public List<Chunk> getChunks();

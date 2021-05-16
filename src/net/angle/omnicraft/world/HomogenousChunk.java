@@ -27,7 +27,7 @@ public class HomogenousChunk extends BlockChunk {
 
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        if (containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (containsCoordinates(blockx, blocky, blockz)) {
             return block;
         } else {
             return container.getBlock(blockx + x, blocky + y, blockz + z);
@@ -36,7 +36,7 @@ public class HomogenousChunk extends BlockChunk {
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (!containsCoordinates(blockx, blocky, blockz)) {
             //If the coordinates are outside this block, then we should throw an error.
             throw new IndexOutOfBoundsException("Asked for block at " + blockx + ", " + blocky + ", " + blockz + " in chunk of side length " + getEdgeLength());
         }

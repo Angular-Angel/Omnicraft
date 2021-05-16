@@ -24,7 +24,14 @@ public abstract class Block {
     public int id;
     
     public enum BlockFace {
-        top, bottom, front, back, left, right;
+        
+        top(0), bottom(1), front(2), back(3), left(4), right(5);
+        
+        public final int id;
+        
+        private BlockFace(int id) {
+            this.id = id;
+        }
         
         public Vec3i getStartingPosition(BlockChunk chunk) {
             switch(this) {

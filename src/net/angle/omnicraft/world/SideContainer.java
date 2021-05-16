@@ -13,7 +13,7 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-public interface SideContainer {
+public interface SideContainer extends VoxelContainer {
     
     /**
      * Gets the number of blocks in an edge (length, width, or height) for this side container.
@@ -21,23 +21,23 @@ public interface SideContainer {
      */
     public int getEdgeLength();
     
-    public Side getSide(BlockFace face, int blockx, int blocky, int blockz);
+    public Side getSide(BlockFace face, int sidex, int sidey, int sidez);
     
     public default Side getSide(BlockFace face, Vec3i coord) {
         return getSide(face, coord.x, coord.y, coord.z);
     }
     
-    public void setSide(BlockFace face, int blockx, int blocky, int blockz, Side side);
+    public void setSide(BlockFace face, int sidex, int sidey, int sidez, Side side);
     
     public default void setSide(BlockFace face, Vec3i coord, Side side) {
         setSide(face, coord.x, coord.y, coord.z, side);
     }
     
     public default void setAllSides(BlockFace face, Side side) {
-        for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
-                for (int blocky = 0; blocky < getEdgeLength(); blocky++) {
-                    for (int blockz = 0; blockz < getEdgeLength(); blockz++) {
-                        setSide(face, blockx, blocky, blockz, side);
+        for (int sidex = 0; sidex < getEdgeLength(); sidex++) {
+                for (int sidey = 0; sidey < getEdgeLength(); sidey++) {
+                    for (int sidez = 0; sidez < getEdgeLength(); sidez++) {
+                        setSide(face, sidex, sidey, sidez, side);
                     }
                 }
             }

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.angle.omnicraft.world.blocks.Block;
+import net.angle.omnicraft.world.blocks.Side;
 
 /**
  *
@@ -44,14 +45,14 @@ public class Region implements ChunkContainer {
     
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        if (!containsBlockCoordinates(blockx, blocky, blockz))
+        if (!containsCoordinates(blockx, blocky, blockz))
             return null;
-        return getChunkOfBlock(blockx, blocky, blockz).getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
+        return getChunkOfCoords(blockx, blocky, blockz).getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
     }
     
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        getChunkOfBlock(blockx, blocky, blockz).setBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk, block);
+        getChunkOfCoords(blockx, blocky, blockz).setBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk, block);
     }
 
     @Override
@@ -81,8 +82,8 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public Chunk getChunkOfBlock(int blockx, int blocky, int blockz) {
-        Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
+    public Chunk getChunkOfCoords(int x, int y, int z) {
+        Vec3i chunkCoords = getChunkCoordinatesOfBlock(x, y, z);
         
         return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
@@ -116,5 +117,15 @@ public class Region implements ChunkContainer {
         .flatMap(Arrays::stream)
         .flatMap(Arrays::stream)
         .collect(Collectors.toList());
+    }
+
+    @Override
+    public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

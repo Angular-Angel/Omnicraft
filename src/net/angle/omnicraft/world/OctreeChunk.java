@@ -62,7 +62,7 @@ public class OctreeChunk extends BlockChunk implements BlockChunkContainer {
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         
-        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (!containsCoordinates(blockx, blocky, blockz)) {
             return container.getBlock(blockx + x, blocky + y, blockz + z);
         }
         

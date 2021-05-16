@@ -41,7 +41,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, BlockCon
 
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (!containsCoordinates(blockx, blocky, blockz)) {
             return container.getBlock(blockx + x, blocky + y, blockz + z);
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
@@ -49,7 +49,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, BlockCon
 
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        if (!containsBlockCoordinates(blockx, blocky, blockz)) {
+        if (!containsCoordinates(blockx, blocky, blockz)) {
             container.setBlock(blockx + x, blocky + y, blockz + z, block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);

@@ -12,18 +12,12 @@ import net.angle.omnicraft.world.blocks.Block;
  *
  * @author angle
  */
-public interface BlockContainer {
+public interface BlockContainer extends VoxelContainer {
     
     /**
      * Gets the number of blocks in an edge (length, width, or height) for this block container.
      * @return
      */
-    public int getEdgeLength();
-    
-    public default boolean containsBlockCoordinates(int blockx, int blocky, int blockz) {
-        return blockx >= 0 && blockx < getEdgeLength() && blocky >= 0 && blocky < getEdgeLength() && 
-            blockz >= 0 && blockz < getEdgeLength();
-    }
     
     public abstract Block getBlock(int blockx, int blocky, int blockz);
     
