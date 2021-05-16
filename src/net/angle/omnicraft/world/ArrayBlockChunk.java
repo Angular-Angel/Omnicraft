@@ -13,15 +13,15 @@ import net.angle.omnicraft.world.blocks.Block;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public class ArrayChunk extends BlockChunk {
+public class ArrayBlockChunk extends BlockChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Block[][][] blocks;
     
-    public ArrayChunk(BlockChunkContainer container, Block block) {
+    public ArrayBlockChunk(BlockChunkContainer container, Block block) {
         this(container, block, 0, 0, 0);
     }
     
-    public ArrayChunk(BlockChunkContainer container, Block block, int x, int y, int z) {
+    public ArrayBlockChunk(BlockChunkContainer container, Block block, int x, int y, int z) {
         super(container, x, y, z);
         blocks = new Block[16][16][16];
         setAllBlocks(block);

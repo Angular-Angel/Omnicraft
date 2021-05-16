@@ -38,6 +38,7 @@ public class DebugClient implements Client {
     public Vec3 vPos;
     public Vec2 vTexCoord;
     public VertexBuilder.IntAttribute block_palette_index;
+    public VertexBuilder.IntAttribute side_palette_index;
     public Vec3 vRandom;
     
     @Override
@@ -148,6 +149,7 @@ public class DebugClient implements Client {
         vPos = buffer.vec3("in_pos");
         vTexCoord = buffer.vec2("in_tex_coord");
         block_palette_index = buffer.aint("in_block_palette_index");
+        side_palette_index = buffer.aint("in_side_palette_index");
         vRandom = buffer.vec3("in_random");
 
         buffer.begin();

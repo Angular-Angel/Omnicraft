@@ -6,9 +6,11 @@ uniform mat4 u_view_matrix;
 in vec3 in_pos; //Supplied by the vertex buffer.
 in vec2 in_tex_coord;
 in int in_block_palette_index;
+in int in_side_palette_index;
 in vec3 in_random;
 
 flat out int i_block_palette_index;
+flat out int i_side_palette_index;
 out vec2 v_tex_coord;
 flat out float f_random;
 out float f_distance;

@@ -4,6 +4,7 @@ uniform sampler2DRect u_palette;
 
 in vec2 v_tex_coord;
 flat in int i_block_palette_index;
+flat in int i_side_palette_index;
 flat in float f_random;
 in float f_distance;
 
