@@ -17,11 +17,12 @@ import net.angle.omnicraft.world.BlockChunk;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class Block {
-    
-    public final String name;
+public abstract class Block extends Datum {
     public RenderData renderData;
-    public final int id;
+
+    public Block(String name, int id) {
+        super(name, id);
+    }
     
     public enum BlockFace {
         
@@ -181,11 +182,6 @@ public abstract class Block {
             
             return direction;
         }
-    }
-    
-    public Block(String name, int id) {
-        this.name = name;
-        this.id = id;
     }
     
     public abstract boolean isTransparent();

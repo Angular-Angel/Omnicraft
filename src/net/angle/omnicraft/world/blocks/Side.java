@@ -9,18 +9,16 @@ package net.angle.omnicraft.world.blocks;
  *
  * @author angle
  */
-public class Side {
-    
-    public final String name;
+public class Side extends Datum {
     
     public boolean obscures;
     
-    public Side(String name) {
-        this(name, false);
+    public Side(String name, int id) {
+        this(name, id, false);
     }
     
-    public Side(String name, boolean obscures) {
-        this.name = name;
+    public Side(String name, int id, boolean obscures) {
+        super(name, id);
         this.obscures = obscures;
     }
 }
