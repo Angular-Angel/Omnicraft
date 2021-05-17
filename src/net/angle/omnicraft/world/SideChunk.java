@@ -11,11 +11,11 @@ package net.angle.omnicraft.world;
  */
 public abstract class SideChunk implements SideContainer {
 
-    public final ChunkContainer container;
+    public final SideChunkContainer container;
     
     public final int x, y, z;
     
-    public SideChunk(ChunkContainer container, int x, int y, int z) {
+    public SideChunk(SideChunkContainer container, int x, int y, int z) {
         this.container = container;
         this.x = x;
         this.y = y;

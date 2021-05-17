@@ -16,7 +16,7 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-public class Chunk extends Positionable implements BlockChunkContainer, BlockContainer, SideContainer {
+public class Chunk extends Positionable implements BlockChunkContainer, SideChunkContainer {
     
     public final ChunkContainer container;
     
@@ -28,6 +28,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, BlockCon
         this.container = container;
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
+        sideChunk = new ArraySideChunk(this, 0, 0, 0);
     }
 
     @Override

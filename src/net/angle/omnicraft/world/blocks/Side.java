@@ -5,13 +5,17 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import net.angle.omnicraft.graphics.RenderData;
+
 /**
  *
  * @author angle
  */
 public class Side extends Datum {
     
-    public boolean obscures;
+    public final boolean obscures;
+    
+    public RenderData renderData;
     
     public Side(String name, int id) {
         this(name, id, false);
