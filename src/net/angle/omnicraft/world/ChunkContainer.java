@@ -21,13 +21,13 @@ public interface ChunkContainer extends BlockContainer, SideContainer {
     public Vec3i getCoordinates();
     
     public int getEdgeLengthOfContainedChunks();
-    public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz);
+    public Vec3i getChunkCoordsFromVoxelCoords(int blockx, int blocky, int blockz);
     
     public Chunk getChunk(int chunkx, int chunky, int chunkz);
     public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk);
     
-    public Chunk getChunkOfCoords(int chunkx, int chunky, int chunkz);
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk);
+    public Chunk getChunkFromVoxelCoords(int chunkx, int chunky, int chunkz);
+    public void setChunkFromVoxelCoords(int blockx, int blocky, int blockz, Chunk chunk);
     
     public List<Chunk> getChunks();
 }

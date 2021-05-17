@@ -47,12 +47,12 @@ public class Region implements ChunkContainer {
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz))
             return null;
-        return getChunkOfCoords(blockx, blocky, blockz).getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
+        return getChunkFromVoxelCoords(blockx, blocky, blockz).getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
     }
     
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        getChunkOfCoords(blockx, blocky, blockz).setBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk, block);
+        getChunkFromVoxelCoords(blockx, blocky, blockz).setBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk, block);
     }
 
     @Override
@@ -77,21 +77,21 @@ public class Region implements ChunkContainer {
     }
     
     @Override
-    public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz) {
-        return new Vec3i(blockx / world.blockEdgeLengthOfChunk, blocky / world.blockEdgeLengthOfChunk, blockz / world.blockEdgeLengthOfChunk);
+    public Vec3i getChunkCoordsFromVoxelCoords(int x, int y, int z) {
+        return new Vec3i(x / world.blockEdgeLengthOfChunk, y / world.blockEdgeLengthOfChunk, z / world.blockEdgeLengthOfChunk);
     }
     
     @Override
-    public Chunk getChunkOfCoords(int x, int y, int z) {
-        Vec3i chunkCoords = getChunkCoordinatesOfBlock(x, y, z);
+    public Chunk getChunkFromVoxelCoords(int x, int y, int z) {
+        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
         
         return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
 
     @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, Chunk chunk) {
+    public void setChunkFromVoxelCoords(int x, int y, int z, Chunk chunk) {
         
-        Vec3i chunkCoords = getChunkCoordinatesOfBlock(blockx, blocky, blockz);
+        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
         
         chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z] = chunk;
     }
@@ -121,11 +121,11 @@ public class Region implements ChunkContainer {
 
     @Override
     public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getChunkFromVoxelCoords(sidex, sidey, sidez).getSide(face, sidex % world.blockEdgeLengthOfChunk, sidey % world.blockEdgeLengthOfChunk, sidez % world.blockEdgeLengthOfChunk);
     }
 
     @Override
     public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        getChunkFromVoxelCoords(sidex, sidey, sidez).setSide(face, sidex % world.blockEdgeLengthOfChunk, sidey % world.blockEdgeLengthOfChunk, sidez % world.blockEdgeLengthOfChunk, side);
     }
 }
