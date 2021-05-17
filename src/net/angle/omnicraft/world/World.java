@@ -66,12 +66,13 @@ public class World {
         substances.put(substance.name, substance);
     }
     
+    public int get_next_id() {
+        return block_ids.size();
+    }
+    
     public void addBlockType(Block block) {
         blockTypes.put(block.name, block);
-        if (block.renderData != null) {
-            block.id = block_ids.size();
-            block_ids.add(block);
-        }
+        block_ids.add(block);
     }
     
     public void addRegion(ChunkContainer region) {

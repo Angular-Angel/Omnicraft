@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import net.angle.omnicraft.graphics.RenderData;
+
 /**
  *
  * @author angle
@@ -12,7 +14,8 @@ package net.angle.omnicraft.world.blocks;
 public class Emptiness extends Block {
 
     public Emptiness() {
-        super("Emptiness");
+        super("Emptiness", 0);
+        this.renderData = new RenderData();
     }
 
     @Override

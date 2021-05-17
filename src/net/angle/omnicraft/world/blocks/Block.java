@@ -21,7 +21,7 @@ public abstract class Block {
     
     public final String name;
     public RenderData renderData;
-    public int id;
+    public final int id;
     
     public enum BlockFace {
         
@@ -183,8 +183,9 @@ public abstract class Block {
         }
     }
     
-    public Block(String name) {
+    public Block(String name, int id) {
         this.name = name;
+        this.id = id;
     }
     
     public abstract boolean isTransparent();

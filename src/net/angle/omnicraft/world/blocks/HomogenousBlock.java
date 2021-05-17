@@ -19,8 +19,8 @@ public class HomogenousBlock extends Block {
     private final Substance substance;
     private final BlockShape blockShape;
     
-    public HomogenousBlock(String name, Substance substance, BlockShape blockShape, OmniRandom random) {
-        super(name);
+    public HomogenousBlock(String name, int id, Substance substance, BlockShape blockShape, OmniRandom random) {
+        super(name, id);
         
         this.substance = substance;
         this.blockShape = blockShape;
