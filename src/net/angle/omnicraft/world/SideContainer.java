@@ -35,11 +35,17 @@ public interface SideContainer extends VoxelContainer {
     
     public default void setAllSides(BlockFace face, Side side) {
         for (int sidex = 0; sidex < getEdgeLength(); sidex++) {
-                for (int sidey = 0; sidey < getEdgeLength(); sidey++) {
-                    for (int sidez = 0; sidez < getEdgeLength(); sidez++) {
-                        setSide(face, sidex, sidey, sidez, side);
-                    }
+            for (int sidey = 0; sidey < getEdgeLength(); sidey++) {
+                for (int sidez = 0; sidez < getEdgeLength(); sidez++) {
+                    setSide(face, sidex, sidey, sidez, side);
                 }
             }
         }
     }
+
+    public default void setAllSides(Side side) {
+        for (BlockFace face : BlockFace.values()) {
+            setAllSides(face, side);
+        }
+    }
+}

@@ -25,10 +25,10 @@ public class Region implements ChunkContainer {
     public Chunk[][][] chunks;
     
     public Region(World world) {
-        this(world, null, 0, 0, 0);
+        this(world, null, null, 0, 0, 0);
     }
     
-    public Region(World world, Block block, int x, int y, int z) {
+    public Region(World world, Block block, Side side, int x, int y, int z) {
         this.world = world;
         this.coords = new Vec3i(x, y, z);
         
@@ -37,7 +37,7 @@ public class Region implements ChunkContainer {
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
                 for (int k = 0; k < world.chunkEdgeLengthOfRegion; k++) {
-                    chunks[i][j][k] = new Chunk(this, block, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
+                    chunks[i][j][k] = new Chunk(this, block, side, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
                 }
             }
         }

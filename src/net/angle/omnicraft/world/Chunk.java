@@ -23,12 +23,12 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
 
-    public Chunk(ChunkContainer container, Block block, int x, int y, int z) {
+    public Chunk(ChunkContainer container, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
         this.container = container;
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
-        sideChunk = new ArraySideChunk(this, 0, 0, 0);
+        sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
     }
 
     @Override

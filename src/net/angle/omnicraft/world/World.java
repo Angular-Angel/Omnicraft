@@ -17,6 +17,8 @@ import java.util.Map;
 import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Emptiness;
+import net.angle.omnicraft.world.blocks.Nothingness;
+import net.angle.omnicraft.world.blocks.Side;
 import net.angle.omnicraft.world.types.Substance;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
@@ -43,14 +45,14 @@ public class World {
     private TextureRectangle palettes;
     
     public World() {
-        this(new Emptiness());
+        this(new Emptiness(), new Nothingness());
     }
     
-    public World(Block block) {
-        this(block, 16, 16);
+    public World(Block block, Side side) {
+        this(block, side, 16, 16);
     }
     
-    public World(Block block, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
+    public World(Block block, Side side, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         regions = new HashMap<>();
@@ -59,7 +61,7 @@ public class World {
         addBlockType(block);
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
-        addRegion(new Region(this, block, 0, 0, 0));
+        addRegion(new Region(this, block, side, 0, 0, 0));
     }
     
     public void addSubstance(Substance substance) {
