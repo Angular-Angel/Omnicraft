@@ -77,6 +77,8 @@ public class World {
     }
     
     public void addBlockType(Block block) {
+        if (block.id != get_next_block_id())
+            throw new IllegalArgumentException("Block has incorrect ID!");
         blockTypes.put(block.name, block);
         block_ids.add(block);
     }
@@ -86,6 +88,8 @@ public class World {
     }
     
     public void addSideType(Side side) {
+        if (side.id != get_next_side_id())
+            throw new IllegalArgumentException("Side has incorrect ID!");
         sideTypes.put(side.name, side);
         side_ids.add(side);
     }

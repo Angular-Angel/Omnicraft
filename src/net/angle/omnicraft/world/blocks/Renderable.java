@@ -11,15 +11,12 @@ import net.angle.omnicraft.graphics.RenderData;
  *
  * @author angle
  */
-public class Emptiness extends Block {
-
-    public Emptiness() {
-        super("Emptiness", 0, new RenderData());
-    }
-
-    @Override
-    public boolean isTransparent() {
-        return true;
+public class Renderable extends Datum {
+    public final RenderData renderData;
+    
+    public Renderable(String name, int id, RenderData renderData) {
+        super(name, id);
+        this.renderData = renderData;
     }
     
 }

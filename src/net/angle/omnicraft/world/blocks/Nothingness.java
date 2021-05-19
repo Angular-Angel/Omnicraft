@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import net.angle.omnicraft.graphics.RenderData;
+
 /**
  *
  * @author angle
@@ -12,7 +14,7 @@ package net.angle.omnicraft.world.blocks;
 public class Nothingness extends Side {
     
     public Nothingness() {
-        super("Nothingness", 0);
+        super("Nothingness", 0, new RenderData());
     }
     
 }

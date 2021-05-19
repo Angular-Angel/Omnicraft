@@ -17,11 +17,10 @@ import net.angle.omnicraft.world.BlockChunk;
  * @author angle
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
-public abstract class Block extends Datum {
-    public RenderData renderData;
+public abstract class Block extends Renderable {
 
-    public Block(String name, int id) {
-        super(name, id);
+    public Block(String name, int id, RenderData renderData) {
+        super(name, id, renderData);
     }
     
     public enum BlockFace {

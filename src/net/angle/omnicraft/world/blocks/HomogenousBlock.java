@@ -20,11 +20,10 @@ public class HomogenousBlock extends Block {
     private final BlockShape blockShape;
     
     public HomogenousBlock(String name, int id, Substance substance, BlockShape blockShape, OmniRandom random) {
-        super(name, id);
+        super(name, id, new RenderData(substance.getPalette(PALETTE_SIZE, random)));
         
         this.substance = substance;
         this.blockShape = blockShape;
-        this.renderData = new RenderData(substance.getPalette(PALETTE_SIZE, random));
     }
 
     @Override
