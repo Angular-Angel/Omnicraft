@@ -42,9 +42,9 @@ public class WorldGenerator {
     }
     
     public static void generateBlocks(World world) {
-        world.addBlockType(new HomogenousBlock("Dirt Block", world.get_next_id(), world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
-        world.addBlockType(new HomogenousBlock("Gravel Block", world.get_next_id(), world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
-        world.addBlockType(new HomogenousBlock("Desert Sand Block", world.get_next_id(), world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Dirt Block", world.get_next_block_id(), world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Gravel Block", world.get_next_block_id(), world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
+        world.addBlockType(new HomogenousBlock("Desert Sand Block", world.get_next_block_id(), world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
     }
     
     public static void generateChunks(World world) {

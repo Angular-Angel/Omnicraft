@@ -38,9 +38,11 @@ public class World {
     
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
+    public final Map<String, Side> sideTypes;
     public final Map<String, ChunkContainer> regions;
     public final List<Chunk> loadedChunks;
     public final List<Block> block_ids;
+    public final List<Side> side_ids;
     
     private TextureRectangle palettes;
     
@@ -55,9 +57,11 @@ public class World {
     public World(Block block, Side side, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
+        sideTypes = new HashMap<>();
         regions = new HashMap<>();
         loadedChunks = new ArrayList<>();
         block_ids = new ArrayList<>();
+        side_ids = new ArrayList<>();
         addBlockType(block);
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
@@ -68,13 +72,22 @@ public class World {
         substances.put(substance.name, substance);
     }
     
-    public int get_next_id() {
+    public int get_next_block_id() {
         return block_ids.size();
     }
     
     public void addBlockType(Block block) {
         blockTypes.put(block.name, block);
         block_ids.add(block);
+    }
+    
+    public int get_next_side_id() {
+        return side_ids.size();
+    }
+    
+    public void addSideType(Side side) {
+        sideTypes.put(side.name, side);
+        side_ids.add(side);
     }
     
     public void addRegion(ChunkContainer region) {
@@ -91,7 +104,7 @@ public class World {
         loadedChunks.addAll(region.getChunks());
     }
     
-    public void prepare_palette() {
+    public void prepare_block_palette() {
         palettes = DGL.genTexRect();
         Image image = DGL.genImage(PALETTE_SIZE, block_ids.size(), 3, Util.PrimType.BYTE);
         image.shade((int x, int y, int band) -> {
