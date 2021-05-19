@@ -11,18 +11,11 @@ import net.angle.omnicraft.graphics.RenderData;
  *
  * @author angle
  */
-public class Side extends Renderable {
-    
-    public final boolean obscures;
+public abstract class Side extends Renderable {
     
     public RenderData renderData;
     
     public Side(String name, int id, RenderData renderData) {
-        this(name, id, false, renderData);
-    }
-    
-    public Side(String name, int id, boolean obscures, RenderData renderData) {
         super(name, id, renderData);
-        this.obscures = obscures;
     }
 }

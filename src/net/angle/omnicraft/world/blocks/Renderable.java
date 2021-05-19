@@ -11,12 +11,13 @@ import net.angle.omnicraft.graphics.RenderData;
  *
  * @author angle
  */
-public class Renderable extends Datum {
+public abstract class Renderable extends Datum {
     public final RenderData renderData;
     
     public Renderable(String name, int id, RenderData renderData) {
         super(name, id);
         this.renderData = renderData;
     }
+    public abstract boolean isTransparent();
     
 }

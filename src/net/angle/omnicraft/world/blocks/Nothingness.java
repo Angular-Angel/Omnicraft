@@ -16,5 +16,10 @@ public class Nothingness extends Side {
     public Nothingness() {
         super("Nothingness", 0, new RenderData());
     }
+
+    @Override
+    public boolean isTransparent() {
+        return true;
+    }
     
 }
