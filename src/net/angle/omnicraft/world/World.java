@@ -39,7 +39,7 @@ public class World {
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
     public final Map<String, Side> sideTypes;
-    public final Map<String, ChunkContainer> regions;
+    public final Map<String, Region> regions;
     public final List<Chunk> loadedChunks;
     public final List<Block> block_ids;
     public final List<Side> side_ids;
@@ -94,17 +94,16 @@ public class World {
         side_ids.add(side);
     }
     
-    public void addRegion(ChunkContainer region) {
-        region.getCoordinates().toString();
+    public void addRegion(Region region) {
         String coordstring = region.getCoordinates().toString();
         regions.put(coordstring, region);
     }
     
-    public ChunkContainer getSpawnRegion() {
+    public Region getSpawnRegion() {
         return regions.get("(0, 0, 0)");
     }
     
-    public void loadRegion(ChunkContainer region) {
+    public void loadRegion(Region region) {
         loadedChunks.addAll(region.getChunks());
     }
     

@@ -13,8 +13,6 @@ import net.angle.omnicraft.graphics.RenderData;
  */
 public abstract class Side extends Renderable {
     
-    public RenderData renderData;
-    
     public Side(String name, int id, RenderData renderData) {
         super(name, id, renderData);
     }

@@ -18,14 +18,14 @@ import net.angle.omnicraft.world.blocks.Side;
  */
 public class Chunk extends Positionable implements BlockChunkContainer, SideChunkContainer {
     
-    public final ChunkContainer container;
+    public final Region region;
     
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
 
-    public Chunk(ChunkContainer container, Block block, Side side, int x, int y, int z) {
+    public Chunk(Region region, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
-        this.container = container;
+        this.region = region;
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
         sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
@@ -33,7 +33,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
 
     @Override
     public int getEdgeLength() {
-        return container.getEdgeLengthOfContainedChunks();
+        return region.getEdgeLengthOfContainedChunks();
     }
     
     public void setBlockChunk(BlockChunk blockChunk) {
@@ -43,7 +43,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return container.getBlock(blockx + x, blocky + y, blockz + z);
+            return region.getBlock(blockx + x, blocky + y, blockz + z);
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
     }
@@ -51,7 +51,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            container.setBlock(blockx + x, blocky + y, blockz + z, block);
+            region.setBlock(blockx + x, blocky + y, blockz + z, block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
@@ -160,7 +160,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
 
     @Override
     public int getEdgeLengthOfContainedChunks() {
-        return container.getEdgeLengthOfContainedChunks();
+        return region.getEdgeLengthOfContainedChunks();
     }
 
     @Override

@@ -16,10 +16,9 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-public class Region implements ChunkContainer {
+public class Region extends Positionable implements BlockContainer, SideContainer {
     public final World world;
     //These describe this regions size in blocks, and the sizes of it's chunks.
-    public final Vec3i coords;
     
     //The chunks within this region
     public Chunk[][][] chunks;
@@ -29,8 +28,8 @@ public class Region implements ChunkContainer {
     }
     
     public Region(World world, Block block, Side side, int x, int y, int z) {
+        super(x, y, z);
         this.world = world;
-        this.coords = new Vec3i(x, y, z);
         
         chunks = new Chunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
         
@@ -66,29 +65,24 @@ public class Region implements ChunkContainer {
         }
     }
     
-    @Override
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
         return chunks[chunkx][chunky][chunkz];
     }
 
-    @Override
     public void setChunk(int chunkx, int chunky, int chunkz, Chunk chunk) {
         chunks[chunkx][chunky][chunkz] = chunk;
     }
     
-    @Override
     public Vec3i getChunkCoordsFromVoxelCoords(int x, int y, int z) {
         return new Vec3i(x / world.blockEdgeLengthOfChunk, y / world.blockEdgeLengthOfChunk, z / world.blockEdgeLengthOfChunk);
     }
     
-    @Override
     public Chunk getChunkFromVoxelCoords(int x, int y, int z) {
         Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
         
         return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
     }
-
-    @Override
+    
     public void setChunkFromVoxelCoords(int x, int y, int z, Chunk chunk) {
         
         Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
@@ -101,17 +95,10 @@ public class Region implements ChunkContainer {
         return world.blockEdgeLengthOfChunk * world.chunkEdgeLengthOfRegion;
     }
 
-    @Override
     public int getEdgeLengthOfContainedChunks() {
         return world.blockEdgeLengthOfChunk;
     }
 
-    @Override
-    public Vec3i getCoordinates() {
-        return new Vec3i(coords);
-    }
-
-    @Override
     public List<Chunk> getChunks() {
         return Arrays.stream(chunks)
         .flatMap(Arrays::stream)
