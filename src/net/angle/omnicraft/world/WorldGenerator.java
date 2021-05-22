@@ -7,9 +7,11 @@ package net.angle.omnicraft.world;
 
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
+import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.random.OmniRandom;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
+import net.angle.omnicraft.world.blocks.Splatter;
 import net.angle.omnicraft.world.types.Fluid;
 import net.angle.omnicraft.world.types.Mineraloid;
 import net.angle.omnicraft.world.types.MixtureComponent;
@@ -45,6 +47,7 @@ public class WorldGenerator {
         world.addBlockType(new HomogenousBlock("Dirt Block", world.get_next_block_id(), world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
         world.addBlockType(new HomogenousBlock("Gravel Block", world.get_next_block_id(), world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
         world.addBlockType(new HomogenousBlock("Desert Sand Block", world.get_next_block_id(), world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
+        world.addSideType(new Splatter("Moss", world.get_next_side_id(), new RenderData(new Color(1, 0, 0), Color.GREEN)));
     }
     
     public static void generateChunks(World world) {

@@ -18,19 +18,14 @@ public class RenderData {
     
     public final Vec3[] palette;
     
-    public RenderData() {
-        ArrayList<Vec3> palette = new ArrayList<>();
-        for (int i = 0; i < World.PALETTE_SIZE; i++) {
-            palette.add(new Vec3(0, 0, 0));
-        }
-        
-        this.palette = palette.toArray(new Vec3[0]);
-    }
-    
     public RenderData(Color... colors) {
         ArrayList<Vec3> palette = new ArrayList<>();
         for (Color color : colors) {
             palette.add(new Vec3(color.getRed(), color.getGreen(), color.getBlue()));
+        }
+        
+        while (palette.size() < World.PALETTE_SIZE) {
+            palette.add(new Vec3(0, 0, 0));
         }
         
         this.palette = palette.toArray(new Vec3[0]);
