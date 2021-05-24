@@ -63,6 +63,7 @@ public class World {
         block_ids = new ArrayList<>();
         side_ids = new ArrayList<>();
         addBlockType(block);
+        addSideType(side);
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
         addRegion(new Region(this, block, side, 0, 0, 0));

@@ -24,6 +24,7 @@ float random (in vec3 st) {
 void main()
 {
     i_block_palette_index = in_block_palette_index;
+    i_side_palette_index = in_side_palette_index;
     v_tex_coord = in_tex_coord;
     f_random = random(in_random);
 

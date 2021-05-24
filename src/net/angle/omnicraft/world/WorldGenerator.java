@@ -69,7 +69,11 @@ public class WorldGenerator {
 //        chunk.setBlock(0, 0, 1, world.blockTypes.get("Dirt Block"));
 
         chunk.setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
+        chunk.setSide(Block.BlockFace.back, 0, 0, 0, world.sideTypes.get("Moss"));
         chunk.setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
+        chunk.setSide(Block.BlockFace.right, 0, 0, 0, world.sideTypes.get("Moss"));
+        chunk.setSide(Block.BlockFace.top, 0, 0, 0, world.sideTypes.get("Moss"));
+        chunk.setSide(Block.BlockFace.bottom, 0, 0, 0, world.sideTypes.get("Moss"));
         
         spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));

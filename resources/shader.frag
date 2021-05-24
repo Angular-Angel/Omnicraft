@@ -28,6 +28,10 @@ vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
 }
 
 void main() {
+    if (i_side_palette_index != 0) {
+        out_color = vec3(0, 255, 0);
+        return;
+    }
     //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
     vec2 texel_position = floor(v_tex_coord * 15.9999);
 
@@ -60,5 +64,4 @@ void main() {
     out_color = mix(blur_color, out_color, 0.4);
 
     out_color = mix(getPaletteColor(palette_size, palette_length), out_color, blur_factor);
-    
 }
