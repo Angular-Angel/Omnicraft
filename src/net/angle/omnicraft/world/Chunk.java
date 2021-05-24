@@ -72,7 +72,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         }
     }
     
-    public boolean checkMesh(Block block, Block.BlockFace face, Vec3i coord, int width, int height) {
+    public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
         
         //Goes down relative to the block face, not the chunks y coordinate
         Vec3i workingCoordy = new Vec3i(coord);
@@ -81,7 +81,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
             //Goes across relative to the block face, not the chunks x coordinate
             Vec3i workingCoordx = new Vec3i(workingCoordy);
             for (int j = 0; j < width; j++) {
-                if (getBlock(workingCoordx) != block || !block.faceIsVisible(face, blockChunk, workingCoordx)) {
+                if (getBlock(workingCoordx) != block || !block.faceIsVisible(face, blockChunk, workingCoordx) || getSide(face, workingCoordx) != side) {
                     return false;
                 }
                 face.moveAcross(workingCoordx);
@@ -119,6 +119,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     public Vec2i greedyMeshExpansion(DebugClient client, Block.BlockFace face, Vec3i coord) {
         
         Block block = getBlock(coord);
+        Side side = getSide(face, coord);
         
         if (block == null || block.isTransparent() || !block.faceIsVisible(face, blockChunk, coord))
             return new Vec2i(1, 1);
@@ -131,7 +132,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         while (expandAcross && face.continueAcross(workingCoord, blockChunk)) {
             face.moveAcross(workingCoord);
-            if (checkMesh(block, face, workingCoord, 1, height)) {
+            if (checkMesh(block, side, face, workingCoord, 1, height)) {
                 width++;
             } else
                 expandAcross = false;
@@ -141,7 +142,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         while (expandDown && face.continueDown(workingCoord, blockChunk)) {
             face.moveDown(workingCoord);
-            if (checkMesh(block, face, workingCoord, width, 1)) {
+            if (checkMesh(block, side, face, workingCoord, width, 1)) {
                 height++;
             } else
                 expandDown = false;
@@ -153,9 +154,64 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         Vec3 drawStart = face.getDrawStart(x + coord.x, y + coord.y, z + coord.z);
         
-        block.bufferFlatVertices(client, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
+        bufferFlatVertices(client, block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
+    }
+    
+    public void bufferFlatVertices(DebugClient client, int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+
+        //Build a square out of two triangles.
+
+        Vec3 topLeft, topRight, bottomLeft, bottomRight;
+        
+        int width, height;
+
+        topLeft = new Vec3(0, 0, 0);
+
+        if (xoff == 0) {
+            topRight = new Vec3(0, 0, zoff);
+            width = (int) zoff;
+        } else {
+            topRight = new Vec3(xoff, 0, 0);
+            width = (int) xoff;
+        }
+
+        bottomRight = new Vec3(xoff, yoff, zoff);
+
+        if (yoff == 0) {
+            bottomLeft = new Vec3(0, 0, zoff);
+            height = (int) zoff;
+        } else{
+            bottomLeft = new Vec3(0, yoff, 0);
+            height = (int) yoff;
+        }
+        
+        //adjust positions for where our starts are.
+        topLeft.add(new Vec3(startx, starty, startz));
+        topRight.add(new Vec3(startx, starty, startz));
+        bottomLeft.add(new Vec3(startx, starty, startz));
+        bottomRight.add(new Vec3(startx, starty, startz));
+
+        //add first trangle, starting at top left corner, then top right, then bottom right
+        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        
+        client.vPos.set(topRight); client.vTexCoord.set(width, 0.0f); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+
+        //add second triangle, starting at top left corner, then bottom right, then bottom left
+        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        
+        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        
+        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, height); client.block_palette_index.x = block_id; 
+        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
     }
 
     @Override

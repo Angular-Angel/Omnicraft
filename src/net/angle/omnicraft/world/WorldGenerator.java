@@ -9,6 +9,7 @@ import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
 import net.angle.omnicraft.world.blocks.Splatter;
@@ -66,6 +67,9 @@ public class WorldGenerator {
         chunk.setBlock(15, 1, 0, world.blockTypes.get("Gravel Block"));
         chunk.setBlock(0, 15, 0, world.blockTypes.get("Gravel Block"));
 //        chunk.setBlock(0, 0, 1, world.blockTypes.get("Dirt Block"));
+
+        chunk.setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
+        chunk.setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
         
         spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
