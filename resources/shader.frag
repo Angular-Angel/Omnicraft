@@ -1,6 +1,7 @@
 #version 140
 
-uniform sampler2DRect u_palette;
+uniform sampler2DRect u_block_palette;
+uniform sampler2DRect u_side_palette;
 
 in vec2 v_tex_coord;
 flat in int i_block_palette_index;
@@ -18,7 +19,7 @@ float random (in vec2 st) {
 }
 
 vec3 getPaletteColor(int index, int palette_length) {
-    return texelFetch(u_palette, ivec2(index, palette_length - i_block_palette_index)).rgb;
+    return texelFetch(u_block_palette, ivec2(index, palette_length - i_block_palette_index)).rgb;
 }
 
 // Use the random function, times the palette_size and then floored, 
@@ -35,7 +36,7 @@ void main() {
     //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
     vec2 texel_position = floor(v_tex_coord * 15.9999);
 
-    ivec2 texture_size = textureSize(u_palette);
+    ivec2 texture_size = textureSize(u_block_palette);
 
     int palette_size = texture_size.x - 1;
     int palette_length = texture_size.y - 1;

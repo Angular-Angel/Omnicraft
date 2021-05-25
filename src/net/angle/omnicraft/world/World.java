@@ -24,6 +24,7 @@ import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 
 /**
  *
@@ -132,9 +133,34 @@ public class World {
         palettes.bind(GL_TEXTURE0);
     }
     
+    public void prepare_side_palette() {
+        palettes = DGL.genTexRect();
+        Image image = DGL.genImage(PALETTE_SIZE, side_ids.size(), 3, Util.PrimType.BYTE);
+        image.shade((int x, int y, int band) -> {
+            if (band == 0)
+                return side_ids.get(y).renderData.palette[x].x;
+            if (band == 1)
+                return side_ids.get(y).renderData.palette[x].y;
+            if (band == 2)
+                return side_ids.get(y).renderData.palette[x].z;
+            else
+                throw new IllegalArgumentException("Asked for Band: " + band);
+        });
+        
+        palettes.bind();
+        palettes.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        palettes.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        palettes.image(image);
+        DGL.delete(image);
+        palettes.unbind();
+        
+        palettes.bind(GL_TEXTURE1);
+    }
+    
     public void prepareShader(ShaderProgram shader) {
         
-        shader.uniform1i("u_palette", 0);
+        shader.uniform1i("u_block_palette", 0);
+        shader.uniform1i("u_side_palette", 1);
     }
     
     public void bufferOptimizedMesh(DebugClient client) {
