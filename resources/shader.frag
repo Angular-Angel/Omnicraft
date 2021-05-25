@@ -41,7 +41,7 @@ void main() {
     int side_palette_size = side_texture_size.x - 1;
     int side_palette_length = side_texture_size.y - 1;
     if (i_side_palette_index != 0) {
-        out_color = getSidePaletteColor(38, side_palette_length);
+        out_color = getSidePaletteColor(1, side_palette_length);
         return;
     }
     //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.

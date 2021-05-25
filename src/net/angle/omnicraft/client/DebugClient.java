@@ -96,6 +96,7 @@ public class DebugClient implements Client {
             glfwMaximizeWindow(Game.getWindow());
             
             world.prepare_block_palette();
+            world.prepare_side_palette();
             
             DGL.useProgram(shader);
         } catch (IOException ex) {

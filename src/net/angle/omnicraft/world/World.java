@@ -25,6 +25,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  *
@@ -124,6 +125,7 @@ public class World {
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
         
+        glActiveTexture(GL_TEXTURE0);
         block_palette.bind();
         block_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         block_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -147,7 +149,7 @@ public class World {
             else
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
-        
+        glActiveTexture(GL_TEXTURE1);
         side_palette.bind();
         side_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         side_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
