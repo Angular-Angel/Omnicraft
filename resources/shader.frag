@@ -18,31 +18,41 @@ float random (in vec2 st) {
                  * 983.234567 * f_random);
 }
 
-vec3 getPaletteColor(int index, int palette_length) {
+vec3 getBlockPaletteColor(int index, int palette_length) {
     return texelFetch(u_block_palette, ivec2(index, palette_length - i_block_palette_index)).rgb;
+}
+
+
+vec3 getSidePaletteColor(int index, int palette_length) {
+    return texelFetch(u_side_palette, ivec2(index, palette_length - i_side_palette_index)).rgb;
 }
 
 // Use the random function, times the palette_size and then floored, 
 // and then use that to select a color from the palette and return that color.
 vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
-    return getPaletteColor(int(floor(random(texel_coords) * palette_size)), palette_length).rgb;
+    return getBlockPaletteColor(int(floor(random(texel_coords) * palette_size)), palette_length).rgb;
 }
 
 void main() {
+
+
+    ivec2 side_texture_size = textureSize(u_side_palette);
+
+    int side_palette_size = side_texture_size.x - 1;
+    int side_palette_length = side_texture_size.y - 1;
     if (i_side_palette_index != 0) {
-        out_color = vec3(0, 255, 0);
+        out_color = getSidePaletteColor(38, side_palette_length);
         return;
     }
     //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
     vec2 texel_position = floor(v_tex_coord * 15.9999);
 
-    ivec2 texture_size = textureSize(u_block_palette);
+    ivec2 block_texture_size = textureSize(u_block_palette);
 
-    int palette_size = texture_size.x - 1;
-    int palette_length = texture_size.y - 1;
-
+    int block_palette_size = block_texture_size.x - 1;
+    int block_palette_length = block_texture_size.y - 1;
     
-    out_color = getTexel(texel_position, palette_size, palette_length);
+    out_color = getTexel(texel_position, block_palette_size, block_palette_length);
 
     vec2 texel_above = vec2(texel_position.x, texel_position.y - 1);
     vec2 texel_below = vec2(texel_position.x, texel_position.y + 1);
@@ -50,11 +60,11 @@ void main() {
     vec2 texel_left = vec2(texel_position.x - 1, texel_position.y);
     vec2 texel_right = vec2(texel_position.x + 1, texel_position.y);
 
-    vec3 color_above = getTexel(texel_above, palette_size, palette_length);
-    vec3 color_below = getTexel(texel_below, palette_size, palette_length);
+    vec3 color_above = getTexel(texel_above, block_palette_size, block_palette_length);
+    vec3 color_below = getTexel(texel_below, block_palette_size, block_palette_length);
 
-    vec3 color_left = getTexel(texel_left, palette_size, palette_length);
-    vec3 color_right = getTexel(texel_right, palette_size, palette_length);
+    vec3 color_left = getTexel(texel_left, block_palette_size, block_palette_length);
+    vec3 color_right = getTexel(texel_right, block_palette_size, block_palette_length);
 
     vec3 blur_color = mix(mix(color_above, color_below, 0.5), mix(color_left, color_right, 0.5), 0.5);
 
@@ -64,5 +74,5 @@ void main() {
 
     out_color = mix(blur_color, out_color, 0.4);
 
-    out_color = mix(getPaletteColor(palette_size, palette_length), out_color, blur_factor);
+    out_color = mix(getBlockPaletteColor(block_palette_size, block_palette_length), out_color, blur_factor);
 }

@@ -45,7 +45,8 @@ public class World {
     public final List<Block> block_ids;
     public final List<Side> side_ids;
     
-    private TextureRectangle palettes;
+    private TextureRectangle block_palette;
+    private TextureRectangle side_palette;
     
     public World() {
         this(new Emptiness(), new Nothingness());
@@ -110,7 +111,7 @@ public class World {
     }
     
     public void prepare_block_palette() {
-        palettes = DGL.genTexRect();
+        block_palette = DGL.genTexRect();
         Image image = DGL.genImage(PALETTE_SIZE, block_ids.size(), 3, Util.PrimType.BYTE);
         image.shade((int x, int y, int band) -> {
             if (band == 0)
@@ -123,18 +124,18 @@ public class World {
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
         
-        palettes.bind();
-        palettes.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        palettes.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        palettes.image(image);
+        block_palette.bind();
+        block_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        block_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        block_palette.image(image);
         DGL.delete(image);
-        palettes.unbind();
+        block_palette.unbind();
         
-        palettes.bind(GL_TEXTURE0);
+        block_palette.bind(GL_TEXTURE0);
     }
     
     public void prepare_side_palette() {
-        palettes = DGL.genTexRect();
+        side_palette = DGL.genTexRect();
         Image image = DGL.genImage(PALETTE_SIZE, side_ids.size(), 3, Util.PrimType.BYTE);
         image.shade((int x, int y, int band) -> {
             if (band == 0)
@@ -147,14 +148,14 @@ public class World {
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
         
-        palettes.bind();
-        palettes.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        palettes.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        palettes.image(image);
+        side_palette.bind();
+        side_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        side_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        side_palette.image(image);
         DGL.delete(image);
-        palettes.unbind();
+        side_palette.unbind();
         
-        palettes.bind(GL_TEXTURE1);
+        side_palette.bind(GL_TEXTURE1);
     }
     
     public void prepareShader(ShaderProgram shader) {
@@ -170,6 +171,7 @@ public class World {
     }
     
     public void delete() {
-        DGL.delete(palettes);
+        DGL.delete(block_palette);
+        DGL.delete(side_palette);
     }
 }
