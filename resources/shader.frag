@@ -65,7 +65,7 @@ void main() {
     int side_palette_size = side_texture_size.x - 1;
     int side_palette_length = side_texture_size.y - 1;
     if (i_side_palette_index != 0) {
-        float n = noise(texel_position);
+        float n = noise(texel_position/2.0);
         out_color = getSidePaletteColor(1, side_palette_length) * n;
         return;
     }
