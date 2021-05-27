@@ -59,16 +59,6 @@ void main() {
     
     //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
     vec2 texel_position = floor(v_tex_coord * 15.9999);
-    
-    ivec2 side_texture_size = textureSize(u_side_palette);
-
-    int side_palette_size = side_texture_size.x - 1;
-    int side_palette_length = side_texture_size.y - 1;
-    if (i_side_palette_index != 0) {
-        float n = noise(texel_position/2.0);
-        out_color = getSidePaletteColor(1, side_palette_length) * n;
-        return;
-    }
 
     ivec2 block_texture_size = textureSize(u_block_palette);
 
@@ -98,4 +88,14 @@ void main() {
     out_color = mix(blur_color, out_color, 0.4);
 
     out_color = mix(getBlockPaletteColor(block_palette_size, block_palette_length), out_color, blur_factor);
+    if (i_side_palette_index != 0) {
+    
+        ivec2 side_texture_size = textureSize(u_side_palette);
+
+        int side_palette_size = side_texture_size.x - 1;
+        int side_palette_length = side_texture_size.y - 1;
+        float n = noise(texel_position / 2);
+        out_color = mix(out_color, getSidePaletteColor(1, side_palette_length), pow(n, 5));
+        return;
+    }
 }
