@@ -6,7 +6,7 @@
 package net.angle.omnicraft.world;
 
 /**
- *
+ * This interface is mostly just an artifact from when I had Octrees implemented. It can probably be merged into Chunk now.
  * @author angle
  */
 public interface SideChunkContainer extends SideContainer {

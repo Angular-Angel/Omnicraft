@@ -12,10 +12,32 @@ in float f_distance;
 out vec3 out_color; //The color of a pixel/fragment.
 
 // 2D Random
-float random (in vec2 st) {
+float random (vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(234.66, 32.4)))
                  * 983.234567 * f_random);
+}
+
+float noise (vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve.  Same as SmoothStep()
+    vec2 u = f*f*(3.0-2.0*f);
+    // u = smoothstep(0.,1.,f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
 }
 
 vec3 getBlockPaletteColor(int index, int palette_length) {
@@ -34,18 +56,19 @@ vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
 }
 
 void main() {
-
-
+    
+    //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
+    vec2 texel_position = floor(v_tex_coord * 15.9999);
+    
     ivec2 side_texture_size = textureSize(u_side_palette);
 
     int side_palette_size = side_texture_size.x - 1;
     int side_palette_length = side_texture_size.y - 1;
     if (i_side_palette_index != 0) {
-        out_color = getSidePaletteColor(1, side_palette_length);
+        float n = noise(texel_position);
+        out_color = getSidePaletteColor(1, side_palette_length) * n;
         return;
     }
-    //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
-    vec2 texel_position = floor(v_tex_coord * 15.9999);
 
     ivec2 block_texture_size = textureSize(u_block_palette);
 
