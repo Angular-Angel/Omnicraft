@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,63 @@ public class Region extends Positionable implements BlockContainer, SideContaine
                 }
             }
         }
+    }
+    
+    public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
+        
+        int x = (int) Math.floor(origin.x);
+        int y = (int) Math.floor(origin.y);
+        int z = (int) Math.floor(origin.z);
+        
+        float dx = Math.abs(direction.x);
+        float dy = Math.abs(direction.y);
+        float dz = Math.abs(direction.z);
+        
+        int stepX = (int) Math.signum(dx);
+        int stepY = (int) Math.signum(dy);
+        int stepZ = (int) Math.signum(dz);
+        
+        float tMaxX = 0;
+        float tMaxY = 0;
+        float tMaxZ = 0;
+        
+        // The change in t when taking a step (always positive).
+        float tDeltaX = stepX/dx;
+        float tDeltaY = stepY/dy;
+        float tDeltaZ = stepZ/dz;
+        
+        int xincr = 0;
+        int yincr = 0;
+        int zincr = 0;
+        
+        if (dx == 0 && dy == 0 && dz == 0)
+            throw new IllegalArgumentException("Raycast in zero direction!");
+        
+        while (/* ray's length is less than search radius*/
+               xincr <= radius && yincr <= radius && zincr <= radius) {
+            if(tMaxX < tMaxY) {
+                if(tMaxX < tMaxZ) {
+                    x += stepX;
+                    tMaxX += tDeltaX;
+                } else {
+                    z += stepZ;
+                    tMaxZ += tDeltaZ;
+                }
+            } else {
+                if(tMaxY < tMaxZ) {
+                    y += stepY;
+                    tMaxY += tDeltaY;
+                } else {
+                    z += stepZ;
+                    tMaxZ += tDeltaZ;
+                }
+            }
+        
+            if (getBlock(x, y, z).id != 0)
+                return new Vec3i(x, y, z);
+        }
+        
+        return null;
     }
     
     @Override
