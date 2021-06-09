@@ -66,15 +66,11 @@ public class Region extends Positionable implements BlockContainer, SideContaine
         float tDeltaY = stepY/dy;
         float tDeltaZ = stepZ/dz;
         
-        int xincr = 0;
-        int yincr = 0;
-        int zincr = 0;
-        
         if (dx == 0 && dy == 0 && dz == 0)
             throw new IllegalArgumentException("Raycast in zero direction!");
         
         while (/* ray's length is less than search radius*/
-               xincr <= radius && yincr <= radius && zincr <= radius) {
+               tMaxX <= radius && tMaxY <= radius && tMaxZ <= radius) {
             if(tMaxX < tMaxY) {
                 if(tMaxX < tMaxZ) {
                     x += stepX;
@@ -92,8 +88,8 @@ public class Region extends Positionable implements BlockContainer, SideContaine
                     tMaxZ += tDeltaZ;
                 }
             }
-        
-            if (getBlock(x, y, z).id != 0)
+            Block block = getBlock(x, y, z);
+            if (block != null && block.id != 0)
                 return new Vec3i(x, y, z);
         }
         

@@ -41,8 +41,8 @@ public class Player {
     
     public final Camera3D camera;
     private final Camera3DController cameraController;
-    float prevMouseX;
-    float prevMouseY;
+    private float prevMouseX;
+    private float prevMouseY;
     
     public Player() {
         this(CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
