@@ -25,7 +25,7 @@ import net.angle.omnicraft.world.types.Mixture;
  */
 public class WorldGenerator {
     
-    public static void generateSubstances(World world) {
+    public void generateSubstances(World world) {
         world.addSubstance(new Mineraloid("Pebbles", new ColorSource.GreyVariedColorSource(new Color(64, 64, 64, 30), 60)));
         world.addSubstance(new Mineraloid("Sand", new ColorSource.GreyVariedColorSource(new Color(200, 150, 80, 60), 30)));
         world.addSubstance(new Mineraloid("Silt", new ColorSource.GreyVariedColorSource(new Color(120, 75, 0, 40), 10)));
@@ -44,21 +44,21 @@ public class WorldGenerator {
         world.addSubstance(dirt);
     }
     
-    public static void generateBlocks(World world) {
+    public void generateBlocks(World world) {
         world.addBlockType(new HomogenousBlock("Dirt Block", world.get_next_block_id(), world.substances.get("Dirt"), new CubeShape(), new OmniRandom()));
         world.addBlockType(new HomogenousBlock("Gravel Block", world.get_next_block_id(), world.substances.get("Gravel"), new CubeShape(), new OmniRandom()));
         world.addBlockType(new HomogenousBlock("Desert Sand Block", world.get_next_block_id(), world.substances.get("Desert Sand"), new CubeShape(), new OmniRandom()));
         world.addSideType(new Splatter("Moss", world.get_next_side_id(), new RenderData(new Color(1, 0, 0), new Color(0, 128, 0))));
     }
     
-    public static void generateDirtFloor(Region region) {
+    public void generateDirtFloor(Region region) {
         World world = region.world;
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++)
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++)
                 region.getChunk(i, 0, j).setAllBlocks(world.blockTypes.get("Dirt Block"));
     }
     
-    public static void generateChunks(World world) {
+    public void generateSpawnRegion(World world) {
         Region spawnRegion = world.getSpawnRegion();
         generateDirtFloor(spawnRegion);
         
@@ -79,18 +79,17 @@ public class WorldGenerator {
         
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
-            
-        world.loadRegion(spawnRegion);
+    }
+    
+    public void generateNewRegion(Region region) {
+        generateDirtFloor(region);
     }
     
     public static World generateWorld() {
-        World world = new World();
+        World world = new World(new WorldGenerator());
         
-        generateSubstances(world);
-        
-        generateBlocks(world);
-
-        generateChunks(world);
+        world.loadRegion(world.getSpawnRegion());
+        world.loadRegion(world.regions.get("(1, 0, 0)"));
         
         return world;
     }

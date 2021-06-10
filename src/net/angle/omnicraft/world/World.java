@@ -45,19 +45,21 @@ public class World {
     public final List<Chunk> loadedChunks;
     public final List<Block> block_ids;
     public final List<Side> side_ids;
+    public final WorldGenerator worldGenerator;
     
     private TextureRectangle block_palette;
     private TextureRectangle side_palette;
     
-    public World() {
-        this(new Emptiness(), new Nothingness());
+    public World(WorldGenerator worldGenerator) {
+        this(worldGenerator, new Emptiness(), new Nothingness());
     }
     
-    public World(Block block, Side side) {
-        this(block, side, 16, 16);
+    public World(WorldGenerator worldGenerator, Block block, Side side) {
+        this(worldGenerator, block, side, 16, 16);
     }
     
-    public World(Block block, Side side, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
+    public World(WorldGenerator worldGenerator, Block block, Side side, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
+        this.worldGenerator = worldGenerator;
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         sideTypes = new HashMap<>();
@@ -69,7 +71,13 @@ public class World {
         addSideType(side);
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
+        worldGenerator.generateSubstances(this);
+        worldGenerator.generateBlocks(this);
         addRegion(new Region(this, block, side, 0, 0, 0));
+        worldGenerator.generateSpawnRegion(this);
+        Region adjacentRegion = new Region(this, block, side, 1, 0, 0);
+        addRegion(adjacentRegion);
+        worldGenerator.generateDirtFloor(adjacentRegion);
     }
     
     public void addSubstance(Substance substance) {

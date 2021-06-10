@@ -152,7 +152,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         Vec3i orientFace = face.orientFace(dimensions);
         
-        Vec3 drawStart = face.getDrawStart(x + coord.x, y + coord.y, z + coord.z);
+        Vec3 drawStart = face.getDrawStart(region.x * region.getEdgeLength() + x + coord.x, region.y * region.getEdgeLength() + y + coord.y, region.z * region.getEdgeLength() + z + coord.z);
         
         bufferFlatVertices(client, block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
