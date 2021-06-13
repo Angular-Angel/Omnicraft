@@ -25,7 +25,11 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     public Chunk[][][] chunks;
     
     public Region(World world) {
-        this(world, null, null, 0, 0, 0);
+        this(world, world.block_ids.get(0), world.side_ids.get(0), 0, 0, 0);
+    }
+    
+    public Region(World world, int x, int y, int z) {
+        this(world, world.block_ids.get(0), world.side_ids.get(0), x, y, z);
     }
     
     public Region(World world, Block block, Side side, int x, int y, int z) {
