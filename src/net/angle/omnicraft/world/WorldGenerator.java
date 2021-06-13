@@ -65,15 +65,15 @@ public class WorldGenerator {
         Chunk chunk = spawnRegion.getChunk(0, 0, 0);
         chunk.setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
-        chunk.setBlock(15, 1, 0, world.blockTypes.get("Gravel Block"));
-        chunk.setBlock(0, 15, 0, world.blockTypes.get("Gravel Block"));
+        chunk.setBlock(7, 1, 0, world.blockTypes.get("Gravel Block"));
+        chunk.setBlock(0, 7, 0, world.blockTypes.get("Gravel Block"));
 
         chunk.setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
         chunk.setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
         
         spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
-        spawnRegion.getChunk(15, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
+        spawnRegion.getChunk(7, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         
         spawnRegion.getChunk(0, 3, 0).setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
         
@@ -85,11 +85,20 @@ public class WorldGenerator {
         generateDirtFloor(region);
     }
     
+    public void generateNewRegion(World world, int x, int y, int z) {
+        Region adjacentRegion = new Region(world, x, y, z);
+        world.addRegion(adjacentRegion);
+        generateNewRegion(adjacentRegion);
+    }
+    
     public static World generateWorld() {
-        World world = new World(new WorldGenerator());
+        World world = new World(new WorldGenerator(), 8, 8);
         
         world.loadRegion(world.getSpawnRegion());
         world.loadRegion(world.regions.get("(1, 0, 0)"));
+        world.loadRegion(world.regions.get("(-1, 0, 0)"));
+        world.loadRegion(world.regions.get("(0, 0, 1)"));
+        world.loadRegion(world.regions.get("(0, 0, -1)"));
         
         return world;
     }

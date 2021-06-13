@@ -54,6 +54,10 @@ public class World {
         this(worldGenerator, new Emptiness(), new Nothingness());
     }
     
+    public World(WorldGenerator worldGenerator, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
+        this(worldGenerator, new Emptiness(), new Nothingness(), chunkEdgeLengthOfRegion, blockEdgeLengthOfChunk);
+    }
+    
     public World(WorldGenerator worldGenerator, Block block, Side side) {
         this(worldGenerator, block, side, 16, 16);
     }
@@ -75,9 +79,10 @@ public class World {
         worldGenerator.generateBlocks(this);
         addRegion(new Region(this, block, side, 0, 0, 0));
         worldGenerator.generateSpawnRegion(this);
-        Region adjacentRegion = new Region(this, block, side, 1, 0, 0);
-        addRegion(adjacentRegion);
-        worldGenerator.generateDirtFloor(adjacentRegion);
+        worldGenerator.generateNewRegion(this, 1, 0, 0);
+        worldGenerator.generateNewRegion(this, -1, 0, 0);
+        worldGenerator.generateNewRegion(this, 0, 0, 1);
+        worldGenerator.generateNewRegion(this, 0, 0, -1);
     }
     
     public void addSubstance(Substance substance) {
