@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.angle.omnicraft.graphics.VertexManager;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
@@ -36,12 +37,7 @@ public class DebugClient implements Client {
     private Player player;
     private World world;
     
-    public VertexStream stream;
-    public Vec3 streamVPos;
-    public Vec2 streamVTexCoord;
-    public VertexBuilder.IntAttribute stream_block_palette_index;
-    public VertexBuilder.IntAttribute stream_side_palette_index;
-    public Vec3 streamVRandom;
+    public VertexManager vertexManager;
     
     @Override
     public void preInit() {
@@ -81,9 +77,9 @@ public class DebugClient implements Client {
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
             
-            createStream();
+            vertexManager = new VertexManager();
             
-            streamVertices();
+            streamVertices(vertexManager);
             
             Game.getMouse().setGrabbed(true);
             
@@ -133,10 +129,10 @@ public class DebugClient implements Client {
             //chunks.addAll(world.regions.get("(0, 0, -2)").getChunks());
             
             for (Chunk chunk : chunks) {
-                chunk.streamOptimizedMesh(this);
+                chunk.streamOptimizedMesh(vertexManager);
             }
             
-            stream.uploadNew();
+            vertexManager.stream.uploadNew();
         }
     }
 
@@ -168,26 +164,14 @@ public class DebugClient implements Client {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        DGL.draw(stream, GL_TRIANGLES);
+        DGL.draw(vertexManager.stream, GL_TRIANGLES);
     }
     
-    public void createStream() {
-        stream = DGL.genVertexStream(7200000, -1);
+    public void streamVertices(VertexManager vertexManager) {
         
-        streamVPos = stream.vec3("in_pos");
-        streamVTexCoord = stream.vec2("in_tex_coord");
-        stream_block_palette_index = stream.aint("in_block_palette_index");
-        stream_side_palette_index = stream.aint("in_side_palette_index");
-        streamVRandom = stream.vec3("in_random");
+        world.streamOptimizedMesh(vertexManager);
         
-        stream.begin();
-    }
-    
-    public void streamVertices() {
-        
-        world.streamOptimizedMesh(this);
-        
-        stream.uploadNew();
+        vertexManager.stream.uploadNew();
     }
 
     @Override
@@ -195,7 +179,7 @@ public class DebugClient implements Client {
         
         world.delete();
         
-        DGL.delete(shader, stream);
+        DGL.delete(shader, vertexManager.stream);
         
         if (crashed) DGL.setDebugLeakTracking(false);
 
