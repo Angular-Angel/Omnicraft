@@ -14,9 +14,11 @@ import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
+import com.samrj.devil.math.Vec3i;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.angle.omnicraft.world.Region;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
@@ -117,6 +119,11 @@ public class DebugClient implements Client {
     @Override
     public void key(int key, int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
+        
+        if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+            world.worldGenerator.generateNewRegion(world, 0, 0, 2);
+            world.loadRegion(world.regions.get("(0, 0, 2)"));
+        }
     }
 
     @Override
@@ -130,6 +137,12 @@ public class DebugClient implements Client {
     @Override
     public void step(float dt) {
         player.update(dt);
+//        Region spawnRegion = world.getSpawnRegion();
+//        Vec3i coords = spawnRegion.raycast(player.position, player.camera.forward, 10);
+//        System.out.println(player.camera.forward);
+//        System.out.println(coords);
+//        if (coords != null)
+//            System.out.println(spawnRegion.getBlock(coords).name);
     }
 
     @Override
