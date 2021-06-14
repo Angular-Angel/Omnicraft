@@ -8,17 +8,17 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
-import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.gl.VertexBuilder;
+import com.samrj.devil.gl.VertexStream;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
-import com.samrj.devil.math.Vec3i;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.angle.omnicraft.world.Region;
+import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
@@ -36,12 +36,12 @@ public class DebugClient implements Client {
     private Player player;
     private World world;
     
-    public VertexBuffer buffer;
-    public Vec3 vPos;
-    public Vec2 vTexCoord;
-    public VertexBuilder.IntAttribute block_palette_index;
-    public VertexBuilder.IntAttribute side_palette_index;
-    public Vec3 vRandom;
+    public VertexStream stream;
+    public Vec3 streamVPos;
+    public Vec2 streamVTexCoord;
+    public VertexBuilder.IntAttribute stream_block_palette_index;
+    public VertexBuilder.IntAttribute stream_side_palette_index;
+    public Vec3 streamVRandom;
     
     @Override
     public void preInit() {
@@ -80,9 +80,10 @@ public class DebugClient implements Client {
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
-            buffer = DGL.genVertexBuffer(7200000, -1);
             
-            bufferVertices();
+            createStream();
+            
+            streamVertices();
             
             Game.getMouse().setGrabbed(true);
             
@@ -121,8 +122,21 @@ public class DebugClient implements Client {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
         
         if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+            world.worldGenerator.generateNewRegion(world, 2, 0, 0);
+            //world.worldGenerator.generateNewRegion(world, -2, 0, 0);
             world.worldGenerator.generateNewRegion(world, 0, 0, 2);
-            world.loadRegion(world.regions.get("(0, 0, 2)"));
+            //world.worldGenerator.generateNewRegion(world, 0, 0, -2);
+            
+            List<Chunk> chunks = world.regions.get("(2, 0, 0)").getChunks();
+            //chunks.addAll(world.regions.get("(-2, 0, 0)").getChunks());
+            chunks.addAll(world.regions.get("(0, 0, 2)").getChunks());
+            //chunks.addAll(world.regions.get("(0, 0, -2)").getChunks());
+            
+            for (Chunk chunk : chunks) {
+                chunk.streamOptimizedMesh(this);
+            }
+            
+            stream.uploadNew();
         }
     }
 
@@ -154,23 +168,26 @@ public class DebugClient implements Client {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        DGL.draw(buffer, GL_TRIANGLES);
+        DGL.draw(stream, GL_TRIANGLES);
     }
     
-    public void bufferVertices() {
-         //Set up the variable names used by the vertex shader. Each vertex can
-        //have multiple kinds of data: floats, vectors, or matrices.
-        vPos = buffer.vec3("in_pos");
-        vTexCoord = buffer.vec2("in_tex_coord");
-        block_palette_index = buffer.aint("in_block_palette_index");
-        side_palette_index = buffer.aint("in_side_palette_index");
-        vRandom = buffer.vec3("in_random");
-
-        buffer.begin();
+    public void createStream() {
+        stream = DGL.genVertexStream(7200000, -1);
         
-        world.bufferOptimizedMesh(this);
-
-        buffer.end();
+        streamVPos = stream.vec3("in_pos");
+        streamVTexCoord = stream.vec2("in_tex_coord");
+        stream_block_palette_index = stream.aint("in_block_palette_index");
+        stream_side_palette_index = stream.aint("in_side_palette_index");
+        streamVRandom = stream.vec3("in_random");
+        
+        stream.begin();
+    }
+    
+    public void streamVertices() {
+        
+        world.streamOptimizedMesh(this);
+        
+        stream.uploadNew();
     }
 
     @Override
@@ -178,7 +195,7 @@ public class DebugClient implements Client {
         
         world.delete();
         
-        DGL.delete(shader, buffer);
+        DGL.delete(shader, stream);
         
         if (crashed) DGL.setDebugLeakTracking(false);
 

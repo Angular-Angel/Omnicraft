@@ -179,9 +179,9 @@ public class World {
         shader.uniform1i("u_side_palette", 1);
     }
     
-    public void bufferOptimizedMesh(DebugClient client) {
+    public void streamOptimizedMesh(DebugClient client) {
         loadedChunks.forEach(chunk -> {
-            chunk.bufferOptimizedMesh(client);
+            chunk.streamOptimizedMesh(client);
         });
     }
     

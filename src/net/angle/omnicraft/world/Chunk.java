@@ -66,9 +66,9 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         sideChunk.setSide(face, blockx, blocky, blockz, side);
     }
     
-    public void bufferOptimizedMesh(DebugClient client) {
+    public void streamOptimizedMesh(DebugClient client) {
         for (Block.BlockFace face : Block.BlockFace.values()) {
-            optimizeMeshes(client, face);
+            optimizeMeshesForStream(client, face);
         }
     }
     
@@ -92,7 +92,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         return true;
     }
     
-    public void optimizeMeshes(DebugClient client, Block.BlockFace face) {
+    public void optimizeMeshesForStream(DebugClient client, Block.BlockFace face) {
         Vec3i coord1 = face.getStartingPosition(blockChunk);
         for (int i = 0; i < getEdgeLength(); i++) {
             boolean[][] checked = new boolean[getEdgeLength()][getEdgeLength()];
@@ -101,7 +101,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
                 Vec3i coord3 = new Vec3i(coord2);
                 for (int k = 0; k < getEdgeLength(); k++) {
                     if (checked[j][k] == false) {
-                        Vec2i dimensions = greedyMeshExpansion(client, face, coord3);
+                        Vec2i dimensions = greedyMeshExpansionForStream(client, face, coord3);
                         for (int l = 0; l < dimensions.y; l++) {
                             for (int m = 0; m < dimensions.x; m++) {
                                 checked[j+l][k+m] = true;
@@ -116,7 +116,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         }
     }
     
-    public Vec2i greedyMeshExpansion(DebugClient client, Block.BlockFace face, Vec3i coord) {
+    public Vec2i greedyMeshExpansionForStream(DebugClient client, Block.BlockFace face, Vec3i coord) {
         
         Block block = getBlock(coord);
         Side side = getSide(face, coord);
@@ -154,12 +154,12 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         Vec3 drawStart = face.getDrawStart(region.x * region.getEdgeLength() + x + coord.x, region.y * region.getEdgeLength() + y + coord.y, region.z * region.getEdgeLength() + z + coord.z);
         
-        bufferFlatVertices(client, block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
+        streamFlatVertices(client, block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
     }
     
-    public void bufferFlatVertices(DebugClient client, int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+    public void streamFlatVertices(DebugClient client, int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
 
         //Build a square out of two triangles.
 
@@ -194,24 +194,24 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         bottomRight.add(new Vec3(startx, starty, startz));
 
         //add first trangle, starting at top left corner, then top right, then bottom right
-        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(topLeft); client.streamVTexCoord.set(0.0f, 0.0f); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
         
-        client.vPos.set(topRight); client.vTexCoord.set(width, 0.0f); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(topRight); client.streamVTexCoord.set(width, 0.0f); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
         
-        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(bottomRight); client.streamVTexCoord.set(width, height); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
 
         //add second triangle, starting at top left corner, then bottom right, then bottom left
-        client.vPos.set(topLeft); client.vTexCoord.set(0.0f, 0.0f); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(topLeft); client.streamVTexCoord.set(0.0f, 0.0f); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
         
-        client.vPos.set(bottomRight); client.vTexCoord.set(width, height); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(bottomRight); client.streamVTexCoord.set(width, height); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
         
-        client.vPos.set(bottomLeft); client.vTexCoord.set(0.0f, height); client.block_palette_index.x = block_id; 
-        client.side_palette_index.x = side_id; client.vRandom.set(topRight); client.buffer.vertex();
+        client.streamVPos.set(bottomLeft); client.streamVTexCoord.set(0.0f, height); client.stream_block_palette_index.x = block_id; 
+        client.stream_side_palette_index.x = side_id; client.streamVRandom.set(topRight); client.stream.vertex();
     }
 
     @Override
