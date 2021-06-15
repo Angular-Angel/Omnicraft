@@ -6,7 +6,6 @@
 package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
-import com.samrj.devil.game.Mouse;
 import com.samrj.devil.graphics.Camera3D;
 import com.samrj.devil.graphics.Camera3DController;
 import com.samrj.devil.math.Util;

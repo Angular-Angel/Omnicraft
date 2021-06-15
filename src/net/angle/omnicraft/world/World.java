@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.angle.omnicraft.client.DebugClient;
-import net.angle.omnicraft.graphics.VertexManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Emptiness;
 import net.angle.omnicraft.world.blocks.Nothingness;
@@ -175,18 +173,26 @@ public class World {
     }
     
     public void prepareShader(ShaderProgram shader) {
-        
         shader.uniform1i("u_block_palette", 0);
         shader.uniform1i("u_side_palette", 1);
     }
     
-    public void streamOptimizedMesh(VertexManager vertexManager) {
+    public void streamOptimizedMeshes() {
         loadedChunks.forEach(chunk -> {
-            chunk.streamOptimizedMesh(vertexManager);
+            chunk.streamOptimizedMesh();
+        });
+    }
+    
+    public void draw() {
+        loadedChunks.forEach(chunk -> {
+            chunk.draw();
         });
     }
     
     public void delete() {
+        for (Chunk chunk : loadedChunks) {
+            DGL.delete(chunk.vertexManager.stream);
+        }
         DGL.delete(block_palette);
         DGL.delete(side_palette);
     }

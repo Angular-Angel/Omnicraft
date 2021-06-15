@@ -8,17 +8,12 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
-import com.samrj.devil.gl.VertexBuilder;
-import com.samrj.devil.gl.VertexStream;
 import com.samrj.devil.math.Util;
-import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
-import com.samrj.devil.math.Vec3;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.angle.omnicraft.graphics.VertexManager;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
@@ -36,8 +31,6 @@ public class DebugClient implements Client {
     private ShaderProgram shader;
     private Player player;
     private World world;
-    
-    public VertexManager vertexManager;
     
     @Override
     public void preInit() {
@@ -77,9 +70,11 @@ public class DebugClient implements Client {
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
             
-            vertexManager = new VertexManager();
+            world.streamOptimizedMeshes();
             
-            streamVertices(vertexManager);
+            //vertexManager = new VertexManager();
+            
+            //streamVertices(vertexManager);
             
             Game.getMouse().setGrabbed(true);
             
@@ -127,12 +122,11 @@ public class DebugClient implements Client {
             //chunks.addAll(world.regions.get("(-2, 0, 0)").getChunks());
             chunks.addAll(world.regions.get("(0, 0, 2)").getChunks());
             //chunks.addAll(world.regions.get("(0, 0, -2)").getChunks());
+            world.loadedChunks.addAll(chunks);
             
             for (Chunk chunk : chunks) {
-                chunk.streamOptimizedMesh(vertexManager);
+                chunk.streamOptimizedMesh();
             }
-            
-            vertexManager.stream.uploadNew();
         }
     }
 
@@ -164,22 +158,14 @@ public class DebugClient implements Client {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        DGL.draw(vertexManager.stream, GL_TRIANGLES);
-    }
-    
-    public void streamVertices(VertexManager vertexManager) {
-        
-        world.streamOptimizedMesh(vertexManager);
-        
-        vertexManager.stream.uploadNew();
+        world.draw();
     }
 
     @Override
     public void destroy(Boolean crashed) {
-        
         world.delete();
         
-        DGL.delete(shader, vertexManager.stream);
+        DGL.delete(shader);
         
         if (crashed) DGL.setDebugLeakTracking(false);
 

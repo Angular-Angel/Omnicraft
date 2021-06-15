@@ -5,13 +5,14 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.gl.DGL;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.client.DebugClient;
 import net.angle.omnicraft.graphics.VertexManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 /**
  *
@@ -21,12 +22,16 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     
     public final Region region;
     
+    public VertexManager vertexManager;
+    
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
 
     public Chunk(Region region, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
         this.region = region;
+        
+        vertexManager = new VertexManager();
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
         sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
@@ -65,6 +70,11 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     @Override
     public void setSide(Block.BlockFace face, int blockx, int blocky, int blockz, Side side) {
         sideChunk.setSide(face, blockx, blocky, blockz, side);
+    }
+    
+    public void streamOptimizedMesh() {
+        streamOptimizedMesh(vertexManager);
+        vertexManager.stream.uploadNew();
     }
     
     public void streamOptimizedMesh(VertexManager vertexManager) {
@@ -214,6 +224,10 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         vertexManager.streamVPos.set(bottomLeft); vertexManager.streamVTexCoord.set(0.0f, height); vertexManager.stream_block_palette_index.x = block_id; 
         vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
+    }
+    
+    public void draw() {
+        DGL.draw(vertexManager.stream, GL_TRIANGLES);
     }
 
     @Override

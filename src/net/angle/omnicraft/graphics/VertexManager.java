@@ -25,7 +25,7 @@ public class VertexManager {
     public final Vec3 streamVRandom;
     
     public VertexManager() {
-        stream = DGL.genVertexStream(7200000, -1);
+        stream = DGL.genVertexStream(720, -1);
         
         streamVPos = stream.vec3("in_pos");
         streamVTexCoord = stream.vec2("in_tex_coord");
