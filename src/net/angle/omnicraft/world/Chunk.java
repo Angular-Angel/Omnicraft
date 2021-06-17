@@ -165,65 +165,9 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         Vec3 drawStart = face.getDrawStart(region.x * region.getEdgeLength() + x + coord.x, region.y * region.getEdgeLength() + y + coord.y, region.z * region.getEdgeLength() + z + coord.z);
         
-        streamFlatVertices(vertexManager, block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
+        vertexManager.streamFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
-    }
-    
-    
-    public void streamFlatVertices(VertexManager vertexManager, int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
-
-        //Build a square out of two triangles.
-
-        Vec3 topLeft, topRight, bottomLeft, bottomRight;
-        
-        int width, height;
-
-        topLeft = new Vec3(0, 0, 0);
-
-        if (xoff == 0) {
-            topRight = new Vec3(0, 0, zoff);
-            width = (int) zoff;
-        } else {
-            topRight = new Vec3(xoff, 0, 0);
-            width = (int) xoff;
-        }
-
-        bottomRight = new Vec3(xoff, yoff, zoff);
-
-        if (yoff == 0) {
-            bottomLeft = new Vec3(0, 0, zoff);
-            height = (int) zoff;
-        } else{
-            bottomLeft = new Vec3(0, yoff, 0);
-            height = (int) yoff;
-        }
-        
-        //adjust positions for where our starts are.
-        topLeft.add(new Vec3(startx, starty, startz));
-        topRight.add(new Vec3(startx, starty, startz));
-        bottomLeft.add(new Vec3(startx, starty, startz));
-        bottomRight.add(new Vec3(startx, starty, startz));
-
-        //add first trangle, starting at top left corner, then top right, then bottom right
-        vertexManager.streamVPos.set(topLeft); vertexManager.streamVTexCoord.set(0.0f, 0.0f); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
-        
-        vertexManager.streamVPos.set(topRight); vertexManager.streamVTexCoord.set(width, 0.0f); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
-        
-        vertexManager.streamVPos.set(bottomRight); vertexManager.streamVTexCoord.set(width, height); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
-
-        //add second triangle, starting at top left corner, then bottom right, then bottom left
-        vertexManager.streamVPos.set(topLeft); vertexManager.streamVTexCoord.set(0.0f, 0.0f); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
-        
-        vertexManager.streamVPos.set(bottomRight); vertexManager.streamVTexCoord.set(width, height); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
-        
-        vertexManager.streamVPos.set(bottomLeft); vertexManager.streamVTexCoord.set(0.0f, height); vertexManager.stream_block_palette_index.x = block_id; 
-        vertexManager.stream_side_palette_index.x = side_id; vertexManager.streamVRandom.set(topRight); vertexManager.stream.vertex();
     }
     
     public void draw() {
