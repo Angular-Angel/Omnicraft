@@ -124,7 +124,11 @@ public class World {
     }
     
     public void loadRegion(Region region) {
-        loadedChunks.addAll(region.getChunks());
+        List<Chunk> chunks = region.getChunks();
+        for (Chunk chunk : chunks) {
+                chunk.streamOptimizedMesh();
+            }
+        loadedChunks.addAll(chunks);
     }
     
     public void prepare_block_palette() {
@@ -181,10 +185,8 @@ public class World {
         shader.uniform1i("u_side_palette", 1);
     }
     
-    public void streamOptimizedMeshes() {
-        loadedChunks.forEach(chunk -> {
-            chunk.streamOptimizedMesh();
-        });
+    public int getBlockEdgeLengthOfRegion() {
+        return blockEdgeLengthOfChunk * chunkEdgeLengthOfRegion;
     }
     
     public void draw() {

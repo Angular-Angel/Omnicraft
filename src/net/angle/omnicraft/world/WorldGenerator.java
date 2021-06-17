@@ -51,11 +51,12 @@ public class WorldGenerator {
         world.addSideType(new Splatter("Moss", world.get_next_side_id(), new RenderData(new Color(1, 0, 0), new Color(0, 128, 0))));
     }
     
-    public void generateDirtFloor(Region region) {
+    public Region generateDirtFloor(Region region) {
         World world = region.world;
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++)
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++)
                 region.getChunk(i, 0, j).setAllBlocks(world.blockTypes.get("Dirt Block"));
+        return region;
     }
     
     public void generateSpawnRegion(World world) {
@@ -81,14 +82,14 @@ public class WorldGenerator {
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
     
-    public void generateNewRegion(Region region) {
-        generateDirtFloor(region);
+    public Region generateNewRegion(Region region) {
+        return generateDirtFloor(region);
     }
     
-    public void generateNewRegion(World world, int x, int y, int z) {
-        Region adjacentRegion = new Region(world, x, y, z);
-        world.addRegion(adjacentRegion);
-        generateNewRegion(adjacentRegion);
+    public Region generateNewRegion(World world, int x, int y, int z) {
+        Region region = new Region(world, x, y, z);
+        world.addRegion(region);
+        return generateNewRegion(region);
     }
     
     public static World generateWorld() {

@@ -60,7 +60,7 @@ public class Player {
         camera.setFOV(resolution.x, resolution.y, camera_fov);
         
         cameraController = new Camera3DController(camera);
-        position = new Vec3(0, 1, 2);
+        position = new Vec3(32, 20, 32);
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;

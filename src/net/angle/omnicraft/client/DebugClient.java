@@ -10,10 +10,8 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.math.Vec2i;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import static org.lwjgl.glfw.GLFW.*;
@@ -65,8 +63,6 @@ public class DebugClient implements Client {
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
             
-            world.streamOptimizedMeshes();
-            
             //vertexManager = new VertexManager();
             
             //streamVertices(vertexManager);
@@ -108,20 +104,10 @@ public class DebugClient implements Client {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
         
         if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-            world.worldGenerator.generateNewRegion(world, 2, 0, 0);
+            world.loadRegion(world.worldGenerator.generateNewRegion(world, 2, 0, 0));
             //world.worldGenerator.generateNewRegion(world, -2, 0, 0);
-            world.worldGenerator.generateNewRegion(world, 0, 0, 2);
+            world.loadRegion(world.worldGenerator.generateNewRegion(world, 0, 0, 2));
             //world.worldGenerator.generateNewRegion(world, 0, 0, -2);
-            
-            List<Chunk> chunks = world.regions.get("(2, 0, 0)").getChunks();
-            //chunks.addAll(world.regions.get("(-2, 0, 0)").getChunks());
-            chunks.addAll(world.regions.get("(0, 0, 2)").getChunks());
-            //chunks.addAll(world.regions.get("(0, 0, -2)").getChunks());
-            world.loadedChunks.addAll(chunks);
-            
-            for (Chunk chunk : chunks) {
-                chunk.streamOptimizedMesh();
-            }
         }
     }
 
