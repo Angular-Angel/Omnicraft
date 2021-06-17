@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec3i;
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
@@ -60,6 +61,7 @@ public class WorldGenerator {
     }
     
     public void generateSpawnRegion(World world) {
+        world.addRegion(new Region(world));
         Region spawnRegion = world.getSpawnRegion();
         generateDirtFloor(spawnRegion);
         
@@ -82,8 +84,8 @@ public class WorldGenerator {
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
     
-    public Region generateNewRegion(Region region) {
-        return generateDirtFloor(region);
+    public Region generateNewRegion(World world, Vec3i coord) {
+        return generateNewRegion(world, coord.x, coord.y, coord.z);
     }
     
     public Region generateNewRegion(World world, int x, int y, int z) {
@@ -92,14 +94,14 @@ public class WorldGenerator {
         return generateNewRegion(region);
     }
     
+    public Region generateNewRegion(Region region) {
+        return generateDirtFloor(region);
+    }
+    
     public static World generateWorld() {
         World world = new World(new WorldGenerator(), 8, 8);
         
         world.loadRegion(world.getSpawnRegion());
-        world.loadRegion(world.regions.get("(1, 0, 0)"));
-        world.loadRegion(world.regions.get("(-1, 0, 0)"));
-        world.loadRegion(world.regions.get("(0, 0, 1)"));
-        world.loadRegion(world.regions.get("(0, 0, -1)"));
         
         return world;
     }

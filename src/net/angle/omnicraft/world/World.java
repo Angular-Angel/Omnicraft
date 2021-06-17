@@ -10,10 +10,12 @@ import com.samrj.devil.gl.Image;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.TextureRectangle;
 import com.samrj.devil.math.Util;
+import com.samrj.devil.math.Vec3i;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Emptiness;
 import net.angle.omnicraft.world.blocks.Nothingness;
@@ -46,6 +48,8 @@ public class World {
     public final List<Side> side_ids;
     public final WorldGenerator worldGenerator;
     
+    public Player player;
+    
     private TextureRectangle block_palette;
     private TextureRectangle side_palette;
     
@@ -76,16 +80,32 @@ public class World {
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
         worldGenerator.generateSubstances(this);
         worldGenerator.generateBlocks(this);
-        addRegion(new Region(this, block, side, 0, 0, 0));
         worldGenerator.generateSpawnRegion(this);
-        worldGenerator.generateNewRegion(this, 1, 0, 0);
-        worldGenerator.generateNewRegion(this, -1, 0, 0);
-        worldGenerator.generateNewRegion(this, 0, 0, 1);
-        worldGenerator.generateNewRegion(this, 0, 0, -1);
+    }
+    
+    public Region checkRegion(Vec3i coord) {
+        Region region = regions.get(coord.toString());
+        if (region == null) {
+            region = worldGenerator.generateNewRegion(this, coord);
+            loadRegion(region);
+        }
+        return region;
     }
     
     public void update(float dt) {
-        
+        Vec3i regionPosition = new Vec3i(player.regionPosition);
+        regionPosition.x -= 1;
+        regionPosition.z -= 1;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                checkRegion(regionPosition);
+                regionPosition.z += 1;
+            }
+            regionPosition.z -= 3;
+            regionPosition.x += 1;
+        }
+        for (Region region : regions.values())
+            region.update(dt);
     }
     
     public void addSubstance(Substance substance) {

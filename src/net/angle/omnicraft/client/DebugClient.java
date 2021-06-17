@@ -63,10 +63,6 @@ public class DebugClient implements Client {
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
             
-            //vertexManager = new VertexManager();
-            
-            //streamVertices(vertexManager);
-            
             Game.getMouse().setGrabbed(true);
             
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

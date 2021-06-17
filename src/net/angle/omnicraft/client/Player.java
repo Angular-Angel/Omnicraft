@@ -13,7 +13,6 @@ import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.world.Region;
 import net.angle.omnicraft.world.World;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
@@ -40,6 +39,7 @@ public class Player {
     public static final float MOVE_SPEED = 20.0f;
     
     public final Vec3 position;
+    public final Vec3i regionPosition;
     
     public final World world;
     
@@ -54,6 +54,7 @@ public class Player {
     
     public Player(World world, float camera_near_z, float camera_far_z, float camera_fov) {
         this.world = world;
+        world.player = this;
         camera = new Camera3D(camera_near_z, camera_far_z, camera_fov, 1.0f);
 
         Vec2i resolution = Game.getResolution();
@@ -61,6 +62,7 @@ public class Player {
         
         cameraController = new Camera3DController(camera);
         position = new Vec3(32, 20, 32);
+        regionPosition = new Vec3i(0, 0, 0);
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
@@ -82,6 +84,27 @@ public class Player {
             glMatrixMode(GL_MODELVIEW);
             glLoadMatrixf(camera.viewMat.mallocFloat(stack));
         }
+    }
+    
+    public void updateRegionPosition() {
+            if (position.x > world.getBlockEdgeLengthOfRegion() * (regionPosition.x + 1)) {
+                regionPosition.x += 1;
+            }
+            if (position.x < world.getBlockEdgeLengthOfRegion() * (regionPosition.x)) {
+                regionPosition.x -= 1;
+            }
+            if (position.y > world.getBlockEdgeLengthOfRegion() * (regionPosition.y + 1)) {
+                regionPosition.y += 1;
+            }
+            if (position.y < world.getBlockEdgeLengthOfRegion() * (regionPosition.y)) {
+                regionPosition.y -= 1;
+            }
+            if (position.z > world.getBlockEdgeLengthOfRegion() * (regionPosition.z + 1)) {
+                regionPosition.z += 1;
+            }
+            if (position.z < world.getBlockEdgeLengthOfRegion() * (regionPosition.z)) {
+                regionPosition.z -= 1;
+            }
     }
     
     public void update(float dt) {
@@ -128,6 +151,8 @@ public class Player {
             direction.mult(MOVE_SPEED * dt);
             position.add(direction);
         }
+        
+        updateRegionPosition();
 
         cameraController.target.set(position);
         cameraController.update();

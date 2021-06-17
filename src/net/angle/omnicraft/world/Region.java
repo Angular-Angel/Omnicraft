@@ -47,11 +47,15 @@ public class Region extends Positionable implements BlockContainer, SideContaine
         }
     }
     
+    public void update(float dt) {
+        
+    }
+    
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
         
-        int x = (int) Math.floor(origin.x);
-        int y = (int) Math.floor(origin.y);
-        int z = (int) Math.floor(origin.z);
+        int curx = (int) Math.floor(origin.x);
+        int cury = (int) Math.floor(origin.y);
+        int curz = (int) Math.floor(origin.z);
         
         float dx = Math.abs(direction.x);
         float dy = Math.abs(direction.y);
@@ -77,24 +81,24 @@ public class Region extends Positionable implements BlockContainer, SideContaine
                tMaxX <= radius && tMaxY <= radius && tMaxZ <= radius) {
             if(tMaxX < tMaxY) {
                 if(tMaxX < tMaxZ) {
-                    x += stepX;
+                    curx += stepX;
                     tMaxX += tDeltaX;
                 } else {
-                    z += stepZ;
+                    curz += stepZ;
                     tMaxZ += tDeltaZ;
                 }
             } else {
                 if(tMaxY < tMaxZ) {
-                    y += stepY;
+                    cury += stepY;
                     tMaxY += tDeltaY;
                 } else {
-                    z += stepZ;
+                    curz += stepZ;
                     tMaxZ += tDeltaZ;
                 }
             }
-            Block block = getBlock(x, y, z);
+            Block block = getBlock(curx, cury, curz);
             if (block != null && block.id != 0)
-                return new Vec3i(x, y, z);
+                return new Vec3i(curx, cury, curz);
         }
         
         return null;
