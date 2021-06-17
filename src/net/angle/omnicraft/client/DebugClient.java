@@ -8,7 +8,6 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
-import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2i;
 import java.io.IOException;
 import java.util.List;
@@ -22,10 +21,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 
 public class DebugClient implements Client {
-    
-    private static final float CAMERA_NEAR_Z = 0.125f;
-    private static final float CAMERA_FAR_Z = 1024.0f;
-    private static final float CAMERA_FOV = Util.toRadians(90.0f);
     
     private Vec2i resolution;
     private ShaderProgram shader;
@@ -57,7 +52,7 @@ public class DebugClient implements Client {
     public void init() {
         try {
             
-            player = new Player(CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
+            player = new Player();
             
             world = WorldGenerator.generateWorld();
             
@@ -135,7 +130,7 @@ public class DebugClient implements Client {
         resolution.set(width, height);
         
         //Camera's aspect ratio may change if window is resized.
-        player.camera.setFOV(resolution.x, resolution.y, CAMERA_FOV);
+        player.camera.setFOV(resolution.x, resolution.y, player.CAMERA_FOV);
     }
 
     @Override

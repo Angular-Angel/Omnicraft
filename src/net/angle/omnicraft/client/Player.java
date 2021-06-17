@@ -31,10 +31,10 @@ import org.lwjgl.system.MemoryStack;
  */
 public class Player {
     
-    private static final float CAMERA_NEAR_Z = 0.1f;
-    private static final float CAMERA_FAR_Z = 100.0f;
-    private static final float CAMERA_FOV = Util.toRadians(90.0f);
-    private static final float MOVE_SPEED = 20.0f;
+    public static final float CAMERA_NEAR_Z = 0.125f;
+    public static final float CAMERA_FAR_Z = 1024.0f;
+    public static final float CAMERA_FOV = Util.toRadians(90.0f);
+    public static final float MOVE_SPEED = 20.0f;
     
     public final Vec3 position;
     
