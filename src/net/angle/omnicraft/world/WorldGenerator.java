@@ -52,11 +52,17 @@ public class WorldGenerator {
         world.addSideType(new Splatter("Moss", world.get_next_side_id(), new RenderData(new Color(1, 0, 0), new Color(0, 128, 0))));
     }
     
+    public Chunk generateDirtFloor(Chunk chunk) {
+        World world = chunk.region.world;
+        chunk.setAllBlocks(world.blockTypes.get("Dirt Block"));
+        return chunk;
+    }
+    
     public Region generateDirtFloor(Region region) {
         World world = region.world;
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++)
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++)
-                region.getChunk(i, 0, j).setAllBlocks(world.blockTypes.get("Dirt Block"));
+                generateDirtFloor(region.getChunk(i, 0, j));
         return region;
     }
     

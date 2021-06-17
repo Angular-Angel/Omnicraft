@@ -86,7 +86,7 @@ public class World {
     public Region checkRegion(Vec3i coord) {
         Region region = regions.get(coord.toString());
         if (region == null) {
-            region = worldGenerator.generateNewRegion(this, coord);
+            region = generateNewRegion(coord);
             loadRegion(region);
         }
         return region;
@@ -132,6 +132,16 @@ public class World {
             throw new IllegalArgumentException("Side has incorrect ID!");
         sideTypes.put(side.name, side);
         side_ids.add(side);
+    }
+    
+    public Region generateNewRegion(Vec3i coord) {
+        return generateNewRegion(coord.x, coord.y, coord.z);
+    }
+
+    public Region generateNewRegion(int x, int y, int z) {
+        Region region = new Region(this, x, y, z);
+        addRegion(region);
+        return region;
     }
     
     public void addRegion(Region region) {
