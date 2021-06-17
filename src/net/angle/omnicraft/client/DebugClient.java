@@ -52,9 +52,9 @@ public class DebugClient implements Client {
     public void init() {
         try {
             
-            player = new Player();
-            
             world = WorldGenerator.generateWorld();
+            
+            player = new Player(world);
             
             resolution = Game.getResolution();
             
@@ -136,12 +136,7 @@ public class DebugClient implements Client {
     @Override
     public void step(float dt) {
         player.update(dt);
-//        Region spawnRegion = world.getSpawnRegion();
-//        Vec3i coords = spawnRegion.raycast(player.position, player.camera.forward, 10);
-//        System.out.println(player.camera.forward);
-//        System.out.println(coords);
-//        if (coords != null)
-//            System.out.println(spawnRegion.getBlock(coords).name);
+        world.update(dt);
     }
 
     @Override

@@ -12,6 +12,9 @@ import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
+import com.samrj.devil.math.Vec3i;
+import net.angle.omnicraft.world.Region;
+import net.angle.omnicraft.world.World;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
@@ -38,16 +41,19 @@ public class Player {
     
     public final Vec3 position;
     
+    public final World world;
+    
     public final Camera3D camera;
     private final Camera3DController cameraController;
     private float prevMouseX;
     private float prevMouseY;
     
-    public Player() {
-        this(CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
+    public Player(World world) {
+        this(world, CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
     }
     
-    public Player(float camera_near_z, float camera_far_z, float camera_fov) {
+    public Player(World world, float camera_near_z, float camera_far_z, float camera_fov) {
+        this.world = world;
         camera = new Camera3D(camera_near_z, camera_far_z, camera_fov, 1.0f);
 
         Vec2i resolution = Game.getResolution();
@@ -126,6 +132,11 @@ public class Player {
         cameraController.target.set(position);
         cameraController.update();
         
-        
+//        Region spawnRegion = world.getSpawnRegion();
+//        Vec3i coords = spawnRegion.raycast(position, camera.forward, 10);
+//        System.out.println(camera.forward);
+//        System.out.println(coords);
+//        if (coords != null)
+//            System.out.println(spawnRegion.getBlock(coords).name);
     }
 }

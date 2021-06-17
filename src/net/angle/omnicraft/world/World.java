@@ -84,6 +84,10 @@ public class World {
         worldGenerator.generateNewRegion(this, 0, 0, -1);
     }
     
+    public void update(float dt) {
+        
+    }
+    
     public void addSubstance(Substance substance) {
         substances.put(substance.name, substance);
     }
