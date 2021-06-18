@@ -90,19 +90,19 @@ public class Player {
             if (position.x > world.getBlockEdgeLengthOfRegion() * (regionPosition.x + 1)) {
                 regionPosition.x += 1;
             }
-            if (position.x < world.getBlockEdgeLengthOfRegion() * (regionPosition.x)) {
+            if (position.x < world.getBlockEdgeLengthOfRegion() * regionPosition.x) {
                 regionPosition.x -= 1;
             }
             if (position.y > world.getBlockEdgeLengthOfRegion() * (regionPosition.y + 1)) {
                 regionPosition.y += 1;
             }
-            if (position.y < world.getBlockEdgeLengthOfRegion() * (regionPosition.y)) {
+            if (position.y < world.getBlockEdgeLengthOfRegion() * regionPosition.y) {
                 regionPosition.y -= 1;
             }
             if (position.z > world.getBlockEdgeLengthOfRegion() * (regionPosition.z + 1)) {
                 regionPosition.z += 1;
             }
-            if (position.z < world.getBlockEdgeLengthOfRegion() * (regionPosition.z)) {
+            if (position.z < world.getBlockEdgeLengthOfRegion() * regionPosition.z) {
                 regionPosition.z -= 1;
             }
     }

@@ -36,6 +36,8 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 public class World {
     
     public static final int PALETTE_SIZE = 40;
+    public static final int GENERATION_DISTANCE = 16;
+    public static final int RENDER_DISTANCE = 16;
     
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
