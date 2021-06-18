@@ -24,6 +24,8 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     
     public VertexManager vertexManager;
     
+    public boolean loaded;
+    
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
 
@@ -35,6 +37,8 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
         sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
+        
+        loaded = false;
     }
 
     @Override
@@ -73,14 +77,16 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
     }
     
     public void streamOptimizedMesh() {
-        streamOptimizedMesh(vertexManager);
+        for (Block.BlockFace face : Block.BlockFace.values()) {
+            optimizeMeshesForStream(face);
+        }
+        
         vertexManager.stream.uploadNew();
+        loaded = true;
     }
     
-    public void streamOptimizedMesh(VertexManager vertexManager) {
-        for (Block.BlockFace face : Block.BlockFace.values()) {
-            optimizeMeshesForStream(vertexManager, face);
-        }
+    public void clearStream() {
+        //vertexManager.stream.
     }
     
     public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
@@ -103,7 +109,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         return true;
     }
     
-    public void optimizeMeshesForStream(VertexManager vertexManager, Block.BlockFace face) {
+    public void optimizeMeshesForStream(Block.BlockFace face) {
         Vec3i coord1 = face.getStartingPosition(blockChunk);
         for (int i = 0; i < getEdgeLength(); i++) {
             boolean[][] checked = new boolean[getEdgeLength()][getEdgeLength()];
@@ -112,7 +118,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
                 Vec3i coord3 = new Vec3i(coord2);
                 for (int k = 0; k < getEdgeLength(); k++) {
                     if (checked[j][k] == false) {
-                        Vec2i dimensions = greedyMeshExpansionForStream(vertexManager, face, coord3);
+                        Vec2i dimensions = greedyMeshExpansionForStream(face, coord3);
                         for (int l = 0; l < dimensions.y; l++) {
                             for (int m = 0; m < dimensions.x; m++) {
                                 checked[j+l][k+m] = true;
@@ -127,7 +133,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         }
     }
     
-    public Vec2i greedyMeshExpansionForStream(VertexManager vertexManager, Block.BlockFace face, Vec3i coord) {
+    public Vec2i greedyMeshExpansionForStream(Block.BlockFace face, Vec3i coord) {
         
         Block block = getBlock(coord);
         Side side = getSide(face, coord);
