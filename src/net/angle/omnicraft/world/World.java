@@ -95,6 +95,7 @@ public class World {
     public void update(float dt) {
         Vec3i regionPosition = new Vec3i(player.regionPosition);
         regionPosition.x -= 1;
+        regionPosition.y = 0;
         regionPosition.z -= 1;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -141,6 +142,7 @@ public class World {
     public Region generateNewRegion(int x, int y, int z) {
         Region region = new Region(this, x, y, z);
         addRegion(region);
+        worldGenerator.generateDirtFloor(region);
         return region;
     }
     
@@ -155,9 +157,9 @@ public class World {
     
     public void loadRegion(Region region) {
         List<Chunk> chunks = region.getChunks();
-        for (Chunk chunk : chunks) {
-                chunk.streamOptimizedMesh();
-            }
+        chunks.forEach(chunk -> {
+            chunk.streamOptimizedMesh();
+        });
         loadedChunks.addAll(chunks);
     }
     
