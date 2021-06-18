@@ -7,7 +7,7 @@ package net.angle.omnicraft.graphics;
 
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.VertexBuilder;
-import com.samrj.devil.gl.VertexStream;
+import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 
@@ -17,7 +17,7 @@ import com.samrj.devil.math.Vec3;
  */
 public class VertexManager {
     
-    public VertexStream stream;
+    public VertexBuffer buffer;
     public Vec3 streamVPos;
     public Vec2 streamVTexCoord;
     public VertexBuilder.IntAttribute stream_block_palette_index;
@@ -25,15 +25,15 @@ public class VertexManager {
     public Vec3 streamVRandom;
     
     public void begin() {
-        stream = DGL.genVertexStream(720, -1);
+        buffer = DGL.genVertexBuffer(720, -1);
         
-        streamVPos = stream.vec3("in_pos");
-        streamVTexCoord = stream.vec2("in_tex_coord");
-        stream_block_palette_index = stream.aint("in_block_palette_index");
-        stream_side_palette_index = stream.aint("in_side_palette_index");
-        streamVRandom = stream.vec3("in_random");
+        streamVPos = buffer.vec3("in_pos");
+        streamVTexCoord = buffer.vec2("in_tex_coord");
+        stream_block_palette_index = buffer.aint("in_block_palette_index");
+        stream_side_palette_index = buffer.aint("in_side_palette_index");
+        streamVRandom = buffer.vec3("in_random");
         
-        stream.begin();
+        buffer.begin();
     }
     
     public void streamFlatVertices(int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
@@ -72,22 +72,22 @@ public class VertexManager {
 
         //add first trangle, starting at top left corner, then top right, then bottom right
         streamVPos.set(topLeft); streamVTexCoord.set(0.0f, 0.0f); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
         
         streamVPos.set(topRight); streamVTexCoord.set(width, 0.0f); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
         
         streamVPos.set(bottomRight); streamVTexCoord.set(width, height); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
 
         //add second triangle, starting at top left corner, then bottom right, then bottom left
         streamVPos.set(topLeft); streamVTexCoord.set(0.0f, 0.0f); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
         
         streamVPos.set(bottomRight); streamVTexCoord.set(width, height); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
         
         streamVPos.set(bottomLeft); streamVTexCoord.set(0.0f, height); stream_block_palette_index.x = block_id; 
-        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); stream.vertex();
+        stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
     }
 }

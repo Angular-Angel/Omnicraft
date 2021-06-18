@@ -76,21 +76,50 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         sideChunk.setSide(face, blockx, blocky, blockz, side);
     }
     
+    public boolean blockIsTransparent(int x, int y, int z) {
+        return blockIsTransparent(getBlock(x, y, z));
+    }
+    
+    public boolean blockIsTransparent(Block block) {
+        return block == null || block.isTransparent();
+    }
+    
+    public boolean isTransparent(int x, int y, int z) {
+        if (!blockIsTransparent(x, y, z))
+            return false;
+//        for (Block.BlockFace face : Block.BlockFace.values()) {
+//            if (!getSide(face, x, y, z).isTransparent())
+//                return false;
+//        }
+        return true;
+    }
+    
+    public boolean isTransparent() {
+        for (int i = 0; i < getEdgeLength(); i++) {
+            for (int j = 0; j < getEdgeLength(); j++) {
+                for (int k = 0; k < getEdgeLength(); k++) {
+                    if (!isTransparent(i, j, k))
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     public void streamOptimizedMesh() {
-        vertexManager.begin();
-        if (loaded)
+        if (loaded || isTransparent())
             return;
+        vertexManager.begin();
         for (Block.BlockFace face : Block.BlockFace.values()) {
             optimizeMeshesForStream(face);
         }
-        
-        vertexManager.stream.uploadNew();
+        vertexManager.buffer.end();
         loaded = true;
     }
     
     public void clearStream() {
         if (loaded)
-            DGL.delete(vertexManager.stream);
+            DGL.delete(vertexManager.buffer);
         loaded = false;
     }
     
@@ -143,7 +172,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         Block block = getBlock(coord);
         Side side = getSide(face, coord);
         
-        if (block == null || block.isTransparent() || !block.faceIsVisible(face, blockChunk, coord))
+        if (blockIsTransparent(block) || !block.faceIsVisible(face, blockChunk, coord))
             return new Vec2i(1, 1);
         
         boolean expandDown = true, expandAcross = true;
@@ -183,7 +212,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     
     public void draw() {
         if (loaded)
-            DGL.draw(vertexManager.stream, GL_TRIANGLES);
+            DGL.draw(vertexManager.buffer, GL_TRIANGLES);
     }
 
     public int getEdgeLengthOfContainedChunks() {
