@@ -17,7 +17,7 @@ public class ArraySideChunk extends SideChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Side[][][][] sides;
 
-    public ArraySideChunk(SideChunkContainer container, Side side, int x, int y, int z) {
+    public ArraySideChunk(Chunk container, Side side, int x, int y, int z) {
         super(container, x, y, z);
         sides = new Side[16][16][16][6];
         setAllSides(side);

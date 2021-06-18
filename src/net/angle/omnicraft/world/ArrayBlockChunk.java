@@ -17,11 +17,11 @@ public class ArrayBlockChunk extends BlockChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Block[][][] blocks;
     
-    public ArrayBlockChunk(BlockChunkContainer container, Block block) {
+    public ArrayBlockChunk(Chunk container, Block block) {
         this(container, block, 0, 0, 0);
     }
     
-    public ArrayBlockChunk(BlockChunkContainer container, Block block, int x, int y, int z) {
+    public ArrayBlockChunk(Chunk container, Block block, int x, int y, int z) {
         super(container, x, y, z);
         blocks = new Block[16][16][16];
         setAllBlocks(block);

@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
  *
  * @author angle
  */
-public class Chunk extends Positionable implements BlockChunkContainer, SideChunkContainer {
+public class Chunk extends Positionable implements BlockContainer, SideContainer {
     
     public final Region region;
     
@@ -180,28 +180,7 @@ public class Chunk extends Positionable implements BlockChunkContainer, SideChun
         DGL.draw(vertexManager.stream, GL_TRIANGLES);
     }
 
-    @Override
     public int getEdgeLengthOfContainedChunks() {
         return region.getEdgeLengthOfContainedChunks();
-    }
-
-    @Override
-    public Vec3i getChunkCoordinatesOfBlock(int blockx, int blocky, int blockz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public BlockChunk getChunk(int chunkx, int chunky, int chunkz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public BlockChunk getChunkOfBlock(int chunkx, int chunky, int chunkz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setChunkOfBlock(int blockx, int blocky, int blockz, BlockChunk chunk) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

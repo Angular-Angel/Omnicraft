@@ -11,11 +11,11 @@ package net.angle.omnicraft.world;
  */
 public abstract class BlockChunk extends Positionable implements BlockContainer {
     
-    public final BlockChunkContainer container;
+    public final Chunk container;
     //These describe this chunks size, and it's x, y, and z coordinates within it's region. 
     //These coords are specific to the chunk, with no regard for the wider world.
     
-    public BlockChunk(BlockChunkContainer container, int x, int y, int z) {
+    public BlockChunk(Chunk container, int x, int y, int z) {
         super(x, y, z);
         this.container = container;
     }
