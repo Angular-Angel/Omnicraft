@@ -69,6 +69,7 @@ public class WorldGenerator {
     public void generateSpawnRegion(World world) {
         world.addRegion(new Region(world));
         Region spawnRegion = world.getSpawnRegion();
+        spawnRegion.generateChunks();
         generateDirtFloor(spawnRegion);
         
         Chunk chunk = spawnRegion.getChunk(0, 0, 0);

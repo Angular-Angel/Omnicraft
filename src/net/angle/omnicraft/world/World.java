@@ -87,7 +87,6 @@ public class World {
         Region region = regions.get(coord.toString());
         if (region == null) {
             region = generateNewRegion(coord);
-            loadRegion(region);
         }
         return region;
     }
@@ -142,7 +141,6 @@ public class World {
     public Region generateNewRegion(int x, int y, int z) {
         Region region = new Region(this, x, y, z);
         addRegion(region);
-        worldGenerator.generateDirtFloor(region);
         return region;
     }
     

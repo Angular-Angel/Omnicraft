@@ -25,19 +25,21 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     public Chunk[][][] chunks;
     
     public Region(World world) {
-        this(world, world.block_ids.get(0), world.side_ids.get(0), 0, 0, 0);
+        this(world, 0, 0, 0);
     }
     
     public Region(World world, int x, int y, int z) {
-        this(world, world.block_ids.get(0), world.side_ids.get(0), x, y, z);
-    }
-    
-    public Region(World world, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
         this.world = world;
         
         chunks = new Chunk[world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion][world.chunkEdgeLengthOfRegion];
-        
+    }
+    
+    public void generateChunks() {
+        generateChunks(world.block_ids.get(0), world.side_ids.get(0));
+    }
+    
+    public void generateChunks(Block block, Side side) {
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
                 for (int k = 0; k < world.chunkEdgeLengthOfRegion; k++) {
@@ -48,7 +50,8 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     }
     
     public void update(float dt) {
-        
+        int startx = (int) world.player.position.x;
+        int startz = (int) world.player.position.z;
     }
     
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
