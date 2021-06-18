@@ -90,20 +90,6 @@ public class WorldGenerator {
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
     
-    public Region generateNewRegion(World world, Vec3i coord) {
-        return generateNewRegion(world, coord.x, coord.y, coord.z);
-    }
-    
-    public Region generateNewRegion(World world, int x, int y, int z) {
-        Region region = new Region(world, x, y, z);
-        world.addRegion(region);
-        return generateNewRegion(region);
-    }
-    
-    public Region generateNewRegion(Region region) {
-        return generateDirtFloor(region);
-    }
-    
     public static World generateWorld() {
         World world = new World(new WorldGenerator(), 8, 8);
         

@@ -98,13 +98,6 @@ public class DebugClient implements Client {
     @Override
     public void key(int key, int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
-        
-        if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-            world.loadRegion(world.worldGenerator.generateNewRegion(world, 2, 0, 0));
-            //world.worldGenerator.generateNewRegion(world, -2, 0, 0);
-            world.loadRegion(world.worldGenerator.generateNewRegion(world, 0, 0, 2));
-            //world.worldGenerator.generateNewRegion(world, 0, 0, -2);
-        }
     }
 
     @Override
