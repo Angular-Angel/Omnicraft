@@ -77,6 +77,9 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     }
     
     public void streamOptimizedMesh() {
+        vertexManager.begin();
+        if (loaded)
+            return;
         for (Block.BlockFace face : Block.BlockFace.values()) {
             optimizeMeshesForStream(face);
         }
@@ -86,7 +89,9 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     }
     
     public void clearStream() {
-        //vertexManager.stream.
+        if (loaded)
+            DGL.delete(vertexManager.stream);
+        loaded = false;
     }
     
     public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
@@ -177,7 +182,8 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     }
     
     public void draw() {
-        DGL.draw(vertexManager.stream, GL_TRIANGLES);
+        if (loaded)
+            DGL.draw(vertexManager.stream, GL_TRIANGLES);
     }
 
     public int getEdgeLengthOfContainedChunks() {

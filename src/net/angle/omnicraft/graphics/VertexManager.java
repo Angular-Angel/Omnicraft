@@ -17,14 +17,14 @@ import com.samrj.devil.math.Vec3;
  */
 public class VertexManager {
     
-    public final VertexStream stream;
-    public final Vec3 streamVPos;
-    public final Vec2 streamVTexCoord;
-    public final VertexBuilder.IntAttribute stream_block_palette_index;
-    public final VertexBuilder.IntAttribute stream_side_palette_index;
-    public final Vec3 streamVRandom;
+    public VertexStream stream;
+    public Vec3 streamVPos;
+    public Vec2 streamVTexCoord;
+    public VertexBuilder.IntAttribute stream_block_palette_index;
+    public VertexBuilder.IntAttribute stream_side_palette_index;
+    public Vec3 streamVRandom;
     
-    public VertexManager() {
+    public void begin() {
         stream = DGL.genVertexStream(720, -1);
         
         streamVPos = stream.vec3("in_pos");

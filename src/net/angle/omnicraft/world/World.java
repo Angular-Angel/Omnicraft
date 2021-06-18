@@ -229,7 +229,7 @@ public class World {
     
     public void delete() {
         for (Chunk chunk : loadedChunks) {
-            DGL.delete(chunk.vertexManager.stream);
+            chunk.clearStream();
         }
         DGL.delete(block_palette);
         DGL.delete(side_palette);
