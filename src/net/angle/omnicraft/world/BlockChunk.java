@@ -9,7 +9,7 @@ package net.angle.omnicraft.world;
  *
  * @author angle
  */
-public abstract class BlockChunk extends Positionable implements BlockContainer {
+public abstract class BlockChunk extends VoxelPositionable implements BlockContainer {
     
     public final Chunk container;
     //These describe this chunks size, and it's x, y, and z coordinates within it's region. 

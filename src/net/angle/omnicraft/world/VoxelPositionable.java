@@ -11,16 +11,28 @@ import com.samrj.devil.math.Vec3i;
  *
  * @author angle
  */
-public abstract class Positionable {
+public abstract class VoxelPositionable {
     
     //These describe this objects x, y, and z coordinates relative to it's containing object.
-    public final Vec3i position;
+    private final Vec3i position;
     
-    public Positionable(int x, int y, int z) {
+    public VoxelPositionable(int x, int y, int z) {
         this(new Vec3i(x, y, z));
     }
     
-    public Positionable(Vec3i position) {
+    public int getX() {
+        return position.x;
+    }
+    
+    public int getY() {
+        return position.y;
+    }
+    
+    public int getZ() {
+        return position.z;
+    }
+    
+    public VoxelPositionable(Vec3i position) {
         this.position = position;
     }
     

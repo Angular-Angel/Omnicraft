@@ -67,7 +67,7 @@ public class WorldGenerator {
     }
     
     public Chunk generateChunk(Chunk chunk) {
-        if (chunk.position.y == 0 && chunk.region.position.y == 0)
+        if (chunk.getY() == 0 && chunk.region.getY() == 0)
             return generateDirtFloor(chunk);
         else return chunk;
     }

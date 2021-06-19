@@ -16,7 +16,7 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-public class Chunk extends Positionable implements BlockContainer, SideContainer {
+public class Chunk extends VoxelPositionable implements BlockContainer, SideContainer {
     
     public final Region region;
     
@@ -51,7 +51,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return region.getBlock(blockx + position.x * getEdgeLength(), blocky + position.y * getEdgeLength(), blockz + position.z * getEdgeLength());
+            return region.getBlock(blockx + getX() * getEdgeLength(), blocky + getY() * getEdgeLength(), blockz + getZ() * getEdgeLength());
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
     }
@@ -59,7 +59,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            region.setBlock(blockx + position.x * getEdgeLength(), blocky + position.y * getEdgeLength(), blockz + position.z * getEdgeLength(), block);
+            region.setBlock(blockx + getX() * getEdgeLength(), blocky + getY() * getEdgeLength(), blockz + getZ() * getEdgeLength(), block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
@@ -94,7 +94,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         if (!blockIsTransparent(blockx, blocky, blockz))
             return false;
         for (Block.BlockFace face : Block.BlockFace.values()) {
-            if (!sideIsTransparent(face, position.x, position.y, position.z))
+            if (!sideIsTransparent(face, getX(), getY(), getZ()))
                 return false;
         }
         return true;
@@ -132,7 +132,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         if (!blockIsEmpty(blockx, blocky, blockz))
             return false;
         for (Block.BlockFace face : Block.BlockFace.values()) {
-            if (!sideIsEmpty(face, position.x, position.y, position.z))
+            if (!sideIsEmpty(face, getX(), getY(), getZ()))
                 return false;
         }
         return true;
@@ -244,9 +244,9 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         
         Vec3i orientFace = face.orientFace(dimensions);
         
-        float drawStartx = region.position.x * region.getEdgeLength() + position.x * getEdgeLength() + coord.x;
-        float drawStarty = region.position.y * region.getEdgeLength() + position.y * getEdgeLength() + coord.y;
-        float drawStartz = region.position.z * region.getEdgeLength() + position.z * getEdgeLength() + coord.z;
+        float drawStartx = region.getX() * region.getEdgeLength() + getX() * getEdgeLength() + coord.x;
+        float drawStarty = region.getY() * region.getEdgeLength() + getY() * getEdgeLength() + coord.y;
+        float drawStartz = region.getZ() * region.getEdgeLength() + getZ() * getEdgeLength() + coord.z;
         
         Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
         
