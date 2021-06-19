@@ -96,10 +96,10 @@ public class VertexManager {
         bottomLeft.add(new Vec3(startx, starty, startz));
         bottomRight.add(new Vec3(startx, starty, startz));
         
-        topLeft.mult(World.BLOCK_EDGE_LENGTH);
-        topRight.mult(World.BLOCK_EDGE_LENGTH);
-        bottomLeft.mult(World.BLOCK_EDGE_LENGTH);
-        bottomRight.mult(World.BLOCK_EDGE_LENGTH);
+        topLeft.mult(World.EDGE_LENGTH_OF_BLOCK);
+        topRight.mult(World.EDGE_LENGTH_OF_BLOCK);
+        bottomLeft.mult(World.EDGE_LENGTH_OF_BLOCK);
+        bottomRight.mult(World.EDGE_LENGTH_OF_BLOCK);
 
         //add first trangle, starting at top left corner, then top right, then bottom right
         streamVPos.set(topLeft); streamVTexCoord.set(0.0f, 0.0f); stream_block_palette_index.x = block_id; 

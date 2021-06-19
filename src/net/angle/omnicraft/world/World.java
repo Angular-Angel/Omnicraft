@@ -38,7 +38,7 @@ public class World {
     public static final int PALETTE_SIZE = 40;
     public static final int GENERATION_DISTANCE = 8;
     public static final int RENDER_DISTANCE = 8;
-    public static final float BLOCK_EDGE_LENGTH = 0.5f;
+    public static final float EDGE_LENGTH_OF_BLOCK = 0.5f;
     
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
@@ -239,6 +239,10 @@ public class World {
     
     public int getBlockEdgeLengthOfRegion() {
         return blockEdgeLengthOfChunk * chunkEdgeLengthOfRegion;
+    }
+    
+    public float getRealEdgeLengthOfRegion() {
+        return getBlockEdgeLengthOfRegion() * EDGE_LENGTH_OF_BLOCK;
     }
     
     public void draw() {

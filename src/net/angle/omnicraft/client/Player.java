@@ -38,7 +38,7 @@ public class Player {
     public static final float CAMERA_NEAR_Z = 0.125f;
     public static final float CAMERA_FAR_Z = 1024.0f;
     public static final float CAMERA_FOV = Util.toRadians(90.0f);
-    public static final float MOVE_SPEED = 20.0f;
+    public static final float MOVE_SPEED = 10.0f;
     
     private final Vec3 position;
     private final Vec3i regionPosition;
@@ -67,7 +67,7 @@ public class Player {
         camera.setFOV(resolution.x, resolution.y, camera_fov);
         
         cameraController = new Camera3DController(camera);
-        position = new Vec3(world.getBlockEdgeLengthOfRegion() / 2, 17, world.getBlockEdgeLengthOfRegion() / 2);
+        position = new Vec3(world.getRealEdgeLengthOfRegion() / 2, 17, world.getRealEdgeLengthOfRegion() / 2);
         regionPosition = new Vec3i(0, 0, 0);
         
         Vec2 mousePos = Game.getMouse().getPos();
@@ -93,31 +93,31 @@ public class Player {
     }
     
     public void updateRegionPosition() {
-            if (position.x >= world.getBlockEdgeLengthOfRegion() * (regionPosition.x + 1)) {
+            if (position.x >= world.getRealEdgeLengthOfRegion() * (regionPosition.x + 1)) {
                 regionPosition.x += 1;
             }
-            if (position.x < world.getBlockEdgeLengthOfRegion() * regionPosition.x) {
+            if (position.x < world.getRealEdgeLengthOfRegion() * regionPosition.x) {
                 regionPosition.x -= 1;
             }
-            if (position.y >= world.getBlockEdgeLengthOfRegion() * (regionPosition.y + 1)) {
+            if (position.y >= world.getRealEdgeLengthOfRegion() * (regionPosition.y + 1)) {
                 regionPosition.y += 1;
             }
-            if (position.y < world.getBlockEdgeLengthOfRegion() * regionPosition.y) {
+            if (position.y < world.getRealEdgeLengthOfRegion() * regionPosition.y) {
                 regionPosition.y -= 1;
             }
-            if (position.z >= world.getBlockEdgeLengthOfRegion() * (regionPosition.z + 1)) {
+            if (position.z >= world.getRealEdgeLengthOfRegion() * (regionPosition.z + 1)) {
                 regionPosition.z += 1;
             }
-            if (position.z < world.getBlockEdgeLengthOfRegion() * regionPosition.z) {
+            if (position.z < world.getRealEdgeLengthOfRegion() * regionPosition.z) {
                 regionPosition.z -= 1;
             }
     }
     
     public Vec3i getChunkCoords() {
         Vec3i relativePosition = new Vec3i((int) position.x, (int) position.y, (int) position.z);
-        relativePosition.x -= world.getBlockEdgeLengthOfRegion() * regionPosition.x;
-        relativePosition.y -= world.getBlockEdgeLengthOfRegion() * regionPosition.y;
-        relativePosition.z -= world.getBlockEdgeLengthOfRegion() * regionPosition.z;
+        relativePosition.x -= world.getRealEdgeLengthOfRegion() * regionPosition.x;
+        relativePosition.y -= world.getRealEdgeLengthOfRegion() * regionPosition.y;
+        relativePosition.z -= world.getRealEdgeLengthOfRegion() * regionPosition.z;
         
         return getRegion().getChunkCoordsFromVoxelCoords(relativePosition.x, relativePosition.y, relativePosition.z);
     }
