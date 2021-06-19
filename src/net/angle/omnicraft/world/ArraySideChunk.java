@@ -26,7 +26,7 @@ public class ArraySideChunk extends SideChunk {
     @Override
     public Side getSide(BlockFace face, int sidex, int sidey, int sidez) {
         if (!containsCoordinates(sidex, sidey, sidez)) {
-            return container.getSide(face, sidex + container.getX() * getEdgeLength(), sidey + container.getY() * getEdgeLength(), sidez + container.getZ() * getEdgeLength());
+            return container.getSide(face, sidex , sidey, sidez);
         }
         return sides[sidex][sidey][sidez][face.id];
     }

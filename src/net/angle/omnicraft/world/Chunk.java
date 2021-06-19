@@ -51,7 +51,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return region.getBlock(blockx + getX() * getEdgeLength(), blocky + getY() * getEdgeLength(), blockz + getZ() * getEdgeLength());
+            return region.getBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset());
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
     }
@@ -59,14 +59,17 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            region.setBlock(blockx + getX() * getEdgeLength(), blocky + getY() * getEdgeLength(), blockz + getZ() * getEdgeLength(), block);
+            region.setBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset(), block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
 
     @Override
-    public Side getSide(Block.BlockFace face, int blockx, int blocky, int blockz) {
-        return sideChunk.getSide(face, blockx, blocky, blockz);
+    public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
+        if (!containsCoordinates(sidex, sidey, sidez)) {
+            return region.getSide(face, sidex + getXVoxelOffset(), sidey + getYVoxelOffset(), sidez + getZVoxelOffset());
+        }
+        return sideChunk.getSide(face, sidex, sidey, sidez);
     }
 
     @Override
@@ -244,9 +247,9 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         
         Vec3i orientFace = face.orientFace(dimensions);
         
-        float drawStartx = region.getX() * region.getEdgeLength() + getX() * getEdgeLength() + coord.x;
-        float drawStarty = region.getY() * region.getEdgeLength() + getY() * getEdgeLength() + coord.y;
-        float drawStartz = region.getZ() * region.getEdgeLength() + getZ() * getEdgeLength() + coord.z;
+        float drawStartx = region.getXVoxelOffset() + getXVoxelOffset() + coord.x;
+        float drawStarty = region.getYVoxelOffset() + getYVoxelOffset() + coord.y;
+        float drawStartz = region.getZVoxelOffset() + getZVoxelOffset() + coord.z;
         
         Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
         
@@ -262,11 +265,11 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
 
     @Override
     public int getYVoxelOffset() {
-        return getX() * getEdgeLength();
+        return getY() * getEdgeLength();
     }
 
     @Override
     public int getZVoxelOffset() {
-        return getX() * getEdgeLength();
+        return getZ() * getEdgeLength();
     }
 }
