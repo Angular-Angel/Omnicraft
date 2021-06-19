@@ -36,8 +36,8 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 public class World {
     
     public static final int PALETTE_SIZE = 40;
-    public static final int GENERATION_DISTANCE = 16;
-    public static final int RENDER_DISTANCE = 16;
+    public static final int GENERATION_DISTANCE = 6;
+    public static final int RENDER_DISTANCE = 4;
     
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
@@ -94,18 +94,6 @@ public class World {
     }
     
     public void update(float dt) {
-        Vec3i regionPosition = new Vec3i(player.regionPosition);
-        regionPosition.x -= 1;
-        regionPosition.y = 0;
-        regionPosition.z -= 1;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                checkRegion(regionPosition);
-                regionPosition.z += 1;
-            }
-            regionPosition.z -= 3;
-            regionPosition.x += 1;
-        }
         for (Region region : regions.values())
             region.update(dt);
     }
@@ -146,6 +134,13 @@ public class World {
         return region;
     }
     
+    public Chunk generateChunkTerrain(Chunk chunk) {
+        worldGenerator.generateChunk(chunk);
+        reloadChunk(chunk);
+        reloadAdjacentChunks(chunk);
+        return chunk;
+    }
+    
     public void addRegion(Region region) {
         String coordstring = region.getCoordinates().toString();
         regions.put(coordstring, region);
@@ -155,12 +150,41 @@ public class World {
         return regions.get("(0, 0, 0)");
     }
     
+    public void loadChunk(Chunk chunk) {
+        if (chunk != null && !chunk.vertexManager.loaded) {
+            chunk.streamOptimizedMesh();
+            loadedChunks.add(chunk);
+        }
+    }
+    
+    public void unloadChunk(Chunk chunk) {
+        if (chunk.vertexManager.loaded) {
+            chunk.vertexManager.clearStream();
+            loadedChunks.remove(chunk);
+        }
+    }
+    
+    public void reloadChunk(Chunk chunk) {
+        if (chunk != null && chunk.vertexManager.loaded) {
+            unloadChunk(chunk);
+            loadChunk(chunk);
+        }
+    }
+    
+    public void reloadAdjacentChunks(Chunk chunk) {
+        reloadChunk(chunk.region.getChunk(chunk.x + 1, chunk.y, chunk.z));
+        reloadChunk(chunk.region.getChunk(chunk.x - 1, chunk.y, chunk.z));
+        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y + 1, chunk.z));
+        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y - 1, chunk.z));
+        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y, chunk.z + 1));
+        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y, chunk.z - 1));
+    }
+    
     public void loadRegion(Region region) {
         List<Chunk> chunks = region.getChunks();
         chunks.forEach(chunk -> {
-            chunk.streamOptimizedMesh();
+            loadChunk(chunk);
         });
-        loadedChunks.addAll(chunks);
     }
     
     public void prepare_block_palette() {
@@ -223,13 +247,13 @@ public class World {
     
     public void draw() {
         loadedChunks.forEach(chunk -> {
-            chunk.draw();
+            chunk.vertexManager.draw();
         });
     }
     
     public void delete() {
         for (Chunk chunk : loadedChunks) {
-            chunk.clearStream();
+            chunk.vertexManager.clearStream();
         }
         DGL.delete(block_palette);
         DGL.delete(side_palette);

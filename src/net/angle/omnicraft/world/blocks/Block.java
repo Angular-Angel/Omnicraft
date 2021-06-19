@@ -44,7 +44,7 @@ public abstract class Block extends Renderable {
             return new Vec3i(-1, -1, -1);
         }
         
-        public Vec3 getDrawStart(int x, int y, int z) {
+        public Vec3 getDrawStart(float x, float y, float z) {
             switch(this) {
                 case top: return new Vec3(x + 1, y + 1, z);
                 case bottom: return new Vec3(x, y, z);

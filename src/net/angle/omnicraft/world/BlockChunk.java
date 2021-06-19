@@ -22,6 +22,6 @@ public abstract class BlockChunk extends Positionable implements BlockContainer 
     
     @Override
     public int getEdgeLength() {
-        return container.getEdgeLengthOfContainedChunks();
+        return container.getEdgeLength();
     }
 }

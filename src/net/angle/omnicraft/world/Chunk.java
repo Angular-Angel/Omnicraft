@@ -24,10 +24,12 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     
     public VertexManager vertexManager;
     
-    public boolean loaded;
-    
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
+    
+    public Chunk(Region region, int x, int y, int z) {
+        this(region, region.world.block_ids.get(0), region.world.side_ids.get(0), x, y, z);
+    }
 
     public Chunk(Region region, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
@@ -37,8 +39,6 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         
         blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
         sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
-        
-        loaded = false;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return region.getBlock(blockx + x, blocky + y, blockz + z);
+            return region.getBlock(blockx + x * getEdgeLength(), blocky + y * getEdgeLength(), blockz + z * getEdgeLength());
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
     }
@@ -61,7 +61,7 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            region.setBlock(blockx + x, blocky + y, blockz + z, block);
+            region.setBlock(blockx + x * getEdgeLength(), blocky + y * getEdgeLength(), blockz + z * getEdgeLength(), block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
@@ -76,16 +76,16 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         sideChunk.setSide(face, blockx, blocky, blockz, side);
     }
     
-    public boolean blockIsTransparent(int x, int y, int z) {
-        return blockIsTransparent(getBlock(x, y, z));
+    public boolean blockIsTransparent(int blockx, int blocky, int blockz) {
+        return blockIsTransparent(getBlock(blockx, blocky, blockz));
     }
     
     public boolean blockIsTransparent(Block block) {
         return block == null || block.isTransparent();
     }
     
-    public boolean isTransparent(int x, int y, int z) {
-        if (!blockIsTransparent(x, y, z))
+    public boolean isTransparent(int blockx, int blocky, int blockz) {
+        if (!blockIsTransparent(blockx, blocky, blockz))
             return false;
 //        for (Block.BlockFace face : Block.BlockFace.values()) {
 //            if (!getSide(face, x, y, z).isTransparent())
@@ -107,20 +107,12 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     }
     
     public void streamOptimizedMesh() {
-        if (loaded || isTransparent())
+        if (vertexManager.loaded || isTransparent())
             return;
-        vertexManager.begin();
         for (Block.BlockFace face : Block.BlockFace.values()) {
             optimizeMeshesForStream(face);
         }
-        vertexManager.buffer.end();
-        loaded = true;
-    }
-    
-    public void clearStream() {
-        if (loaded)
-            DGL.delete(vertexManager.buffer);
-        loaded = false;
+        vertexManager.end();
     }
     
     public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
@@ -203,19 +195,14 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         
         Vec3i orientFace = face.orientFace(dimensions);
         
-        Vec3 drawStart = face.getDrawStart(region.x * region.getEdgeLength() + x + coord.x, region.y * region.getEdgeLength() + y + coord.y, region.z * region.getEdgeLength() + z + coord.z);
+        float drawStartx = region.x * region.getEdgeLength() + x * getEdgeLength() + coord.x;
+        float drawStarty = region.y * region.getEdgeLength() + y * getEdgeLength() + coord.y;
+        float drawStartz = region.z * region.getEdgeLength() + z * getEdgeLength() + coord.z;
+        
+        Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
         
         vertexManager.streamFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
-    }
-    
-    public void draw() {
-        if (loaded)
-            DGL.draw(vertexManager.buffer, GL_TRIANGLES);
-    }
-
-    public int getEdgeLengthOfContainedChunks() {
-        return region.getEdgeLengthOfContainedChunks();
     }
 }

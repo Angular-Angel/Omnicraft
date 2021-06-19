@@ -43,15 +43,42 @@ public class Region extends Positionable implements BlockContainer, SideContaine
         for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++) {
             for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++) {
                 for (int k = 0; k < world.chunkEdgeLengthOfRegion; k++) {
-                    chunks[i][j][k] = new Chunk(this, block, side, i * world.blockEdgeLengthOfChunk, j * world.blockEdgeLengthOfChunk, k * world.blockEdgeLengthOfChunk);
+                    chunks[i][j][k] = new Chunk(this, block, side, i, j, k);
                 }
             }
         }
     }
     
+    public boolean containsChunkCoordinates(int x, int y, int z) {
+        return x >= 0 && x < world.chunkEdgeLengthOfRegion && y >= 0 && y < world.chunkEdgeLengthOfRegion && 
+            z >= 0 && z < world.chunkEdgeLengthOfRegion;
+    }
+    
+    public int getLowerXBound() {
+        return world.getBlockEdgeLengthOfRegion() * x;
+    }
+    
+    public int getUpperXBound() {
+        return world.getBlockEdgeLengthOfRegion() * (x + 1);
+    }
+    
+    public int getLowerYBound() {
+        return world.getBlockEdgeLengthOfRegion() * y;
+    }
+    
+    public int getUpperYBound() {
+        return world.getBlockEdgeLengthOfRegion() * (y + 1);
+    }
+    
+    public int getLowerZBound() {
+        return world.getBlockEdgeLengthOfRegion() * z;
+    }
+    
+    public int getUpperZBound() {
+        return world.getBlockEdgeLengthOfRegion() * (z + 1);
+    }
+    
     public void update(float dt) {
-        int startx = (int) world.player.position.x;
-        int startz = (int) world.player.position.z;
     }
     
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
@@ -109,9 +136,10 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
-        if (!containsCoordinates(blockx, blocky, blockz))
+        Chunk chunk = getChunkFromVoxelCoords(blockx, blocky, blockz);
+        if (chunk == null)
             return null;
-        return getChunkFromVoxelCoords(blockx, blocky, blockz).getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
+        return chunk.getBlock(blockx % world.blockEdgeLengthOfChunk, blocky % world.blockEdgeLengthOfChunk, blockz % world.blockEdgeLengthOfChunk);
     }
     
     @Override
@@ -130,7 +158,83 @@ public class Region extends Positionable implements BlockContainer, SideContaine
         }
     }
     
+    public Chunk generateChunk(int chunkx, int chunky, int chunkz) {
+        if (!containsChunkCoordinates(chunkx, chunky, chunkz)) {
+            int regionx = x;
+            int regiony = y;
+            int regionz = z;
+            while (chunkx < 0) {
+                chunkx += world.chunkEdgeLengthOfRegion;
+                regionx--;
+            }
+            while (chunkx >= world.chunkEdgeLengthOfRegion) {
+                chunkx -= world.chunkEdgeLengthOfRegion;
+                regionx++;
+            }
+            while (chunky < 0) {
+                chunky += world.chunkEdgeLengthOfRegion;
+                regiony--;
+            }
+            while (chunky >= world.chunkEdgeLengthOfRegion) {
+                chunky -= world.chunkEdgeLengthOfRegion;
+                regiony++;
+            }
+            while (chunkz < 0) {
+                chunkz += world.chunkEdgeLengthOfRegion;
+                regionz--;
+            }
+            while (chunkz >= world.chunkEdgeLengthOfRegion) {
+                chunkz -= world.chunkEdgeLengthOfRegion;
+                regionz++;
+            }
+            Region region = world.regions.get(new Vec3i(regionx, regiony, regionz).toString());
+            if (region == null)
+                region = world.generateNewRegion(regionx, regiony, regionz);
+            return region.generateChunk(chunkx, chunky, chunkz);
+        }
+        Chunk chunk = new Chunk(this, chunkx, chunky, chunkz);
+        chunks[chunkx][chunky][chunkz] = chunk;
+        return world.generateChunkTerrain(chunk);
+    }
+    
+    public Chunk getChunk(Vec3i coord) {
+        return getChunk(coord.x, coord.y, coord.z);
+    }
+    
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+        if (!containsChunkCoordinates(chunkx, chunky, chunkz)) {
+            int regionx = x;
+            int regiony = y;
+            int regionz = z;
+            while (chunkx < 0) {
+                chunkx += world.chunkEdgeLengthOfRegion;
+                regionx--;
+            }
+            while (chunkx >= world.chunkEdgeLengthOfRegion) {
+                chunkx -= world.chunkEdgeLengthOfRegion;
+                regionx++;
+            }
+            while (chunky < 0) {
+                chunky += world.chunkEdgeLengthOfRegion;
+                regiony--;
+            }
+            while (chunky >= world.chunkEdgeLengthOfRegion) {
+                chunky -= world.chunkEdgeLengthOfRegion;
+                regiony++;
+            }
+            while (chunkz < 0) {
+                chunkz += world.chunkEdgeLengthOfRegion;
+                regionz--;
+            }
+            while (chunkz >= world.chunkEdgeLengthOfRegion) {
+                chunkz -= world.chunkEdgeLengthOfRegion;
+                regionz++;
+            }
+            Region region = world.regions.get(new Vec3i(regionx, regiony, regionz).toString());
+            if (region == null)
+                region = world.generateNewRegion(regionx, regiony, regionz);
+            return region.getChunk(chunkx, chunky, chunkz);
+        }
         return chunks[chunkx][chunky][chunkz];
     }
 
@@ -138,19 +242,27 @@ public class Region extends Positionable implements BlockContainer, SideContaine
         chunks[chunkx][chunky][chunkz] = chunk;
     }
     
-    public Vec3i getChunkCoordsFromVoxelCoords(int x, int y, int z) {
-        return new Vec3i(x / world.blockEdgeLengthOfChunk, y / world.blockEdgeLengthOfChunk, z / world.blockEdgeLengthOfChunk);
+    public Vec3i getChunkCoordsFromVoxelCoords(int voxelx, int voxely, int voxelz) {
+        //Fixing a rounding problem
+        if (voxelx < 0) voxelx -= world.blockEdgeLengthOfChunk;
+        if (voxely < 0) voxely -= world.blockEdgeLengthOfChunk;
+        if (voxelz < 0) voxelz -= world.blockEdgeLengthOfChunk;
+        return new Vec3i(voxelx / world.blockEdgeLengthOfChunk, voxely / world.blockEdgeLengthOfChunk, voxelz / world.blockEdgeLengthOfChunk);
     }
     
-    public Chunk getChunkFromVoxelCoords(int x, int y, int z) {
-        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
-        
-        return chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z];
+    public Chunk getChunkFromVoxelCoords(Vec3i coord) {
+        return getChunkFromVoxelCoords(coord.x, coord.y, coord.z);
     }
     
-    public void setChunkFromVoxelCoords(int x, int y, int z, Chunk chunk) {
+    public Chunk getChunkFromVoxelCoords(int voxelx, int voxely, int voxelz) {
+        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(voxelx, voxely, voxelz);
         
-        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(x, y, z);
+        return getChunk(chunkCoords);
+    }
+    
+    public void setChunkFromVoxelCoords(int voxelx, int voxely, int voxelz, Chunk chunk) {
+        
+        Vec3i chunkCoords = getChunkCoordsFromVoxelCoords(voxelx, voxely, voxelz);
         
         chunks[chunkCoords.x][chunkCoords.y][chunkCoords.z] = chunk;
     }

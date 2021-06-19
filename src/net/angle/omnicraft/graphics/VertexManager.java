@@ -10,6 +10,7 @@ import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 /**
  *
@@ -24,6 +25,8 @@ public class VertexManager {
     public VertexBuilder.IntAttribute stream_side_palette_index;
     public Vec3 streamVRandom;
     
+    public boolean loaded;
+    
     public void begin() {
         buffer = DGL.genVertexBuffer(720, -1);
         
@@ -34,9 +37,16 @@ public class VertexManager {
         streamVRandom = buffer.vec3("in_random");
         
         buffer.begin();
+        loaded = true;
+    }
+    
+    public void end() {
+        if (loaded)
+            buffer.end();
     }
     
     public void streamFlatVertices(int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
+        if (!loaded) begin();
 
         //Build a square out of two triangles.
 
@@ -89,5 +99,16 @@ public class VertexManager {
         
         streamVPos.set(bottomLeft); streamVTexCoord.set(0.0f, height); stream_block_palette_index.x = block_id; 
         stream_side_palette_index.x = side_id; streamVRandom.set(topRight); buffer.vertex();
+    }
+    
+    public void clearStream() {
+        if (loaded)
+            DGL.delete(buffer);
+        loaded = false;
+    }
+    
+    public void draw() {
+        if (loaded)
+            DGL.draw(buffer, GL_TRIANGLES);
     }
 }

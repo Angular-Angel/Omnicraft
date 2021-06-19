@@ -66,9 +66,14 @@ public class WorldGenerator {
         return region;
     }
     
+    public Chunk generateChunk(Chunk chunk) {
+        if (chunk.y == 0)
+            return generateDirtFloor(chunk);
+        else return chunk;
+    }
+    
     public void generateSpawnRegion(World world) {
-        world.addRegion(new Region(world));
-        Region spawnRegion = world.getSpawnRegion();
+        Region spawnRegion = world.generateNewRegion(0, 0, 0);
         spawnRegion.generateChunks();
         generateDirtFloor(spawnRegion);
         
@@ -93,6 +98,9 @@ public class WorldGenerator {
     
     public static World generateWorld() {
         World world = new World(new WorldGenerator(), 8, 8);
+        Region region = world.generateNewRegion(1, 0, 0);
+        region.generateChunks();
+        world.worldGenerator.generateDirtFloor(region);
         
         world.loadRegion(world.getSpawnRegion());
         

@@ -24,6 +24,6 @@ public abstract class SideChunk implements SideContainer {
     
     @Override
     public int getEdgeLength() {
-        return container.getEdgeLengthOfContainedChunks();
+        return container.getEdgeLength();
     }
 }
