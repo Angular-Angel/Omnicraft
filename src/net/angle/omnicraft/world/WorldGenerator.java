@@ -97,12 +97,7 @@ public class WorldGenerator {
     }
     
     public static World generateWorld() {
-        World world = new World(new WorldGenerator(), 8, 8);
-        Region region = world.generateNewRegion(1, 0, 0);
-        region.generateChunks();
-        world.worldGenerator.generateDirtFloor(region);
-        
-        world.loadRegion(world.getSpawnRegion());
+        World world = new World(new WorldGenerator(), 16, 16);
         
         return world;
     }
