@@ -26,6 +26,7 @@ public class VertexManager {
     public Vec3 streamVRandom;
     
     public boolean loaded;
+    public boolean drawing;
     
     public void begin() {
         buffer = DGL.genVertexBuffer(720, -1);
@@ -38,6 +39,7 @@ public class VertexManager {
         
         buffer.begin();
         loaded = true;
+        drawing = true;
     }
     
     public void end() {
@@ -108,7 +110,7 @@ public class VertexManager {
     }
     
     public void draw() {
-        if (loaded)
+        if (loaded && drawing)
             DGL.draw(buffer, GL_TRIANGLES);
     }
 }

@@ -107,8 +107,13 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
     }
     
     public void streamOptimizedMesh() {
-        if (vertexManager.loaded || isTransparent())
+        if (vertexManager.loaded)
             return;
+        if (isTransparent()) {
+            vertexManager.loaded = true;
+            vertexManager.drawing = false;
+            return;
+        }
         for (Block.BlockFace face : Block.BlockFace.values()) {
             optimizeMeshesForStream(face);
         }
