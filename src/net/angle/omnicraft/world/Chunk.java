@@ -84,13 +84,21 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         return block == null || block.isTransparent();
     }
     
+    public boolean sideIsTransparent(Block.BlockFace face, int voxelx, int voxely, int voxelz) {
+        return sideIsTransparent(getSide(face, voxelx, voxely, voxelz));
+    }
+    
+    public boolean sideIsTransparent(Side side) {
+        return side == null || side.isTransparent();
+    }
+    
     public boolean isTransparent(int blockx, int blocky, int blockz) {
         if (!blockIsTransparent(blockx, blocky, blockz))
             return false;
-//        for (Block.BlockFace face : Block.BlockFace.values()) {
-//            if (!getSide(face, x, y, z).isTransparent())
-//                return false;
-//        }
+        for (Block.BlockFace face : Block.BlockFace.values()) {
+            if (!sideIsTransparent(face, x, y, z))
+                return false;
+        }
         return true;
     }
     
@@ -106,10 +114,48 @@ public class Chunk extends Positionable implements BlockContainer, SideContainer
         return true;
     }
     
+    public boolean blockIsEmpty(int blockx, int blocky, int blockz) {
+        return blockIsEmpty(getBlock(blockx, blocky, blockz));
+    }
+    
+    public boolean blockIsEmpty(Block block) {
+        return block == null || block.id == 0;
+    }
+    
+    public boolean sideIsEmpty(Block.BlockFace face, int voxelx, int voxely, int voxelz) {
+        return sideIsEmpty(getSide(face, voxelx, voxely, voxelz));
+    }
+    
+    public boolean sideIsEmpty(Side side) {
+        return side == null || side.id == 0;
+    }
+    
+    public boolean isEmpty(int blockx, int blocky, int blockz) {
+        if (!blockIsEmpty(blockx, blocky, blockz))
+            return false;
+        for (Block.BlockFace face : Block.BlockFace.values()) {
+            if (!sideIsEmpty(face, x, y, z))
+                return false;
+        }
+        return true;
+    }
+    
+    public boolean isEmpty() {
+        for (int i = 0; i < getEdgeLength(); i++) {
+            for (int j = 0; j < getEdgeLength(); j++) {
+                for (int k = 0; k < getEdgeLength(); k++) {
+                    if (!isTransparent(i, j, k))
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     public void streamOptimizedMesh() {
         if (vertexManager.loaded)
             return;
-        if (isTransparent()) {
+        if (isEmpty()) {
             vertexManager.loaded = true;
             vertexManager.drawing = false;
             return;
