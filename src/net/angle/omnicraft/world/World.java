@@ -20,6 +20,7 @@ import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.EmptyBlock;
 import net.angle.omnicraft.world.blocks.EmptySide;
 import net.angle.omnicraft.world.blocks.Side;
+import net.angle.omnicraft.world.types.Emptiness;
 import net.angle.omnicraft.world.types.Substance;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
@@ -42,13 +43,20 @@ public class World {
     
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
+    //Stored by name
     public final Map<String, Substance> substances;
     public final Map<String, Block> blockTypes;
     public final Map<String, Side> sideTypes;
+    
+    //Stored by coordinates
     public final Map<String, Region> regions;
+    
     public final List<Chunk> loadedChunks;
+    
+    public final List<Substance> substance_ids;
     public final List<Block> block_ids;
     public final List<Side> side_ids;
+    
     public final WorldGenerator worldGenerator;
     
     public Player player;
@@ -67,8 +75,10 @@ public class World {
         sideTypes = new HashMap<>();
         regions = new HashMap<>();
         loadedChunks = new ArrayList<>();
+        substance_ids = new ArrayList<>();
         block_ids = new ArrayList<>();
         side_ids = new ArrayList<>();
+        addSubstance(new Emptiness());
         addBlockType(new EmptyBlock());
         addSideType(new EmptySide());
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
