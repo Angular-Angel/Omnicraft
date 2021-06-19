@@ -254,4 +254,19 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         
         return dimensions;
     }
+
+    @Override
+    public int getXVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
+
+    @Override
+    public int getYVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
+
+    @Override
+    public int getZVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
 }

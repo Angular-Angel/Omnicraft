@@ -296,4 +296,19 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
         getChunkFromVoxelCoords(sidex, sidey, sidez).setSide(face, sidex % world.blockEdgeLengthOfChunk, sidey % world.blockEdgeLengthOfChunk, sidez % world.blockEdgeLengthOfChunk, side);
     }
+
+    @Override
+    public int getXVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
+
+    @Override
+    public int getYVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
+
+    @Override
+    public int getZVoxelOffset() {
+        return getX() * getEdgeLength();
+    }
 }

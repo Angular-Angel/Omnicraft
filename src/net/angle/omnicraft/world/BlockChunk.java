@@ -23,4 +23,19 @@ public abstract class BlockChunk implements BlockContainer {
     public int getEdgeLength() {
         return container.getEdgeLength();
     }
+
+    @Override
+    public int getXVoxelOffset() {
+        return container.getXVoxelOffset();
+    }
+
+    @Override
+    public int getYVoxelOffset() {
+        return container.getYVoxelOffset();
+    }
+
+    @Override
+    public int getZVoxelOffset() {
+        return container.getZVoxelOffset();
+    }
 }

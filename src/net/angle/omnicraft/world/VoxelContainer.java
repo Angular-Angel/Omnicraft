@@ -16,4 +16,8 @@ public interface VoxelContainer {
         return x >= 0 && x < getEdgeLength() && y >= 0 && y < getEdgeLength() && 
             z >= 0 && z < getEdgeLength();
     }
+    
+    public int getXVoxelOffset();
+    public int getYVoxelOffset();
+    public int getZVoxelOffset();
 }
