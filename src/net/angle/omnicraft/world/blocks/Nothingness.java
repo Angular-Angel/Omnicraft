@@ -23,8 +23,8 @@ public class Nothingness extends Side {
     }
 
     @Override
-    public boolean isEmpty() {
-        return true;
+    public boolean isDrawable() {
+        return false;
     }
     
 }

@@ -51,7 +51,7 @@ public class VertexManager {
     public void streamOptimizedMesh(Chunk chunk) {
         if (loaded)
             return;
-        if (chunk.isEmpty()) {
+        if (!chunk.isDrawable()) {
             loaded = true;
             drawing = false;
             return;

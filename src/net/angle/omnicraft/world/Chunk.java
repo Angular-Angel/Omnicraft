@@ -115,42 +115,42 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         return true;
     }
     
-    public boolean blockIsEmpty(int blockx, int blocky, int blockz) {
-        return blockIsEmpty(getBlock(blockx, blocky, blockz));
+    public boolean blockIsDrawable(int blockx, int blocky, int blockz) {
+        return blockIsDrawable(getBlock(blockx, blocky, blockz));
     }
     
-    public boolean blockIsEmpty(Block block) {
-        return block == null || block.isEmpty();
+    public boolean blockIsDrawable(Block block) {
+        return block != null && block.isDrawable();
     }
     
-    public boolean sideIsEmpty(Block.BlockFace face, int voxelx, int voxely, int voxelz) {
-        return sideIsEmpty(getSide(face, voxelx, voxely, voxelz));
+    public boolean sideIsDrawable(Block.BlockFace face, int voxelx, int voxely, int voxelz) {
+        return sideIsDrawable(getSide(face, voxelx, voxely, voxelz));
     }
     
-    public boolean sideIsEmpty(Side side) {
-        return side == null || side.isEmpty();
+    public boolean sideIsDrawable(Side side) {
+        return side != null && side.isDrawable();
     }
     
-    public boolean isEmpty(int blockx, int blocky, int blockz) {
-        if (!blockIsEmpty(blockx, blocky, blockz))
-            return false;
+    public boolean isDrawable(int blockx, int blocky, int blockz) {
+        if (blockIsDrawable(blockx, blocky, blockz))
+            return true;
         for (Block.BlockFace face : Block.BlockFace.values()) {
-            if (!sideIsEmpty(face, getX(), getY(), getZ()))
-                return false;
+            if (sideIsDrawable(face, getX(), getY(), getZ()))
+                return true;
         }
-        return true;
+        return false;
     }
     
-    public boolean isEmpty() {
+    public boolean isDrawable() {
         for (int i = 0; i < getEdgeLength(); i++) {
             for (int j = 0; j < getEdgeLength(); j++) {
                 for (int k = 0; k < getEdgeLength(); k++) {
-                    if (!isTransparent(i, j, k))
-                        return false;
+                    if (isDrawable(i, j, k))
+                        return true;
                 }
             }
         }
-        return true;
+        return false;
     }
     
     public void stream() {
@@ -164,7 +164,6 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     }
     
     public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
-        
         //Goes down relative to the block face, not the chunks y coordinate
         Vec3i workingCoordy = new Vec3i(coord);
         for (int i = 0; i < height; i++) {

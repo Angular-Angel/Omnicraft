@@ -32,7 +32,7 @@ public class HomogenousBlock extends Block {
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
+    public boolean isDrawable() {
+        return true;
     }
 }

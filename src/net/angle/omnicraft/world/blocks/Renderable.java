@@ -19,6 +19,6 @@ public abstract class Renderable extends Datum {
         this.renderData = renderData;
     }
     public abstract boolean isTransparent();
-    public abstract boolean isEmpty();
+    public abstract boolean isDrawable();
     
 }

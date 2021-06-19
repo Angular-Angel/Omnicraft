@@ -23,8 +23,8 @@ public class Emptiness extends Block {
     }
 
     @Override
-    public boolean isEmpty() {
-        return true;
+    public boolean isDrawable() {
+        return false;
     }
     
 }
