@@ -152,8 +152,7 @@ public class Player {
         }
     }
     
-    public void update(float dt) {
-        
+    public void move(float dt) {
         float forwards = 0, rightwards = 0;
         
         boolean moving = false;
@@ -197,6 +196,11 @@ public class Player {
             position.add(direction);
             updateRegionPosition();
         }
+    }
+    
+    public void update(float dt) {
+        
+        move(dt);
         
         generateNeededChunks();
         
