@@ -153,18 +153,14 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         return true;
     }
     
-    public void streamOptimizedMesh() {
-        if (vertexManager.loaded)
-            return;
-        if (isEmpty()) {
-            vertexManager.loaded = true;
-            vertexManager.drawing = false;
-            return;
-        }
+    public void stream() {
+        vertexManager.streamOptimizedMesh(this);
+    }
+    
+    public void streamMeshes() {
         for (Block.BlockFace face : Block.BlockFace.values()) {
-            optimizeMeshesForStream(face);
+            optimizeMeshes(face);
         }
-        vertexManager.end();
     }
     
     public boolean checkMesh(Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
@@ -187,7 +183,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         return true;
     }
     
-    public void optimizeMeshesForStream(Block.BlockFace face) {
+    public void optimizeMeshes(Block.BlockFace face) {
         Vec3i coord1 = face.getStartingPosition(blockChunk);
         for (int i = 0; i < getEdgeLength(); i++) {
             boolean[][] checked = new boolean[getEdgeLength()][getEdgeLength()];
@@ -196,7 +192,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
                 Vec3i coord3 = new Vec3i(coord2);
                 for (int k = 0; k < getEdgeLength(); k++) {
                     if (checked[j][k] == false) {
-                        Vec2i dimensions = greedyMeshExpansionForStream(face, coord3);
+                        Vec2i dimensions = greedyMeshExpansion(face, coord3);
                         for (int l = 0; l < dimensions.y; l++) {
                             for (int m = 0; m < dimensions.x; m++) {
                                 checked[j+l][k+m] = true;
@@ -211,7 +207,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         }
     }
     
-    public Vec2i greedyMeshExpansionForStream(Block.BlockFace face, Vec3i coord) {
+    public Vec2i greedyMeshExpansion(Block.BlockFace face, Vec3i coord) {
         
         Block block = getBlock(coord);
         Side side = getSide(face, coord);

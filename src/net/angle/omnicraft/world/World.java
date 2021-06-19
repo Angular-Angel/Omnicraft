@@ -155,7 +155,7 @@ public class World {
     
     public void loadChunk(Chunk chunk) {
         if (chunk != null && !chunk.vertexManager.loaded) {
-            chunk.streamOptimizedMesh();
+            chunk.stream();
             loadedChunks.add(chunk);
         }
     }

@@ -10,6 +10,7 @@ import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
+import net.angle.omnicraft.world.Chunk;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 /**
@@ -45,6 +46,18 @@ public class VertexManager {
     public void end() {
         if (loaded)
             buffer.end();
+    }
+    
+    public void streamOptimizedMesh(Chunk chunk) {
+        if (loaded)
+            return;
+        if (chunk.isEmpty()) {
+            loaded = true;
+            drawing = false;
+            return;
+        }
+        chunk.streamMeshes();
+        end();
     }
     
     public void streamFlatVertices(int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
