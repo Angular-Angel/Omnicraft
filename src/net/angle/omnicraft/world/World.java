@@ -235,6 +235,10 @@ public class World {
     public void prepareShader(ShaderProgram shader) {
         shader.uniform1i("u_block_palette", 0);
         shader.uniform1i("u_side_palette", 1);
+        
+        //We use subtract a small number here instead of a full one to prevent 
+        //having a sliver where it hits the full on the far edges, and giving us lines.
+        shader.uniform1f("u_texel_length", (16.0f * EDGE_LENGTH_OF_BLOCK) - 0.00001f);
     }
     
     public int getBlockEdgeLengthOfRegion() {

@@ -2,6 +2,7 @@
 
 uniform sampler2DRect u_block_palette;
 uniform sampler2DRect u_side_palette;
+uniform float u_texel_length;
 
 in vec2 v_tex_coord;
 flat in int i_block_palette_index;
@@ -56,9 +57,7 @@ vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
 }
 
 void main() {
-    
-    //We use 15.9999 here instead of 16 to prevent having a sliver where it hits 16 on the far edges, and giving us lines.
-    vec2 texel_position = floor(v_tex_coord * 15.9999);
+    vec2 texel_position = floor(v_tex_coord * u_texel_length);
 
     ivec2 block_texture_size = textureSize(u_block_palette);
 
