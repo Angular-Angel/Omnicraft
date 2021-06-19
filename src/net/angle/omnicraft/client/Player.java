@@ -129,9 +129,11 @@ public class Player {
         Vec3i chunkCoords = getChunkCoords();
         for (int i = -World.GENERATION_DISTANCE; i <= World.GENERATION_DISTANCE; i++) {
             for (int j = -World.GENERATION_DISTANCE; j <= World.GENERATION_DISTANCE; j++) {
-                Chunk chunk = region.getChunk(chunkCoords.x + i, 0, chunkCoords.z + j);
-                if (chunk == null)
-                    region.generateChunk(chunkCoords.x + i, 0, chunkCoords.z + j);
+                for (int k = -World.GENERATION_DISTANCE; k <= World.GENERATION_DISTANCE; k++) {
+                    Chunk chunk = region.getChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k);
+                    if (chunk == null)
+                        region.generateChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k);
+                }
             }
         }
     }
@@ -143,7 +145,9 @@ public class Player {
         Vec3i chunkCoords = getChunkCoords();
         for (int i = -World.RENDER_DISTANCE; i <= World.RENDER_DISTANCE; i++) {
             for (int j = -World.RENDER_DISTANCE; j <= World.RENDER_DISTANCE; j++) {
-                world.loadChunk(region.getChunk(chunkCoords.x + i, 0, chunkCoords.z + j));
+                for (int k = -World.RENDER_DISTANCE; k <= World.RENDER_DISTANCE; k++) {
+                    world.loadChunk(region.getChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k));
+                }
             }
         }
     }
