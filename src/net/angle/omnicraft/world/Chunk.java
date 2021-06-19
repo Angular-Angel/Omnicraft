@@ -120,7 +120,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     }
     
     public boolean blockIsEmpty(Block block) {
-        return block == null || block.id == 0;
+        return block == null || block.isEmpty();
     }
     
     public boolean sideIsEmpty(Block.BlockFace face, int voxelx, int voxely, int voxelz) {
@@ -128,7 +128,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     }
     
     public boolean sideIsEmpty(Side side) {
-        return side == null || side.id == 0;
+        return side == null || side.isEmpty();
     }
     
     public boolean isEmpty(int blockx, int blocky, int blockz) {

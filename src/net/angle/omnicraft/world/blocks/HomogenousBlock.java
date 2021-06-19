@@ -30,4 +30,9 @@ public class HomogenousBlock extends Block {
     public boolean isTransparent() {
         return false;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 }

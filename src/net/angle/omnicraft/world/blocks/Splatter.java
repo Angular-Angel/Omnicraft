@@ -21,5 +21,10 @@ public class Splatter extends Side {
     public boolean isTransparent() {
         return false;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
     
 }

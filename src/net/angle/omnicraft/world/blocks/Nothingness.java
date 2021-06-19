@@ -21,5 +21,10 @@ public class Nothingness extends Side {
     public boolean isTransparent() {
         return true;
     }
+
+    @Override
+    public boolean isEmpty() {
+        return true;
+    }
     
 }
