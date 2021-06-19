@@ -11,10 +11,10 @@ import net.angle.omnicraft.graphics.RenderData;
  *
  * @author angle
  */
-public class Emptiness extends Block {
-
-    public Emptiness() {
-        super("Emptiness", 0, new RenderData());
+public class EmptySide extends Side {
+    
+    public EmptySide() {
+        super("Nothingness", 0, new RenderData());
     }
 
     @Override
