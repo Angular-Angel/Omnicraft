@@ -40,8 +40,8 @@ public class Player {
     public static final float CAMERA_FOV = Util.toRadians(90.0f);
     public static final float MOVE_SPEED = 20.0f;
     
-    public final Vec3 position;
-    public final Vec3i regionPosition;
+    private final Vec3 position;
+    private final Vec3i regionPosition;
     
     public final World world;
     
@@ -195,9 +195,8 @@ public class Player {
             direction.normalize();
             direction.mult(MOVE_SPEED * dt);
             position.add(direction);
+            updateRegionPosition();
         }
-        
-        updateRegionPosition();
         
         generateNeededChunks();
         
