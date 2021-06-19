@@ -56,18 +56,10 @@ public class World {
     private TextureRectangle side_palette;
     
     public World(WorldGenerator worldGenerator) {
-        this(worldGenerator, new Emptiness(), new Nothingness());
+        this(worldGenerator, 16, 16);
     }
     
     public World(WorldGenerator worldGenerator, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
-        this(worldGenerator, new Emptiness(), new Nothingness(), chunkEdgeLengthOfRegion, blockEdgeLengthOfChunk);
-    }
-    
-    public World(WorldGenerator worldGenerator, Block block, Side side) {
-        this(worldGenerator, block, side, 16, 16);
-    }
-    
-    public World(WorldGenerator worldGenerator, Block block, Side side, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
         this.worldGenerator = worldGenerator;
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
@@ -76,8 +68,8 @@ public class World {
         loadedChunks = new ArrayList<>();
         block_ids = new ArrayList<>();
         side_ids = new ArrayList<>();
-        addBlockType(block);
-        addSideType(side);
+        addBlockType(new Emptiness());
+        addSideType(new Nothingness());
         this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
         this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
         worldGenerator.generateSubstances(this);
