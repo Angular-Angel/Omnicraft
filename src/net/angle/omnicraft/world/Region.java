@@ -54,30 +54,6 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
             z >= 0 && z < world.chunkEdgeLengthOfRegion;
     }
     
-    public int getLowerXBound() {
-        return world.getBlockEdgeLengthOfRegion() * getX();
-    }
-    
-    public int getUpperXBound() {
-        return world.getBlockEdgeLengthOfRegion() * (getX() + 1);
-    }
-    
-    public int getLowerYBound() {
-        return world.getBlockEdgeLengthOfRegion() * getY();
-    }
-    
-    public int getUpperYBound() {
-        return world.getBlockEdgeLengthOfRegion() * (getY() + 1);
-    }
-    
-    public int getLowerZBound() {
-        return world.getBlockEdgeLengthOfRegion() * getZ();
-    }
-    
-    public int getUpperZBound() {
-        return world.getBlockEdgeLengthOfRegion() * (getZ() + 1);
-    }
-    
     public void update(float dt) {
     }
     
