@@ -36,8 +36,8 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 public class World {
     
     public static final int PALETTE_SIZE = 40;
-    public static final int GENERATION_DISTANCE = 6;
-    public static final int RENDER_DISTANCE = 4;
+    public static final int GENERATION_DISTANCE = 8;
+    public static final int RENDER_DISTANCE = 8;
     
     public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
@@ -96,6 +96,9 @@ public class World {
     public void update(float dt) {
         for (Region region : regions.values())
             region.update(dt);
+//        for (Chunk chunk : loadedChunks) {
+//            if chunk.
+//        }
     }
     
     public void addSubstance(Substance substance) {
