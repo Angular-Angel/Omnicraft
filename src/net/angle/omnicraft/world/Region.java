@@ -55,27 +55,27 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     }
     
     public int getLowerXBound() {
-        return world.getBlockEdgeLengthOfRegion() * x;
+        return world.getBlockEdgeLengthOfRegion() * position.x;
     }
     
     public int getUpperXBound() {
-        return world.getBlockEdgeLengthOfRegion() * (x + 1);
+        return world.getBlockEdgeLengthOfRegion() * (position.x + 1);
     }
     
     public int getLowerYBound() {
-        return world.getBlockEdgeLengthOfRegion() * y;
+        return world.getBlockEdgeLengthOfRegion() * position.y;
     }
     
     public int getUpperYBound() {
-        return world.getBlockEdgeLengthOfRegion() * (y + 1);
+        return world.getBlockEdgeLengthOfRegion() * (position.y + 1);
     }
     
     public int getLowerZBound() {
-        return world.getBlockEdgeLengthOfRegion() * z;
+        return world.getBlockEdgeLengthOfRegion() * position.z;
     }
     
     public int getUpperZBound() {
-        return world.getBlockEdgeLengthOfRegion() * (z + 1);
+        return world.getBlockEdgeLengthOfRegion() * (position.z + 1);
     }
     
     public void update(float dt) {
@@ -160,9 +160,9 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     
     public Chunk generateChunk(int chunkx, int chunky, int chunkz) {
         if (!containsChunkCoordinates(chunkx, chunky, chunkz)) {
-            int regionx = x;
-            int regiony = y;
-            int regionz = z;
+            int regionx = position.x;
+            int regiony = position.y;
+            int regionz = position.z;
             while (chunkx < 0) {
                 chunkx += world.chunkEdgeLengthOfRegion;
                 regionx--;
@@ -203,9 +203,9 @@ public class Region extends Positionable implements BlockContainer, SideContaine
     
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
         if (!containsChunkCoordinates(chunkx, chunky, chunkz)) {
-            int regionx = x;
-            int regiony = y;
-            int regionz = z;
+            int regionx = position.x;
+            int regiony = position.y;
+            int regionz = position.z;
             while (chunkx < 0) {
                 chunkx += world.chunkEdgeLengthOfRegion;
                 regionx--;
@@ -269,7 +269,11 @@ public class Region extends Positionable implements BlockContainer, SideContaine
 
     @Override
     public int getEdgeLength() {
-        return world.blockEdgeLengthOfChunk * world.chunkEdgeLengthOfRegion;
+        return world.getBlockEdgeLengthOfRegion();
+    }
+    
+    public int getEdgeLengthInChunks() {
+        return world.chunkEdgeLengthOfRegion;
     }
 
     public int getEdgeLengthOfContainedChunks() {

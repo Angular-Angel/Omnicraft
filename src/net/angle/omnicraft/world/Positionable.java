@@ -14,15 +14,17 @@ import com.samrj.devil.math.Vec3i;
 public abstract class Positionable {
     
     //These describe this objects x, y, and z coordinates relative to it's containing object.
-    public int x, y, z;
+    public final Vec3i position;
     
     public Positionable(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this(new Vec3i(x, y, z));
+    }
+    
+    public Positionable(Vec3i position) {
+        this.position = position;
     }
     
     public Vec3i getCoordinates() {
-        return new Vec3i(x, y, z);
+        return new Vec3i(position);
     }
 }

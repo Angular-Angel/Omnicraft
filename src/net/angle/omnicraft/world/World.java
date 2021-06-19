@@ -172,12 +172,12 @@ public class World {
     }
     
     public void reloadAdjacentChunks(Chunk chunk) {
-        reloadChunk(chunk.region.getChunk(chunk.x + 1, chunk.y, chunk.z));
-        reloadChunk(chunk.region.getChunk(chunk.x - 1, chunk.y, chunk.z));
-        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y + 1, chunk.z));
-        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y - 1, chunk.z));
-        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y, chunk.z + 1));
-        reloadChunk(chunk.region.getChunk(chunk.x, chunk.y, chunk.z - 1));
+        reloadChunk(chunk.region.getChunk(chunk.position.x + 1, chunk.position.y, chunk.position.z));
+        reloadChunk(chunk.region.getChunk(chunk.position.x - 1, chunk.position.y, chunk.position.z));
+        reloadChunk(chunk.region.getChunk(chunk.position.x, chunk.position.y + 1, chunk.position.z));
+        reloadChunk(chunk.region.getChunk(chunk.position.x, chunk.position.y - 1, chunk.position.z));
+        reloadChunk(chunk.region.getChunk(chunk.position.x, chunk.position.y, chunk.position.z + 1));
+        reloadChunk(chunk.region.getChunk(chunk.position.x, chunk.position.y, chunk.position.z - 1));
     }
     
     public void loadRegion(Region region) {
