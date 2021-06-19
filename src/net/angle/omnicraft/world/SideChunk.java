@@ -13,13 +13,8 @@ public abstract class SideChunk implements SideContainer {
 
     public final Chunk container;
     
-    public final int x, y, z;
-    
-    public SideChunk(Chunk container, int x, int y, int z) {
+    public SideChunk(Chunk container) {
         this.container = container;
-        this.x = x;
-        this.y = y;
-        this.z = z;
     }
     
     @Override

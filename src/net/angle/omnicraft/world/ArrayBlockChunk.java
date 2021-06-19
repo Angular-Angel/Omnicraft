@@ -18,11 +18,7 @@ public class ArrayBlockChunk extends BlockChunk {
     private Block[][][] blocks;
     
     public ArrayBlockChunk(Chunk container, Block block) {
-        this(container, block, 0, 0, 0);
-    }
-    
-    public ArrayBlockChunk(Chunk container, Block block, int x, int y, int z) {
-        super(container, x, y, z);
+        super(container);
         blocks = new Block[16][16][16];
         setAllBlocks(block);
     }
@@ -30,7 +26,7 @@ public class ArrayBlockChunk extends BlockChunk {
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return container.getBlock(blockx + getX() * getEdgeLength(), blocky + getY() * getEdgeLength(), blockz + getZ() * getEdgeLength());
+            return container.getBlock(blockx + container.getX() * getEdgeLength(), blocky + container.getY() * getEdgeLength(), blockz + container.getZ() * getEdgeLength());
         }
         return blocks[blockx][blocky][blockz];
     }

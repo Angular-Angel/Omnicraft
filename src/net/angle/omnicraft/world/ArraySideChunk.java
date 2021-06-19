@@ -17,17 +17,16 @@ public class ArraySideChunk extends SideChunk {
     //incredibly lazy and lame representation, but also very easy.
     private Side[][][][] sides;
 
-    public ArraySideChunk(Chunk container, Side side, int x, int y, int z) {
-        super(container, x, y, z);
+    public ArraySideChunk(Chunk container, Side side) {
+        super(container);
         sides = new Side[16][16][16][6];
         setAllSides(side);
     }
 
     @Override
     public Side getSide(BlockFace face, int sidex, int sidey, int sidez) {
-        
         if (!containsCoordinates(sidex, sidey, sidez)) {
-            return container.getSide(face, sidex + x, sidey + y, sidez + z);
+            return container.getSide(face, sidex + container.getX() * getEdgeLength(), sidey + container.getY() * getEdgeLength(), sidez + container.getZ() * getEdgeLength());
         }
         return sides[sidex][sidey][sidez][face.id];
     }

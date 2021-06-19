@@ -35,8 +35,8 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         
         vertexManager = new VertexManager();
         
-        blockChunk = new ArrayBlockChunk(this, block, 0, 0, 0);
-        sideChunk = new ArraySideChunk(this, side, 0, 0, 0);
+        blockChunk = new ArrayBlockChunk(this, block);
+        sideChunk = new ArraySideChunk(this, side);
     }
 
     @Override
