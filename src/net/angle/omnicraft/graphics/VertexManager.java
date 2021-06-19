@@ -11,6 +11,7 @@ import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.world.Chunk;
+import net.angle.omnicraft.world.World;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 /**
@@ -94,6 +95,11 @@ public class VertexManager {
         topRight.add(new Vec3(startx, starty, startz));
         bottomLeft.add(new Vec3(startx, starty, startz));
         bottomRight.add(new Vec3(startx, starty, startz));
+        
+        topLeft.mult(World.BLOCK_EDGE_LENGTH);
+        topRight.mult(World.BLOCK_EDGE_LENGTH);
+        bottomLeft.mult(World.BLOCK_EDGE_LENGTH);
+        bottomRight.mult(World.BLOCK_EDGE_LENGTH);
 
         //add first trangle, starting at top left corner, then top right, then bottom right
         streamVPos.set(topLeft); streamVTexCoord.set(0.0f, 0.0f); stream_block_palette_index.x = block_id; 

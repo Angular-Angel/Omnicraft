@@ -5,7 +5,6 @@
  */
 package net.angle.omnicraft.world;
 
-import com.samrj.devil.math.Vec3i;
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
