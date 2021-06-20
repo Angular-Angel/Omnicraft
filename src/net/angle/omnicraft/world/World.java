@@ -39,9 +39,9 @@ public class World {
     public static final int PALETTE_SIZE = 40;
     public static final int GENERATION_DISTANCE = 8;
     public static final int RENDER_DISTANCE = 8;
+    public static final int CHUNK_EDGE_LENGTH_OF_REGION = 16;
+    public static final int BLOCK_EDGE_LENGTH_OF_CHUNK = 16;
     public static final float EDGE_LENGTH_OF_BLOCK = 0.5f;
-    
-    public final int blockEdgeLengthOfChunk, chunkEdgeLengthOfRegion;
     
     //Stored by name
     public final Map<String, Substance> substances;
@@ -65,10 +65,6 @@ public class World {
     private TextureRectangle side_palette;
     
     public World(WorldGenerator worldGenerator) {
-        this(worldGenerator, 16, 16);
-    }
-    
-    public World(WorldGenerator worldGenerator, int chunkEdgeLengthOfRegion, int blockEdgeLengthOfChunk) {
         this.worldGenerator = worldGenerator;
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
@@ -81,8 +77,6 @@ public class World {
         addSubstance(new Emptiness());
         addBlockType(new EmptyBlock());
         addSideType(new EmptySide());
-        this.chunkEdgeLengthOfRegion = chunkEdgeLengthOfRegion;
-        this.blockEdgeLengthOfChunk = blockEdgeLengthOfChunk;
         worldGenerator.generateSubstances(this);
         worldGenerator.generateBlocks(this);
         worldGenerator.generateSpawnRegion(this);
@@ -252,7 +246,7 @@ public class World {
     }
     
     public int getBlockEdgeLengthOfRegion() {
-        return blockEdgeLengthOfChunk * chunkEdgeLengthOfRegion;
+        return BLOCK_EDGE_LENGTH_OF_CHUNK * CHUNK_EDGE_LENGTH_OF_REGION;
     }
     
     public float getRealEdgeLengthOfRegion() {

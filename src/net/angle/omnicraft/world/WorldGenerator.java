@@ -59,8 +59,8 @@ public class WorldGenerator {
     
     public Region generateDirtFloor(Region region) {
         World world = region.world;
-        for (int i = 0; i < world.chunkEdgeLengthOfRegion; i++)
-            for (int j = 0; j < world.chunkEdgeLengthOfRegion; j++)
+        for (int i = 0; i < World.CHUNK_EDGE_LENGTH_OF_REGION; i++)
+            for (int j = 0; j < World.CHUNK_EDGE_LENGTH_OF_REGION; j++)
                 generateDirtFloor(region.getChunk(i, 0, j));
         return region;
     }
@@ -96,7 +96,7 @@ public class WorldGenerator {
     }
     
     public static World generateWorld() {
-        World world = new World(new WorldGenerator(), 16, 16);
+        World world = new World(new WorldGenerator());
         
         return world;
     }
