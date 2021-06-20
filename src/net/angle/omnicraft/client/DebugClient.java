@@ -50,7 +50,7 @@ public class DebugClient implements Client {
     public void init() {
         try {
             
-            world = WorldGenerator.generateWorld();
+            world = new World(new WorldGenerator());
             
             player = new Player(world);
             

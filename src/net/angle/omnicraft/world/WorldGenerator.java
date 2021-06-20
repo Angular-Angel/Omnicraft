@@ -94,10 +94,4 @@ public class WorldGenerator {
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
         spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
-    
-    public static World generateWorld() {
-        World world = new World(new WorldGenerator());
-        
-        return world;
-    }
 }
