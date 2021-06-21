@@ -7,6 +7,7 @@ package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
+import com.samrj.devil.gui.DUI;
 import org.lwjgl.system.APIUtil;
 
 /**
@@ -21,6 +22,7 @@ public interface Client {
 
             Game.onInit(() -> {
                 DGL.init();
+                DUI.init();
                 
                 this.init();
                 

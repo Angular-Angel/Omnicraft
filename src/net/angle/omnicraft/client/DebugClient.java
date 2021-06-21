@@ -8,6 +8,7 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
+import com.samrj.devil.gui.DUI;
 import com.samrj.devil.math.Vec2i;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -77,8 +78,6 @@ public class DebugClient implements Client {
             
             world.prepare_block_palette();
             world.prepare_side_palette();
-            
-            DGL.useProgram(shader);
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,6 +119,7 @@ public class DebugClient implements Client {
 
     @Override
     public void render() {
+        DGL.useProgram(shader);
         shader.uniformMat4("u_projection_matrix", player.camera.projMat);
         shader.uniformMat4("u_view_matrix", player.camera.viewMat);
         
@@ -128,6 +128,7 @@ public class DebugClient implements Client {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         world.draw();
+        DUI.render();
     }
 
     @Override
@@ -138,6 +139,7 @@ public class DebugClient implements Client {
         
         if (crashed) DGL.setDebugLeakTracking(false);
 
+        DUI.destroy();
         DGL.destroy();
     }
 }
