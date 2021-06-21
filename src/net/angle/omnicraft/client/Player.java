@@ -114,10 +114,11 @@ public class Player {
     }
     
     public Vec3i getChunkCoords() {
-        Vec3i relativePosition = new Vec3i((int) position.x, (int) position.y, (int) position.z);
-        relativePosition.x -= world.getRealEdgeLengthOfRegion() * regionPosition.x;
-        relativePosition.y -= world.getRealEdgeLengthOfRegion() * regionPosition.y;
-        relativePosition.z -= world.getRealEdgeLengthOfRegion() * regionPosition.z;
+        Vec3i relativePosition = new Vec3i((int) (position.x / World.EDGE_LENGTH_OF_BLOCK), (int) (position.y / World.EDGE_LENGTH_OF_BLOCK), (int) (position.z / World.EDGE_LENGTH_OF_BLOCK));
+        
+        relativePosition.x -= world.getBlockEdgeLengthOfRegion() * regionPosition.x;
+        relativePosition.y -= world.getBlockEdgeLengthOfRegion() * regionPosition.y;
+        relativePosition.z -= world.getBlockEdgeLengthOfRegion() * regionPosition.z;
         
         return getRegion().getChunkCoordsFromVoxelCoords(relativePosition.x, relativePosition.y, relativePosition.z);
     }
