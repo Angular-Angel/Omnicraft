@@ -60,7 +60,6 @@ public class Player {
     
     public Player(World world, float camera_near_z, float camera_far_z, float camera_fov) {
         this.world = world;
-        world.player = this;
         camera = new Camera3D(camera_near_z, camera_far_z, camera_fov, 1.0f);
 
         Vec2i resolution = Game.getResolution();

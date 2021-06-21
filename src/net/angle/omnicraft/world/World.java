@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.angle.omnicraft.client.Player;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.EmptyBlock;
 import net.angle.omnicraft.world.blocks.EmptySide;
@@ -58,8 +57,6 @@ public class World {
     public final List<Side> side_ids;
     
     public final WorldGenerator worldGenerator;
-    
-    public Player player;
     
     private TextureRectangle block_palette;
     private TextureRectangle side_palette;
