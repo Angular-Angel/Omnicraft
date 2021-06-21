@@ -9,8 +9,10 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gui.DUI;
+import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2i;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,7 +83,10 @@ public class DebugClient implements Client {
             world.prepare_block_palette();
             world.prepare_side_palette();
             
+            DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
+            
             debugWindow = new Window();
+            debugWindow.setTitle("Debug Window");
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
