@@ -46,8 +46,7 @@ public class DebugClient implements Client {
         Game.setTitle("Omnicraft");
     }
     
-    @Override
-    public void init() {
+    public void beginGame() {
         try {
             
             world = new World(new WorldGenerator());
@@ -83,6 +82,11 @@ public class DebugClient implements Client {
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Override
+    public void init() {
+        beginGame();
     }
     
     public static void main(String args[]) {
