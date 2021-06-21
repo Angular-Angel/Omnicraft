@@ -9,6 +9,7 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gui.DUI;
+import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2i;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -25,6 +26,7 @@ public class DebugClient implements Client {
     private ShaderProgram shader;
     private Player player;
     private World world;
+    private Window debugWindow;
     
     @Override
     public void preInit() {
@@ -70,7 +72,7 @@ public class DebugClient implements Client {
             
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
-
+            
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
             
@@ -78,6 +80,8 @@ public class DebugClient implements Client {
             
             world.prepare_block_palette();
             world.prepare_side_palette();
+            
+            debugWindow = new Window();
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,6 +105,12 @@ public class DebugClient implements Client {
     @Override
     public void key(int key, int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
+        if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
+            if (debugWindow.isVisible())
+                DUI.hide(debugWindow);
+            else
+                DUI.show(debugWindow);
+        }
     }
 
     @Override
@@ -128,6 +138,7 @@ public class DebugClient implements Client {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         world.draw();
+        
         DUI.render();
     }
 
