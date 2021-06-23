@@ -10,6 +10,9 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
+import com.samrj.devil.gui.LayoutColumns;
+import com.samrj.devil.gui.LayoutRows;
+import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2i;
 import java.io.FileInputStream;
@@ -29,6 +32,7 @@ public class DebugClient implements Client {
     private Player player;
     private World world;
     private Window debugWindow;
+    private Text fpsNum;
     
     @Override
     public void preInit() {
@@ -49,6 +53,19 @@ public class DebugClient implements Client {
         Game.setFullscreen(false);
         Game.setVsync(true);
         Game.setTitle("Omnicraft");
+    }
+    
+    public void buildDebugWindow() {
+        debugWindow = new Window();
+        debugWindow.setTitle("Debug Window");
+        LayoutColumns columns = new LayoutColumns();
+        debugWindow.setContent(columns);
+        LayoutRows rows = new LayoutRows();
+        columns.add(rows);
+        Text fps = new Text("FPS: ");
+        rows.add(fps);
+        fpsNum = new Text("");
+        columns.add(fpsNum);
     }
     
     public void beginGame() {
@@ -85,8 +102,7 @@ public class DebugClient implements Client {
             
             DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
             
-            debugWindow = new Window();
-            debugWindow.setTitle("Debug Window");
+            buildDebugWindow();
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,6 +146,7 @@ public class DebugClient implements Client {
     public void step(float dt) {
         player.update(dt);
         world.update(dt);
+        fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
     }
 
     @Override
