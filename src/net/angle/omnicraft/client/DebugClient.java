@@ -205,6 +205,7 @@ public class DebugClient implements Client {
         world.delete();
         
         DGL.delete(shader);
+        DUI.font().destroy();
         
         if (crashed) DGL.setDebugLeakTracking(false);
 
