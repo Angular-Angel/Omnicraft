@@ -58,12 +58,16 @@ public class DebugClient implements Client {
     public void buildDebugWindow() {
         debugWindow = new Window();
         debugWindow.setTitle("Debug Window");
-        LayoutColumns columns = new LayoutColumns();
-        debugWindow.setContent(columns);
         LayoutRows rows = new LayoutRows();
-        columns.add(rows);
+        debugWindow.setContent(rows);
+        
+        LayoutColumns columns = new LayoutColumns();
+        rows.add(columns);
+        
+        
         Text fps = new Text("FPS: ");
-        rows.add(fps);
+        columns.add(fps);
+        
         fpsNum = new Text("");
         columns.add(fpsNum);
     }
