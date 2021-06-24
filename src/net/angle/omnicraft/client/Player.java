@@ -51,6 +51,9 @@ public class Player {
     private float prevMouseX;
     private float prevMouseY;
     
+    private int chunkGenX = -World.GENERATION_DISTANCE, chunkGenY = -World.GENERATION_DISTANCE, chunkGenZ = -World.GENERATION_DISTANCE;
+    private int chunkRenderX = -World.RENDER_DISTANCE, chunkRenderY = -World.RENDER_DISTANCE, chunkRenderZ = -World.RENDER_DISTANCE;
+    
     public Region getRegion() {
         return world.regions.get(regionPosition.toString());
     }
@@ -129,33 +132,49 @@ public class Player {
     }
     
     public void generateNeededChunks() {
+        int generatedChunks = 0;
         Region region = getRegion();
         if (region == null)
             return;
         Vec3i chunkCoords = getChunkCoords();
-        for (int i = -World.GENERATION_DISTANCE; i <= World.GENERATION_DISTANCE; i++) {
-            for (int j = -World.GENERATION_DISTANCE; j <= World.GENERATION_DISTANCE; j++) {
-                for (int k = -World.GENERATION_DISTANCE; k <= World.GENERATION_DISTANCE; k++) {
-                    Chunk chunk = region.getChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k);
-                    if (chunk == null)
-                        region.generateChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k);
+        for (; chunkGenX <= World.GENERATION_DISTANCE; chunkGenX++) {
+            for (; chunkGenY <= World.GENERATION_DISTANCE; chunkGenY++) {
+                for (; chunkGenZ <= World.GENERATION_DISTANCE; chunkGenZ++) {
+                    Chunk chunk = region.getChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
+                    if (chunk == null) {
+                        region.generateChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
+                        generatedChunks++;
+                        if (generatedChunks >= 3)
+                            return;
+                    }
                 }
+                chunkGenZ = -World.GENERATION_DISTANCE;
             }
+            chunkGenY = -World.GENERATION_DISTANCE;
         }
+        chunkGenX = -World.GENERATION_DISTANCE;
     }
     
     public void loadChunks() {
+        int renderedChunks = 0;
         Region region = getRegion();
         if (region == null)
             return;
         Vec3i chunkCoords = getChunkCoords();
-        for (int i = -World.RENDER_DISTANCE; i <= World.RENDER_DISTANCE; i++) {
-            for (int j = -World.RENDER_DISTANCE; j <= World.RENDER_DISTANCE; j++) {
-                for (int k = -World.RENDER_DISTANCE; k <= World.RENDER_DISTANCE; k++) {
-                    world.loadChunk(region.getChunk(chunkCoords.x + i, chunkCoords.y + j, chunkCoords.z + k));
+        for (; chunkRenderX <= World.RENDER_DISTANCE; chunkRenderX++) {
+            for (; chunkRenderY <= World.RENDER_DISTANCE; chunkRenderY++) {
+                for (; chunkRenderZ <= World.RENDER_DISTANCE; chunkRenderZ++) {
+                    if (world.loadChunk(region.getChunk(chunkCoords.x + chunkRenderX, chunkCoords.y + chunkRenderY, chunkCoords.z + chunkRenderZ))) {
+                        renderedChunks++;
+                        if (renderedChunks >= 8)
+                            return;
+                    }
                 }
+                chunkRenderZ = -World.RENDER_DISTANCE;
             }
+            chunkRenderY = -World.RENDER_DISTANCE;
         }
+        chunkRenderX = -World.RENDER_DISTANCE;
     }
     
     public void move(float dt) {

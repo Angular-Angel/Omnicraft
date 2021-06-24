@@ -147,11 +147,13 @@ public class World {
         return regions.get("(0, 0, 0)");
     }
     
-    public void loadChunk(Chunk chunk) {
+    public boolean loadChunk(Chunk chunk) {
         if (chunk != null && !chunk.vertexManager.loaded) {
             chunk.stream();
             loadedChunks.add(chunk);
+            return true;
         }
+        return false;
     }
     
     public void unloadChunk(Chunk chunk) {
