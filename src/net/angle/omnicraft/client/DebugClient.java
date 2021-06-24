@@ -14,6 +14,7 @@ import com.samrj.devil.gui.LayoutColumns;
 import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
+import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,10 +30,14 @@ public class DebugClient implements Client {
     
     private Vec2i resolution;
     private ShaderProgram shader;
+    
     private Player player;
     private World world;
+    
     private Window debugWindow;
     private Text fpsNum;
+    
+    private Window waila;
     
     @Override
     public void preInit() {
@@ -72,6 +77,15 @@ public class DebugClient implements Client {
         columns.add(fpsNum);
     }
     
+    public void buildWAILA() {
+        waila = new Window();
+        waila.setTitleBarVisible(false);
+        waila.setWidth(300f);
+        waila.setHeight(75f);
+        DUI.show(waila);
+        waila.setPosAlignToViewport(new Vec2(0.5f, 1));
+    }
+    
     public void beginGame() {
         try {
             
@@ -107,6 +121,7 @@ public class DebugClient implements Client {
             DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
             
             buildDebugWindow();
+            buildWAILA();
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,6 +156,7 @@ public class DebugClient implements Client {
     @Override
     public void resize(int width, int height) {
         resolution.set(width, height);
+        waila.setPosAlignToViewport(new Vec2(0.5f, 1));
         
         //Camera's aspect ratio may change if window is resized.
         player.camera.setFOV(resolution.x, resolution.y, player.CAMERA_FOV);
