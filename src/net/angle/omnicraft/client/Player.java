@@ -201,7 +201,7 @@ public class Player {
     
     public Block pickBlock(int range) {
         Region region = getRegion();
-        Vec3i coord = region.raycast(new Vec3(position), camera.forward, range);
+        Vec3i coord = region.raycast(new Vec3(position), new Vec3(camera.forward), range);
         if (coord != null)
             return region.getBlock(coord);
         else return null;

@@ -60,10 +60,11 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
         
         origin.div(World.EDGE_LENGTH_OF_BLOCK);
+        direction.mult(World.EDGE_LENGTH_OF_BLOCK);
         
-        int curx = (int) Math.floor(origin.x);
-        int cury = (int) Math.floor(origin.y);
-        int curz = (int) Math.floor(origin.z);
+        float curx = origin.x;
+        float cury = origin.y;
+        float curz = origin.z;
         
         float dx = Math.abs(direction.x);
         float dy = Math.abs(direction.y);
@@ -104,9 +105,10 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
                     tMaxZ += tDeltaZ;
                 }
             }
-            Block block = getBlock(curx, cury, curz);
+            Vec3i coord = new Vec3i((int) Math.floor(curx), (int) Math.floor(cury), (int) Math.floor(curz));
+            Block block = getBlock(coord);
             if (block != null && block.id != 0)
-                return new Vec3i(curx, cury, curz);
+                return coord;
         }
         
         return null;
