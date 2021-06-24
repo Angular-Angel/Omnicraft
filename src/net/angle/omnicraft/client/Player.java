@@ -113,8 +113,13 @@ public class Player {
             }
     }
     
+    public Vec3 getBlockAdjustedPosition() {
+        return new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
+    }
+    
     public Vec3i getChunkCoords() {
-        Vec3i relativePosition = new Vec3i((int) (position.x / World.EDGE_LENGTH_OF_BLOCK), (int) (position.y / World.EDGE_LENGTH_OF_BLOCK), (int) (position.z / World.EDGE_LENGTH_OF_BLOCK));
+        Vec3 blockAdjustedPosition = getBlockAdjustedPosition();
+        Vec3i relativePosition = new Vec3i((int) blockAdjustedPosition.x, (int) blockAdjustedPosition.y, (int) blockAdjustedPosition.z);
         
         relativePosition.x -= world.getBlockEdgeLengthOfRegion() * regionPosition.x;
         relativePosition.y -= world.getBlockEdgeLengthOfRegion() * regionPosition.y;
@@ -201,7 +206,7 @@ public class Player {
     
     public Block pickBlock(int range) {
         Region region = getRegion();
-        Vec3i coord = region.raycast(new Vec3(position), new Vec3(camera.forward), range);
+        Vec3i coord = region.raycast(getBlockAdjustedPosition(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
         if (coord != null)
             return region.getBlock(coord);
         else return null;
