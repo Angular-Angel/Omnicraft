@@ -16,12 +16,14 @@ import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
+import com.samrj.devil.math.Vec3i;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
+import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -38,6 +40,7 @@ public class DebugClient implements Client {
     private Text fpsNum;
     
     private Window waila;
+    private Text blockName;
     
     @Override
     public void preInit() {
@@ -80,10 +83,16 @@ public class DebugClient implements Client {
     public void buildWAILA() {
         waila = new Window();
         waila.setTitleBarVisible(false);
+        
         waila.setWidth(300f);
         waila.setHeight(75f);
-        DUI.show(waila);
         waila.setPosAlignToViewport(new Vec2(0.5f, 1));
+        
+        LayoutColumns columns = new LayoutColumns();
+        waila.setContent(columns);
+        
+        blockName = new Text("");
+        columns.add(blockName);
     }
     
     public void beginGame() {
@@ -167,6 +176,13 @@ public class DebugClient implements Client {
         player.update(dt);
         world.update(dt);
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
+        Block block = player.pickBlock(10);
+        if (block != null) {
+            blockName.setText(block.name);
+            DUI.show(waila);
+        } else {
+            DUI.hide(waila);
+        }
     }
 
     @Override

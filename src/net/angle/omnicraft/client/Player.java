@@ -16,6 +16,7 @@ import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.Region;
 import net.angle.omnicraft.world.World;
+import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
@@ -198,6 +199,14 @@ public class Player {
         }
     }
     
+    public Block pickBlock(int range) {
+        Region region = getRegion();
+        Vec3i coord = region.raycast(new Vec3(position), camera.forward, range);
+        if (coord != null)
+            return region.getBlock(coord);
+        else return null;
+    }
+    
     public void update(float dt) {
         
         move(dt);
@@ -208,12 +217,5 @@ public class Player {
         
         cameraController.target.set(position);
         cameraController.update();
-        
-//        Region spawnRegion = world.getSpawnRegion();
-//        Vec3i coords = spawnRegion.raycast(position, camera.forward, 10);
-//        System.out.println(camera.forward);
-//        System.out.println(coords);
-//        if (coords != null)
-//            System.out.println(spawnRegion.getBlock(coords).name);
     }
 }
