@@ -6,7 +6,6 @@
 package net.angle.omnicraft.graphics;
 
 import com.samrj.devil.gl.DGL;
-import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.gl.VertexStream;
 
 /**
@@ -15,11 +14,10 @@ import com.samrj.devil.gl.VertexStream;
  */
 public class VertexStreamManager extends VertexManager {
     
-    VertexStream stream;
-
-    @Override
-    public VertexStream makeVertices() {
-        stream = DGL.genVertexStream(720, -1);
+    private VertexStream stream;
+        
+    public VertexStream makeVertices(int vertices, int indices) {
+        stream = DGL.genVertexStream(vertices, indices);
         return stream;
     }
 

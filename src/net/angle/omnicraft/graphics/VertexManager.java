@@ -28,8 +28,12 @@ public abstract class VertexManager {
     
     public boolean loaded;
     public boolean drawing;
+
+    public VertexBuilder makeVertices() {
+        return makeVertices(720, -1);
+    }
     
-    public abstract VertexBuilder makeVertices();
+    public abstract VertexBuilder makeVertices(int vertices, int indices);
     public abstract void uploadVertices();
     
     public abstract VertexBuilder getVertices();

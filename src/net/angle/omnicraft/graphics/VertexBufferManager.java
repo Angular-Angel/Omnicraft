@@ -6,7 +6,6 @@
 package net.angle.omnicraft.graphics;
 
 import com.samrj.devil.gl.DGL;
-import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.gl.VertexBuffer;
 
 /**
@@ -15,11 +14,11 @@ import com.samrj.devil.gl.VertexBuffer;
  */
 public class VertexBufferManager extends VertexManager {
     
-    VertexBuffer buffer;
+    private VertexBuffer buffer;
 
     @Override
-    public VertexBuffer makeVertices() {
-        buffer = DGL.genVertexBuffer(720, -1);
+    public VertexBuffer makeVertices(int vertices, int indices) {
+        buffer = DGL.genVertexBuffer(vertices, indices);
         return buffer;
     }
 
