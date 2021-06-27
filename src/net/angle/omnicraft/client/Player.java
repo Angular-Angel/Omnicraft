@@ -44,6 +44,8 @@ public class Player {
     private final Vec3 position;
     private final Vec3i regionPosition;
     
+    public Vec3i pickedCoord;
+    
     public final World world;
     
     public final Camera3D camera;
@@ -225,9 +227,9 @@ public class Player {
     
     public Block pickBlock(int range) {
         Region region = getRegion();
-        Vec3i coord = region.raycast(getBlockAdjustedPosition(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
-        if (coord != null)
-            return region.getBlock(coord);
+        pickedCoord = region.raycast(getBlockAdjustedPosition(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
+        if (pickedCoord != null)
+            return region.getBlock(pickedCoord);
         else return null;
     }
     

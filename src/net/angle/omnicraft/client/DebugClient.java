@@ -8,6 +8,7 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
+import com.samrj.devil.gl.VertexStream;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.LayoutColumns;
@@ -16,6 +17,8 @@ import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
+import com.samrj.devil.math.Vec3;
+import com.samrj.devil.math.Vec3i;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -30,7 +33,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class DebugClient implements Client {
     
     private Vec2i resolution;
-    private ShaderProgram shader;
+    private ShaderProgram blockShader;
+    private ShaderProgram outlineShader;
     
     private Player player;
     private World world;
@@ -40,6 +44,9 @@ public class DebugClient implements Client {
     
     private Window waila;
     private Text blockName;
+    
+    private VertexStream blockOutline;
+    private Vec3 blockOutlineVPos;
     
     @Override
     public void preInit() {
@@ -96,7 +103,6 @@ public class DebugClient implements Client {
     
     public void beginGame() {
         try {
-            
             world = new World(new WorldGenerator());
             
             player = new Player(world);
@@ -105,7 +111,8 @@ public class DebugClient implements Client {
             
             //This method loads shader.vert and shader.frag, as the vertex and
             //fragment shaders respectively.
-            shader = DGL.loadProgram("resources/shader");
+            blockShader = DGL.loadProgram("resources/block_shader");
+            outlineShader = DGL.loadProgram("resources/outline_shader");
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
@@ -130,6 +137,10 @@ public class DebugClient implements Client {
             
             buildDebugWindow();
             buildWAILA();
+            
+            blockOutline = DGL.genVertexStream(8, 24);
+            blockOutlineVPos = blockOutline.vec3("in_pos");
+            blockOutline.begin();
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -144,12 +155,12 @@ public class DebugClient implements Client {
         Client client = new DebugClient();
         client.run();
     }
-
+    
     @Override
     public void mouseMoved(float x, float y) {
         player.mouseMoved(x, y);
     }
-
+    
     @Override
     public void key(int key, int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
@@ -160,7 +171,7 @@ public class DebugClient implements Client {
                 DUI.show(debugWindow);
         }
     }
-
+    
     @Override
     public void resize(int width, int height) {
         resolution.set(width, height);
@@ -169,41 +180,110 @@ public class DebugClient implements Client {
         //Camera's aspect ratio may change if window is resized.
         player.camera.setFOV(resolution.x, resolution.y, player.CAMERA_FOV);
     }
-
+    
+    public void streamBlockOutline(Vec3i coord) {
+        //starting corner
+        float startx = coord.x * World.EDGE_LENGTH_OF_BLOCK;
+        float starty = coord.y * World.EDGE_LENGTH_OF_BLOCK;
+        float startz = coord.z * World.EDGE_LENGTH_OF_BLOCK;
+        
+        //end corner
+        float endx = startx + World.EDGE_LENGTH_OF_BLOCK;
+        float endy = starty + World.EDGE_LENGTH_OF_BLOCK;
+        float endz = startz + World.EDGE_LENGTH_OF_BLOCK;
+        
+        blockOutlineVPos.set(new Vec3(startx, starty, startz)); blockOutline.vertex();
+        
+        blockOutlineVPos.set(new Vec3(endx, starty, startz)); blockOutline.vertex();
+        blockOutlineVPos.set(new Vec3(startx, endy, startz)); blockOutline.vertex();
+        blockOutlineVPos.set(new Vec3(startx, starty, endz)); blockOutline.vertex();
+        
+        blockOutlineVPos.set(new Vec3(endx, endy, startz)); blockOutline.vertex();
+        blockOutlineVPos.set(new Vec3(startx, endy, endz)); blockOutline.vertex();
+        blockOutlineVPos.set(new Vec3(endx, starty, endz)); blockOutline.vertex();
+        
+        blockOutlineVPos.set(new Vec3(endx, endy, endz)); blockOutline.vertex();
+        
+        blockOutline.index(0);
+        blockOutline.index(1);
+        
+        blockOutline.index(0);
+        blockOutline.index(2);
+        
+        blockOutline.index(0);
+        blockOutline.index(3);
+        
+        blockOutline.index(1);
+        blockOutline.index(4);
+        
+        blockOutline.index(1);
+        blockOutline.index(6);
+        
+        blockOutline.index(2);
+        blockOutline.index(4);
+        
+        blockOutline.index(2);
+        blockOutline.index(5);
+        
+        blockOutline.index(3);
+        blockOutline.index(5);
+        
+        blockOutline.index(3);
+        blockOutline.index(6);
+        
+        blockOutline.index(4);
+        blockOutline.index(7);
+        
+        blockOutline.index(5);
+        blockOutline.index(7);
+        
+        blockOutline.index(6);
+        blockOutline.index(7);
+        
+        blockOutline.upload();
+    }
+    
     @Override
     public void step(float dt) {
         player.update(dt);
         world.update(dt);
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
-        Block block = player.pickBlock(25);
+        Block block = player.pickBlock(100);
         if (block != null) {
             blockName.setText(block.name);
             DUI.show(waila);
+            streamBlockOutline(player.pickedCoord);
         } else {
             DUI.hide(waila);
         }
     }
-
+    
     @Override
     public void render() {
-        DGL.useProgram(shader);
-        shader.uniformMat4("u_projection_matrix", player.camera.projMat);
-        shader.uniformMat4("u_view_matrix", player.camera.viewMat);
+        DGL.useProgram(blockShader);
+        blockShader.uniformMat4("u_projection_matrix", player.camera.projMat);
+        blockShader.uniformMat4("u_view_matrix", player.camera.viewMat);
         
-        world.prepareShader(shader);
+        world.prepareShader(blockShader);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         world.draw();
         
         DUI.render();
+        if (waila.isVisible()) {
+            DGL.useProgram(outlineShader);
+            outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
+            outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
+            DGL.draw(blockOutline, GL_LINES);
+        }
     }
-
+    
     @Override
     public void destroy(Boolean crashed) {
         world.delete();
         
-        DGL.delete(shader);
+        DGL.delete(blockShader);
         DUI.font().destroy();
         
         if (crashed) DGL.setDebugLeakTracking(false);
