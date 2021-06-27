@@ -8,7 +8,7 @@ package net.angle.omnicraft.world;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.graphics.VertexManager;
+import net.angle.omnicraft.graphics.VertexBufferManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
 
@@ -20,7 +20,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     
     public final Region region;
     
-    public VertexManager vertexManager;
+    public VertexBufferManager vertexManager;
     
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
@@ -33,7 +33,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         super(x, y, z);
         this.region = region;
         
-        vertexManager = new VertexManager();
+        vertexManager = new VertexBufferManager();
         
         blockChunk = new ArrayBlockChunk(this, block);
         sideChunk = new ArraySideChunk(this, side);

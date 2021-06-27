@@ -16,7 +16,6 @@ import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
-import com.samrj.devil.math.Vec3i;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
