@@ -63,9 +63,9 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         float cury = origin.y;
         float curz = origin.z;
         
-        float dx = Math.abs(direction.x);
-        float dy = Math.abs(direction.y);
-        float dz = Math.abs(direction.z);
+        float dx = direction.x;
+        float dy = direction.y;
+        float dz = direction.z;
         
         int stepX = (int) Math.signum(dx);
         int stepY = (int) Math.signum(dy);
