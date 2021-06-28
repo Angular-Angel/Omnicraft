@@ -248,7 +248,7 @@ public class DebugClient implements Client {
         player.update(dt);
         world.update(dt);
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
-        Block block = player.pickBlock(100);
+        Block block = player.pickBlock(25);
         if (block != null) {
             blockName.setText(block.name);
             DUI.show(waila);

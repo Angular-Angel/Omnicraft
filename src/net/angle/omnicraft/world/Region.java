@@ -57,6 +57,15 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     public void update(float dt) {
     }
     
+    public float intbound(float start, float delta) {
+        if (delta < 0) {
+            return intbound(-start, -delta);
+        } else {
+            start = (start % 1 + 1) % 1;
+            return (1 - start) / delta;
+        }
+    }
+    
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
         
         float curx = origin.x;
@@ -66,15 +75,16 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         float dx = direction.x;
         float dy = direction.y;
         float dz = direction.z;
-        int steps = 0;
         
         int stepX = (int) Math.signum(dx);
         int stepY = (int) Math.signum(dy);
         int stepZ = (int) Math.signum(dz);
         
-        float tMaxX = 0;
-        float tMaxY = 0;
-        float tMaxZ = 0;
+        int steps = 0;
+        
+        float tMaxX = intbound(origin.x, dx);
+        float tMaxY = intbound(origin.y, dy);
+        float tMaxZ = intbound(origin.z, dz);
         
         // The change in t when taking a step (always positive).
         
@@ -85,7 +95,7 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         if (dx == 0 && dy == 0 && dz == 0)
             throw new IllegalArgumentException("Raycast in zero direction!");
         
-        while (steps <= radius) {
+        while (steps < radius) {
             if(tMaxX < tMaxY) {
                 if(tMaxX < tMaxZ) {
                     curx += stepX;
@@ -106,7 +116,7 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
             steps++;
             Vec3i coord = new Vec3i((int) Math.floor(curx), (int) Math.floor(cury), (int) Math.floor(curz));
             Block block = getBlock(coord);
-            if (block != null && block.id != 0)
+            if (block != null && block.isDrawable())
                 return coord;
         }
         
