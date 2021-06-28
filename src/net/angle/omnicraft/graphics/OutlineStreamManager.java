@@ -21,6 +21,7 @@ public class OutlineStreamManager extends VertexManager {
     private VertexStream blockOutline;
     private Vec3 blockOutlineVPos;
     
+    @Override
     public void begin() {
         blockOutline = DGL.genVertexStream(8, 24);
         blockOutlineVPos = blockOutline.vec3("in_pos");

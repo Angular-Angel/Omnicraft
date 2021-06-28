@@ -8,7 +8,6 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
-import com.samrj.devil.gl.VertexStream;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.LayoutColumns;
@@ -17,12 +16,11 @@ import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
-import com.samrj.devil.math.Vec3;
-import com.samrj.devil.math.Vec3i;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.graphics.OutlineStreamManager;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
@@ -47,6 +45,7 @@ public class DebugClient implements Client {
     private Text blockName;
     
     private OutlineStreamManager blockOutline;
+    private BlockBufferManager wailaBlockDisplay;
     
     @Override
     public void preInit() {
@@ -135,11 +134,14 @@ public class DebugClient implements Client {
             
             DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
             
+            blockOutline = new OutlineStreamManager();
+            blockOutline.begin();
+            
             buildDebugWindow();
             buildWAILA();
             
-            blockOutline = new OutlineStreamManager();
-            blockOutline.begin();
+            wailaBlockDisplay = new BlockBufferManager();
+            wailaBlockDisplay.begin(36, -1);
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -220,6 +222,7 @@ public class DebugClient implements Client {
     public void destroy(Boolean crashed) {
         world.delete();
         blockOutline.clearVertices();
+        wailaBlockDisplay.clearVertices();
         
         DGL.delete(blockShader, outlineShader);
         DUI.font().destroy();
