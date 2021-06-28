@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.angle.omnicraft.graphics.OutlineStreamManager;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import net.angle.omnicraft.world.blocks.Block;
@@ -45,8 +46,7 @@ public class DebugClient implements Client {
     private Window waila;
     private Text blockName;
     
-    private VertexStream blockOutline;
-    private Vec3 blockOutlineVPos;
+    private OutlineStreamManager blockOutline;
     
     @Override
     public void preInit() {
@@ -138,8 +138,7 @@ public class DebugClient implements Client {
             buildDebugWindow();
             buildWAILA();
             
-            blockOutline = DGL.genVertexStream(8, 24);
-            blockOutlineVPos = blockOutline.vec3("in_pos");
+            blockOutline = new OutlineStreamManager();
             blockOutline.begin();
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,68 +180,6 @@ public class DebugClient implements Client {
         player.camera.setFOV(resolution.x, resolution.y, player.CAMERA_FOV);
     }
     
-    public void streamBlockOutline(Vec3i coord) {
-        //starting corner
-        float startx = coord.x * World.EDGE_LENGTH_OF_BLOCK;
-        float starty = coord.y * World.EDGE_LENGTH_OF_BLOCK;
-        float startz = coord.z * World.EDGE_LENGTH_OF_BLOCK;
-        
-        //end corner
-        float endx = startx + World.EDGE_LENGTH_OF_BLOCK;
-        float endy = starty + World.EDGE_LENGTH_OF_BLOCK;
-        float endz = startz + World.EDGE_LENGTH_OF_BLOCK;
-        
-        blockOutlineVPos.set(new Vec3(startx, starty, startz)); blockOutline.vertex();
-        
-        blockOutlineVPos.set(new Vec3(endx, starty, startz)); blockOutline.vertex();
-        blockOutlineVPos.set(new Vec3(startx, endy, startz)); blockOutline.vertex();
-        blockOutlineVPos.set(new Vec3(startx, starty, endz)); blockOutline.vertex();
-        
-        blockOutlineVPos.set(new Vec3(endx, endy, startz)); blockOutline.vertex();
-        blockOutlineVPos.set(new Vec3(startx, endy, endz)); blockOutline.vertex();
-        blockOutlineVPos.set(new Vec3(endx, starty, endz)); blockOutline.vertex();
-        
-        blockOutlineVPos.set(new Vec3(endx, endy, endz)); blockOutline.vertex();
-        
-        blockOutline.index(0);
-        blockOutline.index(1);
-        
-        blockOutline.index(0);
-        blockOutline.index(2);
-        
-        blockOutline.index(0);
-        blockOutline.index(3);
-        
-        blockOutline.index(1);
-        blockOutline.index(4);
-        
-        blockOutline.index(1);
-        blockOutline.index(6);
-        
-        blockOutline.index(2);
-        blockOutline.index(4);
-        
-        blockOutline.index(2);
-        blockOutline.index(5);
-        
-        blockOutline.index(3);
-        blockOutline.index(5);
-        
-        blockOutline.index(3);
-        blockOutline.index(6);
-        
-        blockOutline.index(4);
-        blockOutline.index(7);
-        
-        blockOutline.index(5);
-        blockOutline.index(7);
-        
-        blockOutline.index(6);
-        blockOutline.index(7);
-        
-        blockOutline.upload();
-    }
-    
     @Override
     public void step(float dt) {
         player.update(dt);
@@ -252,7 +189,7 @@ public class DebugClient implements Client {
         if (block != null) {
             blockName.setText(block.name);
             DUI.show(waila);
-            streamBlockOutline(player.pickedCoord);
+            blockOutline.streamBlockOutline(player.pickedCoord);
         } else {
             DUI.hide(waila);
         }
@@ -275,15 +212,16 @@ public class DebugClient implements Client {
             DGL.useProgram(outlineShader);
             outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
             outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
-            DGL.draw(blockOutline, GL_LINES);
+            blockOutline.draw();
         }
     }
     
     @Override
     public void destroy(Boolean crashed) {
         world.delete();
+        blockOutline.clearVertices();
         
-        DGL.delete(blockShader, outlineShader, blockOutline);
+        DGL.delete(blockShader, outlineShader);
         DUI.font().destroy();
         
         if (crashed) DGL.setDebugLeakTracking(false);

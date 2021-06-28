@@ -8,7 +8,7 @@ package net.angle.omnicraft.world;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.graphics.BlockVertexBufferManager;
+import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
 
@@ -20,7 +20,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     
     public final Region region;
     
-    public BlockVertexBufferManager vertexManager;
+    public BlockBufferManager vertexManager;
     
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
@@ -33,7 +33,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         super(x, y, z);
         this.region = region;
         
-        vertexManager = new BlockVertexBufferManager();
+        vertexManager = new BlockBufferManager();
         
         blockChunk = new ArrayBlockChunk(this, block);
         sideChunk = new ArraySideChunk(this, side);
@@ -153,11 +153,11 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         return false;
     }
     
-    public void stream() {
-        vertexManager.streamOptimizedMesh(this);
+    public void buffer() {
+        vertexManager.bufferOptimizedMesh(this);
     }
     
-    public void streamMeshes() {
+    public void bufferMeshes() {
         for (Block.BlockFace face : Block.BlockFace.values()) {
             optimizeMeshes(face);
         }
@@ -248,7 +248,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         
         Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
         
-        vertexManager.streamFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
+        vertexManager.bufferFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
         return dimensions;
     }

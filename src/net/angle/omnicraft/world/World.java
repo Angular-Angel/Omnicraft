@@ -149,7 +149,7 @@ public class World {
     
     public boolean loadChunk(Chunk chunk) {
         if (chunk != null && !chunk.vertexManager.loaded) {
-            chunk.stream();
+            chunk.buffer();
             loadedChunks.add(chunk);
             return true;
         }
@@ -158,7 +158,7 @@ public class World {
     
     public void unloadChunk(Chunk chunk) {
         if (chunk.vertexManager.loaded) {
-            chunk.vertexManager.clearStream();
+            chunk.vertexManager.clearVertices();
             loadedChunks.remove(chunk);
         }
     }
@@ -260,7 +260,7 @@ public class World {
     
     public void delete() {
         for (Chunk chunk : loadedChunks) {
-            chunk.vertexManager.clearStream();
+            chunk.vertexManager.clearVertices();
         }
         DGL.delete(block_palette);
         DGL.delete(side_palette);
