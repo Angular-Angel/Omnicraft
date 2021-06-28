@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
  *
  * @author angle
  */
-public abstract class VertexManager {
+public abstract class BlockVertexManager {
     
     
     public Vec3 streamVPos;

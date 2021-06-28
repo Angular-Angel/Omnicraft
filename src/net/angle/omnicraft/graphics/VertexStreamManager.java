@@ -12,7 +12,7 @@ import com.samrj.devil.gl.VertexStream;
  *
  * @author angle
  */
-public class VertexStreamManager extends VertexManager {
+public class VertexStreamManager extends BlockVertexManager {
     
     private VertexStream stream;
         

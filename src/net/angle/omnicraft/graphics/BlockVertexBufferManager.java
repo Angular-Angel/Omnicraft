@@ -12,7 +12,7 @@ import com.samrj.devil.gl.VertexBuffer;
  *
  * @author angle
  */
-public class VertexBufferManager extends VertexManager {
+public class BlockVertexBufferManager extends BlockVertexManager {
     
     private VertexBuffer buffer;
 
