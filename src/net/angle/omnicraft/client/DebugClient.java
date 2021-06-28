@@ -14,6 +14,7 @@ import com.samrj.devil.gui.LayoutColumns;
 import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
+import com.samrj.devil.math.Mat4;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import java.io.FileInputStream;
@@ -141,7 +142,6 @@ public class DebugClient implements Client {
             buildWAILA();
             
             wailaBlockDisplay = new BlockBufferManager();
-            wailaBlockDisplay.begin(36, -1);
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -179,7 +179,7 @@ public class DebugClient implements Client {
         waila.setPosAlignToViewport(new Vec2(0.5f, 1));
         
         //Camera's aspect ratio may change if window is resized.
-        player.camera.setFOV(resolution.x, resolution.y, player.CAMERA_FOV);
+        player.camera.setFOV(resolution.x, resolution.y, Player.CAMERA_FOV);
     }
     
     @Override
@@ -192,6 +192,12 @@ public class DebugClient implements Client {
             blockName.setText(block.name);
             DUI.show(waila);
             blockOutline.streamBlockOutline(player.pickedCoord);
+            wailaBlockDisplay.clearVertices();
+            wailaBlockDisplay.begin(18, -1);
+            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK, 0);
+            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK);
+            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, 0, World.EDGE_LENGTH_OF_BLOCK);
+            wailaBlockDisplay.upload();
         } else {
             DUI.hide(waila);
         }
