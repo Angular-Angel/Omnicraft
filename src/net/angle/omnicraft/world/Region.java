@@ -66,6 +66,7 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         float dx = direction.x;
         float dy = direction.y;
         float dz = direction.z;
+        int steps = 0;
         
         int stepX = (int) Math.signum(dx);
         int stepY = (int) Math.signum(dy);
@@ -76,15 +77,15 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         float tMaxZ = 0;
         
         // The change in t when taking a step (always positive).
-        float tDeltaX = stepX/dx;
-        float tDeltaY = stepY/dy;
-        float tDeltaZ = stepZ/dz;
+        
+        float tDeltaX = dx != 0 ? stepX/dx : 0;
+        float tDeltaY = dy != 0 ? stepY/dy : 0;
+        float tDeltaZ = dz != 0 ? stepZ/dz : 0;
         
         if (dx == 0 && dy == 0 && dz == 0)
             throw new IllegalArgumentException("Raycast in zero direction!");
         
-        while (/* ray's length is less than search radius*/
-               tMaxX <= radius && tMaxY <= radius && tMaxZ <= radius) {
+        while (steps <= radius) {
             if(tMaxX < tMaxY) {
                 if(tMaxX < tMaxZ) {
                     curx += stepX;
@@ -102,6 +103,7 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
                     tMaxZ += tDeltaZ;
                 }
             }
+            steps++;
             Vec3i coord = new Vec3i((int) Math.floor(curx), (int) Math.floor(cury), (int) Math.floor(curz));
             Block block = getBlock(coord);
             if (block != null && block.id != 0)
