@@ -122,12 +122,6 @@ public class DebugClient implements Client {
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1.0);
             
-            glEnable(GL_DEPTH_TEST);
-            glDepthFunc(GL_LEQUAL);
-            
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
-            
             glfwMaximizeWindow(Game.getWindow());
             
             world.prepare_block_palette();
@@ -205,6 +199,16 @@ public class DebugClient implements Client {
     
     @Override
     public void render() {
+            
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearDepth(1.0);
+            
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        
         DGL.useProgram(blockShader);
         blockShader.uniformMat4("u_projection_matrix", player.camera.projMat);
         blockShader.uniformMat4("u_view_matrix", player.camera.viewMat);
@@ -217,10 +221,20 @@ public class DebugClient implements Client {
         
         DUI.render();
         if (waila.isVisible()) {
+            
             DGL.useProgram(outlineShader);
             outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
             outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
             blockOutline.draw();
+            
+            glDisable(GL_DEPTH_TEST);
+            glDisable(GL_CULL_FACE);
+            
+            DGL.useProgram(blockShader);
+            blockShader.uniformMat4("u_projection_matrix", Mat4.orthographic(
+                    0, resolution.x, 0, resolution.y, -1, 1));
+            blockShader.uniformMat4("u_view_matrix", Mat4.identity());
+            wailaBlockDisplay.draw();
         }
     }
     
