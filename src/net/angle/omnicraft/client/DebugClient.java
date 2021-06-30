@@ -208,7 +208,7 @@ public class DebugClient implements Client {
         player.update(dt);
         world.update(dt);
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
-        posDisplay.setText(player.getBlockAdjustedPosition().toString());
+        posDisplay.setText(player.getPositionInRegion().toString());
         updateWaila();
     }
     

@@ -118,23 +118,19 @@ public class Player {
             }
     }
     
-    public Vec3 getBlockAdjustedPosition() {
+    public Vec3 getPositionInRegion() {
         Vec3 pos = new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
-        pos.x -= regionPosition.x * getRegion().getEdgeLength();
-        pos.y -= regionPosition.y * getRegion().getEdgeLength();
-        pos.z -= regionPosition.z * getRegion().getEdgeLength();
+        pos.x -= regionPosition.x * world.getBlockEdgeLengthOfRegion();
+        pos.y -= regionPosition.y * world.getBlockEdgeLengthOfRegion();
+        pos.z -= regionPosition.z * world.getBlockEdgeLengthOfRegion();
         return pos;
     }
     
     public Vec3i getChunkCoords() {
-        Vec3 blockAdjustedPosition = getBlockAdjustedPosition();
-        Vec3i relativePosition = new Vec3i((int) blockAdjustedPosition.x, (int) blockAdjustedPosition.y, (int) blockAdjustedPosition.z);
+        Vec3 positionInRegion = getPositionInRegion();
+        Vec3i voxelPosition = new Vec3i((int) positionInRegion.x, (int) positionInRegion.y, (int) positionInRegion.z);
         
-        relativePosition.x -= world.getBlockEdgeLengthOfRegion() * regionPosition.x;
-        relativePosition.y -= world.getBlockEdgeLengthOfRegion() * regionPosition.y;
-        relativePosition.z -= world.getBlockEdgeLengthOfRegion() * regionPosition.z;
-        
-        return getRegion().getChunkCoordsFromVoxelCoords(relativePosition.x, relativePosition.y, relativePosition.z);
+        return getRegion().getChunkCoordsFromVoxelCoords(voxelPosition.x, voxelPosition.y, voxelPosition.z);
     }
     
     public void generateNeededChunks() {
@@ -231,7 +227,7 @@ public class Player {
     
     public Block pickBlock(int range) {
         Region region = getRegion();
-        pickedCoord = region.raycast(getBlockAdjustedPosition(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
+        pickedCoord = region.raycast(getPositionInRegion(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
         if (pickedCoord != null)
             return region.getBlock(pickedCoord);
         else return null;
