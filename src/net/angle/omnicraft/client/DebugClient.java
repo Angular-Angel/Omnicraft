@@ -41,6 +41,7 @@ public class DebugClient implements Client {
     
     private Window debugWindow;
     private Text fpsNum;
+    private Text posDisplay;
     
     private Window waila;
     private Text blockName;
@@ -78,12 +79,21 @@ public class DebugClient implements Client {
         LayoutColumns columns = new LayoutColumns();
         rows.add(columns);
         
-        
         Text fps = new Text("FPS: ");
         columns.add(fps);
         
         fpsNum = new Text("");
         columns.add(fpsNum);
+        
+        columns = new LayoutColumns();
+        rows.add(columns);
+        
+        Text pos = new Text("POS: ");
+        columns.add(pos);
+        
+        posDisplay = new Text("");
+        columns.add(posDisplay);
+        
     }
     
     public void buildWAILA() {
@@ -176,11 +186,7 @@ public class DebugClient implements Client {
         player.camera.setFOV(resolution.x, resolution.y, Player.CAMERA_FOV);
     }
     
-    @Override
-    public void step(float dt) {
-        player.update(dt);
-        world.update(dt);
-        fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
+    public void updateWaila() {
         Block block = player.pickBlock(25);
         if (block != null) {
             blockName.setText(block.name);
@@ -195,6 +201,15 @@ public class DebugClient implements Client {
         } else {
             DUI.hide(waila);
         }
+    }
+    
+    @Override
+    public void step(float dt) {
+        player.update(dt);
+        world.update(dt);
+        fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
+        posDisplay.setText(player.getBlockAdjustedPosition().toString());
+        updateWaila();
     }
     
     @Override
