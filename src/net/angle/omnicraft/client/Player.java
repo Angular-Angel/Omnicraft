@@ -119,7 +119,11 @@ public class Player {
     }
     
     public Vec3 getBlockAdjustedPosition() {
-        return new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
+        Vec3 pos = new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
+        pos.x -= regionPosition.x * getRegion().getEdgeLength();
+        pos.y -= regionPosition.y * getRegion().getEdgeLength();
+        pos.z -= regionPosition.z * getRegion().getEdgeLength();
+        return pos;
     }
     
     public Vec3i getChunkCoords() {

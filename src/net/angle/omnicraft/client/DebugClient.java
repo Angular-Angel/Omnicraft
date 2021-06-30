@@ -191,7 +191,7 @@ public class DebugClient implements Client {
         if (block != null) {
             blockName.setText(block.name);
             DUI.show(waila);
-            blockOutline.streamBlockOutline(player.pickedCoord);
+            blockOutline.streamBlockOutline(player.getRegion(), player.pickedCoord);
             wailaBlockDisplay.clearVertices();
             wailaBlockDisplay.begin(18, -1);
             wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK, 0);
