@@ -247,12 +247,6 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         
         vertexManager.BufferFace(block, side, face, dimensions, new Vec3(drawStartx, drawStarty, drawStartz));
         
-        Vec3 orientFace = face.orientFace(dimensions);
-        
-        Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
-        
-        vertexManager.bufferFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
-        
         return new Vec2i(width, height);
     }
 
