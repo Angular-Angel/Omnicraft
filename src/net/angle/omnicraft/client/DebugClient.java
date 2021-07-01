@@ -17,6 +17,7 @@ import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Mat4;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
+import com.samrj.devil.math.Vec3;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -193,10 +194,15 @@ public class DebugClient implements Client {
             DUI.show(waila);
             blockOutline.streamBlockOutline(player.getRegion(), player.pickedCoord);
             wailaBlockDisplay.clearVertices();
-            wailaBlockDisplay.begin(18, -1);
-            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK, 0);
-            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK);
-            wailaBlockDisplay.bufferFlatVertices(block.id, 0, 0, 0, 0, World.EDGE_LENGTH_OF_BLOCK, 0, World.EDGE_LENGTH_OF_BLOCK);
+            wailaBlockDisplay.begin(36, -1);
+            Vec3 drawStart = new Vec3();
+            Vec2 dimensions = new Vec2(World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.front, dimensions, drawStart);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.back, dimensions, drawStart);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.left, dimensions, drawStart);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.right, dimensions, drawStart);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.top, dimensions, drawStart);
+            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.bottom, dimensions, drawStart);
             wailaBlockDisplay.upload();
         } else {
             DUI.hide(waila);
@@ -247,7 +253,7 @@ public class DebugClient implements Client {
             
             DGL.useProgram(blockShader);
             blockShader.uniformMat4("u_projection_matrix", Mat4.orthographic(
-                    0, resolution.x, 0, resolution.y, -1, 1));
+                    resolution.x, resolution.y, -1, 1));
             blockShader.uniformMat4("u_view_matrix", Mat4.identity());
             wailaBlockDisplay.draw();
         }

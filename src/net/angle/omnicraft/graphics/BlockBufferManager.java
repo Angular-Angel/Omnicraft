@@ -12,6 +12,8 @@ import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
+import net.angle.omnicraft.world.blocks.Block;
+import net.angle.omnicraft.world.blocks.Side;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 /**
@@ -117,6 +119,14 @@ public class BlockBufferManager extends VertexManager {
         
         bufferVPos.set(bottomLeft); bufferVTexCoord.set(0.0f, height); buffer_block_palette_index.x = block_id; 
         buffer_side_palette_index.x = side_id; bufferVRandom.set(topRight); buffer.vertex();
+    }
+    
+    public void BufferFace(Block block, Side side, Block.BlockFace face, Vec2 dimensions, Vec3 drawStart) {
+        Vec3 orientFace = face.orientFace(dimensions);
+        
+        drawStart = face.getDrawStart(drawStart);
+        
+        bufferFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
     }
 
     @Override

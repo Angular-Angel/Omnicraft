@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
@@ -238,19 +239,21 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
                 expandDown = false;
         }
         
-        Vec2i dimensions = new Vec2i(width, height);
-        
-        Vec3i orientFace = face.orientFace(dimensions);
-        
         float drawStartx = region.getXVoxelOffset() + getXVoxelOffset() + coord.x;
         float drawStarty = region.getYVoxelOffset() + getYVoxelOffset() + coord.y;
         float drawStartz = region.getZVoxelOffset() + getZVoxelOffset() + coord.z;
+        
+        Vec2 dimensions = new Vec2(width, height);
+        
+        vertexManager.BufferFace(block, side, face, dimensions, new Vec3(drawStartx, drawStarty, drawStartz));
+        
+        Vec3 orientFace = face.orientFace(dimensions);
         
         Vec3 drawStart = face.getDrawStart(drawStartx, drawStarty, drawStartz);
         
         vertexManager.bufferFlatVertices(block.id, side.id, drawStart.x, drawStart.y, drawStart.z, orientFace.x, orientFace.y, orientFace.z);
         
-        return dimensions;
+        return new Vec2i(width, height);
     }
 
     @Override

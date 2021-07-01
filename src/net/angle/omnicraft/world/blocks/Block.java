@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.world.blocks;
 
+import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
@@ -42,6 +43,10 @@ public abstract class Block extends Renderable {
                 case right: return new Vec3i(chunk.getEdgeLength() - 1, 0, chunk.getEdgeLength() - 1);
             }
             return new Vec3i(-1, -1, -1);
+        }
+        
+        public Vec3 getDrawStart(Vec3 drawStart) {
+            return getDrawStart(drawStart.x, drawStart.y, drawStart.z);
         }
         
         public Vec3 getDrawStart(float x, float y, float z) {
@@ -149,8 +154,8 @@ public abstract class Block extends Renderable {
             return false;
         }
         
-        public Vec3i orientFace(Vec2i dimensions) {
-            Vec3i direction = new Vec3i();
+        public Vec3 orientFace(Vec2 dimensions) {
+            Vec3 direction = new Vec3();
             switch(this) {
                 case top:
                     direction.z = dimensions.x;
