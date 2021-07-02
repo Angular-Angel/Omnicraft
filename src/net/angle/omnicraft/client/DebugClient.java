@@ -43,6 +43,7 @@ public class DebugClient implements Client {
     private Window debugWindow;
     private Text fpsNum;
     private Text posDisplay;
+    private Text dirDisplay;
     
     private Window waila;
     private Text blockName;
@@ -74,6 +75,7 @@ public class DebugClient implements Client {
     public void buildDebugWindow() {
         debugWindow = new Window();
         debugWindow.setTitle("Debug Window");
+        debugWindow.setWidth(500);
         LayoutRows rows = new LayoutRows();
         debugWindow.setContent(rows);
         
@@ -94,6 +96,15 @@ public class DebugClient implements Client {
         
         posDisplay = new Text("");
         columns.add(posDisplay);
+        
+        columns = new LayoutColumns();
+        rows.add(columns);
+        
+        Text dir = new Text("DIR: ");
+        columns.add(dir);
+        
+        dirDisplay = new Text("");
+        columns.add(dirDisplay);
         
     }
     
@@ -215,6 +226,7 @@ public class DebugClient implements Client {
         world.update(dt);
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
         posDisplay.setText(player.getPositionInRegion().toString());
+        dirDisplay.setText(player.camera.forward.toString());
         updateWaila();
     }
     
