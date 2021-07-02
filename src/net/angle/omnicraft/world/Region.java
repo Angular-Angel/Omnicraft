@@ -300,4 +300,16 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     public int getZVoxelOffset() {
         return getZ() * getEdgeLength();
     }
+    
+    public int getXChunkOffset() {
+        return getX() * getEdgeLengthInChunks();
+    }
+
+    public int getYChunkOffset() {
+        return getY() * getEdgeLengthInChunks();
+    }
+
+    public int getZChunkOffset() {
+        return getZ() * getEdgeLengthInChunks();
+    }
 }

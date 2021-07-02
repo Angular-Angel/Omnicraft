@@ -252,12 +252,12 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     
     public int axialDist(Chunk other) {
         if (other.region != this.region) {
-            int xDist = Math.abs((other.getX() + other.region.getX() * World.CHUNK_EDGE_LENGTH_OF_REGION) 
-                    - (getX() + region.getX() * World.CHUNK_EDGE_LENGTH_OF_REGION));
-            int yDist = Math.abs((other.getY() + other.region.getY() * World.CHUNK_EDGE_LENGTH_OF_REGION) 
-                    - (getY() + region.getY() * World.CHUNK_EDGE_LENGTH_OF_REGION));
-            int zDist = Math.abs((other.getZ() + other.region.getZ() * World.CHUNK_EDGE_LENGTH_OF_REGION) 
-                    - (getZ() + region.getZ() * World.CHUNK_EDGE_LENGTH_OF_REGION));
+            int xDist = Math.abs((other.getX() + other.region.getXChunkOffset()) 
+                    - (getX() + region.getXChunkOffset()));
+            int yDist = Math.abs((other.getY() + other.region.getYChunkOffset()) 
+                    - (getY() + region.getYChunkOffset()));
+            int zDist = Math.abs((other.getZ() + other.region.getZChunkOffset()) 
+                    - (getZ() + region.getZChunkOffset()));
             return Math.max(xDist, Math.max(yDist, zDist));
         }
         else return super.axialDist(other);
