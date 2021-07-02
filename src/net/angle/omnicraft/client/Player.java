@@ -55,10 +55,7 @@ public class Player {
     
     private int chunkGenX = -World.GENERATION_DISTANCE, chunkGenY = -World.GENERATION_DISTANCE, chunkGenZ = -World.GENERATION_DISTANCE;
     private int chunkRenderX = -World.RENDER_DISTANCE, chunkRenderY = -World.RENDER_DISTANCE, chunkRenderZ = -World.RENDER_DISTANCE;
-    
-    public Region getRegion() {
-        return world.regions.get(regionPosition.toString());
-    }
+    private int unloadChunkIndex = 0;
     
     public Player(World world) {
         this(world, CAMERA_NEAR_Z, CAMERA_FAR_Z, CAMERA_FOV);
@@ -77,6 +74,14 @@ public class Player {
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
+    }
+    
+    public Region getRegion() {
+        return world.regions.get(regionPosition.toString());
+    }
+    
+    public Chunk getChunk() {
+        return getRegion().getChunk(getChunkCoords());
     }
     
     public void mouseMoved(float x, float y) {
@@ -179,6 +184,22 @@ public class Player {
         chunkRenderX = -World.RENDER_DISTANCE;
     }
     
+    public void unloadChunks() {
+        Chunk ownChunk = getChunk();
+        for (int i = 0; i < 10; i++) {
+            if (unloadChunkIndex >= world.loadedChunks.size())
+                unloadChunkIndex = 0;
+            if (world.loadedChunks.isEmpty())
+                return;
+            Chunk chunk = world.loadedChunks.get(unloadChunkIndex);
+            if (ownChunk.axialDist(chunk) > World.RENDER_DISTANCE + 2)
+                world.unloadChunk(chunk);
+            else {
+                unloadChunkIndex++;
+            }
+        }
+    }
+    
     public void move(float dt) {
         float forwards = 0, rightwards = 0;
         
@@ -240,6 +261,8 @@ public class Player {
         generateNeededChunks();
         
         loadChunks();
+        
+        unloadChunks();
         
         cameraController.target.set(position);
         cameraController.update();

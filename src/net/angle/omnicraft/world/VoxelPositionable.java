@@ -39,4 +39,9 @@ public abstract class VoxelPositionable {
     public Vec3i getCoordinates() {
         return new Vec3i(position);
     }
+    
+    public int axialDist(VoxelPositionable positionable) {
+        Vec3i other = positionable.getCoordinates();
+        return Math.max(Math.abs(other.x - position.x), Math.max(Math.abs(other.y - position.y), Math.abs(other.z - position.z)));
+    }
 }
