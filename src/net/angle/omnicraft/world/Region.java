@@ -10,6 +10,7 @@ import com.samrj.devil.math.Vec3i;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import jdk.nashorn.internal.objects.Global;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
 
@@ -67,7 +68,6 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     }
     
     public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
-        
         float curx = origin.x;
         float cury = origin.y;
         float curz = origin.z;
@@ -76,15 +76,24 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
         float dy = direction.y;
         float dz = direction.z;
         
+        if (dx < 0.05f && dx > -0.05f)
+            dx = 0;
+        
+        if (dy < 0.05f && dy > -0.05f)
+            dy = 0;
+        
+        if (dz < 0.05f && dz > -0.05f)
+            dz = 0;
+        
         int stepX = (int) Math.signum(dx);
         int stepY = (int) Math.signum(dy);
         int stepZ = (int) Math.signum(dz);
         
         int steps = 0;
         
-        float tMaxX = intbound(origin.x, dx);
-        float tMaxY = intbound(origin.y, dy);
-        float tMaxZ = intbound(origin.z, dz);
+        float tMaxX = dx != 0 ? intbound(origin.x, dx) : Float.POSITIVE_INFINITY;
+        float tMaxY = dy != 0 ? intbound(origin.y, dy) : Float.POSITIVE_INFINITY;
+        float tMaxZ = dz != 0 ? intbound(origin.z, dz) : Float.POSITIVE_INFINITY;
         
         // The change in t when taking a step (always positive).
         
