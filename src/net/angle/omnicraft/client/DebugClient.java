@@ -15,6 +15,7 @@ import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Mat4;
+import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
@@ -206,8 +207,8 @@ public class DebugClient implements Client {
             blockOutline.streamBlockOutline(player.getRegion(), player.pickedCoord);
             wailaBlockDisplay.clearVertices();
             wailaBlockDisplay.begin(36, -1);
-            Vec3 drawStart = new Vec3();
-            Vec2 dimensions = new Vec2(World.EDGE_LENGTH_OF_BLOCK, World.EDGE_LENGTH_OF_BLOCK);
+            Vec3 drawStart = new Vec3(-World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f);
+            Vec2 dimensions = new Vec2(1, 1);
             wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.front, dimensions, drawStart);
             wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.back, dimensions, drawStart);
             wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.left, dimensions, drawStart);
@@ -260,13 +261,9 @@ public class DebugClient implements Client {
             outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
             blockOutline.draw();
             
-            glDisable(GL_DEPTH_TEST);
-            glDisable(GL_CULL_FACE);
-            
             DGL.useProgram(blockShader);
-            blockShader.uniformMat4("u_projection_matrix", Mat4.orthographic(
-                    resolution.x, resolution.y, -1, 1));
-            blockShader.uniformMat4("u_view_matrix", Mat4.identity());
+            blockShader.uniformMat4("u_projection_matrix", Mat4.perspective(Util.toRadians(90.0f), resolution.y/(float)resolution.x, 0.5f, 16));
+            blockShader.uniformMat4("u_view_matrix", Mat4.translation(new Vec3(0, 0, -3)));
             wailaBlockDisplay.draw();
         }
     }
