@@ -70,8 +70,7 @@ public class GameScreen {
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
     
-    
-    public void buildDebugWindow() {
+    private void buildDebugWindow() {
         debugWindow = new Window();
         debugWindow.setTitle("Debug Window");
         debugWindow.setWidth(500);
@@ -107,7 +106,7 @@ public class GameScreen {
         
     }
     
-    public void buildWAILA() {
+    private void buildWAILA() {
         waila = new Window();
         waila.setTitleBarVisible(false);
         
@@ -191,7 +190,13 @@ public class GameScreen {
         player.camera.setFOV(width, height, Player.CAMERA_FOV);
     }
     
-    public void updateWaila() {
+    private void updateDebugWindow() {
+        fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
+        posDisplay.setText(player.getPositionInRegion().toString());
+        dirDisplay.setText(player.camera.forward.toString());
+    }
+    
+    private void updateWaila() {
         Block block = player.pickBlock(25);
         if (block != null) {
             blockName.setText(block.name);
@@ -216,9 +221,7 @@ public class GameScreen {
     public void step(float dt) {
         player.update(dt);
         world.update(dt);
-        fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
-        posDisplay.setText(player.getPositionInRegion().toString());
-        dirDisplay.setText(player.camera.forward.toString());
+        updateDebugWindow();
         updateWaila();
     }
     
