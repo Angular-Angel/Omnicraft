@@ -7,7 +7,9 @@ package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
+import com.samrj.devil.gl.FBO;
 import com.samrj.devil.gl.ShaderProgram;
+import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.LayoutColumns;
@@ -30,6 +32,9 @@ import net.angle.omnicraft.world.WorldGenerator;
 import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14C.GL_DEPTH_COMPONENT16;
+import static org.lwjgl.opengl.GL30C.GL_COLOR_ATTACHMENT0;
+import static org.lwjgl.opengl.GL30C.GL_DEPTH_ATTACHMENT;
 
 
 public class DebugClient implements Client {
@@ -51,6 +56,8 @@ public class DebugClient implements Client {
     
     private OutlineStreamManager blockOutline;
     private BlockBufferManager wailaBlockDisplay;
+    private FBO wailaBlockBuffer;
+    private Mat4 wailaBlockView;
     
     @Override
     public void preInit() {
@@ -122,6 +129,22 @@ public class DebugClient implements Client {
         
         blockName = new Text("");
         columns.add(blockName);
+        
+        wailaBlockView = Mat4.translation(new Vec3(1, -1, -3)) 
+                .rotate(new Vec3(0, 1, 0), Util.toRadians(20.0f))
+                .rotate(new Vec3(1, 0, 0), Util.toRadians(10.0f));
+        
+        wailaBlockBuffer = DGL.genFBO();
+        
+        DGL.bindFBO(wailaBlockBuffer);
+        
+        Texture2D tex = DGL.genTex2D();
+        tex.image(500, 500, GL_RGB8);
+        wailaBlockBuffer.texture2D(tex, GL_COLOR_ATTACHMENT0);
+        
+        tex = DGL.genTex2D();
+        tex.image(500, 500, GL_DEPTH_COMPONENT16);
+        wailaBlockBuffer.texture2D(tex, GL_DEPTH_ATTACHMENT);
     }
     
     public void beginGame() {
@@ -233,6 +256,8 @@ public class DebugClient implements Client {
     
     @Override
     public void render() {
+        
+        DGL.bindFBO(null);
             
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClearDepth(1.0);
@@ -261,9 +286,11 @@ public class DebugClient implements Client {
             outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
             blockOutline.draw();
             
+            DGL.bindFBO(wailaBlockBuffer);
+            
             DGL.useProgram(blockShader);
             blockShader.uniformMat4("u_projection_matrix", Mat4.perspective(Util.toRadians(90.0f), resolution.y/(float)resolution.x, 0.5f, 16));
-            blockShader.uniformMat4("u_view_matrix", Mat4.translation(new Vec3(0, 0, -3)));
+            blockShader.uniformMat4("u_view_matrix", wailaBlockView);
             wailaBlockDisplay.draw();
         }
     }
