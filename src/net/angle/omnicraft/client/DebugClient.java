@@ -42,6 +42,7 @@ public class DebugClient implements Client {
     private Vec2i resolution;
     private ShaderProgram blockShader;
     private ShaderProgram outlineShader;
+    private ShaderProgram textureShader;
     
     private Player player;
     private World world;
@@ -159,6 +160,7 @@ public class DebugClient implements Client {
             //fragment shaders respectively.
             blockShader = DGL.loadProgram("resources/block_shader");
             outlineShader = DGL.loadProgram("resources/outline_shader");
+            textureShader = DGL.loadProgram("resources/texture_shader");
             
             //VertexBuffer is a static block of vertices, allocated once.
             //Could use VertexStream if we wanted something more dynamic.
