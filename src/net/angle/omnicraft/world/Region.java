@@ -10,7 +10,6 @@ import com.samrj.devil.math.Vec3i;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import jdk.nashorn.internal.objects.Global;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
 

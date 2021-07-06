@@ -8,7 +8,6 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.FBO;
-import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
@@ -29,6 +28,9 @@ import net.angle.omnicraft.graphics.OutlineStreamManager;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import net.angle.omnicraft.world.blocks.Block;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwMaximizeWindow;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -51,7 +53,7 @@ import static org.lwjgl.opengl.GL30C.GL_DEPTH_ATTACHMENT;
  *
  * @author angle
  */
-public class GameScreen {
+public class GameScreen extends Screen {
     private DebugClient client;
     
     private Player player;
@@ -145,7 +147,7 @@ public class GameScreen {
     }
     
     public GameScreen(DebugClient client) {
-        this.client = client;
+        super(client);
         
         world = new World(new WorldGenerator());
             
@@ -179,10 +181,20 @@ public class GameScreen {
         wailaBlockDisplay = new BlockBufferManager();
     }
     
+    @Override
     public void mouseMoved(float x, float y) {
         player.mouseMoved(x, y);
     }
     
+    @Override
+    public void key(int key, int action, int mods) {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
+        if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
+            toggeDebugScreen();
+        }
+    }
+    
+    @Override
     public void resize(int width, int height) {
         waila.setPosAlignToViewport(new Vec2(0.5f, 1));
         
@@ -218,6 +230,7 @@ public class GameScreen {
         }
     }
     
+    @Override
     public void step(float dt) {
         player.update(dt);
         world.update(dt);
@@ -225,6 +238,7 @@ public class GameScreen {
         updateWaila();
     }
     
+    @Override
     public void render() {
         
         DGL.bindFBO(null);
@@ -267,6 +281,7 @@ public class GameScreen {
         }
     }
     
+    @Override
     public void destroy(Boolean crashed) {
         world.delete();
         blockOutline.clearVertices();

@@ -44,6 +44,8 @@ public interface Client {
         }
     }
 
+    public void preInit();
+
     public void init();
 
     public void mouseMoved(float x, float y);
@@ -57,6 +59,4 @@ public interface Client {
     public void render();
 
     public void destroy(Boolean crashed);
-
-    public void preInit();
 }

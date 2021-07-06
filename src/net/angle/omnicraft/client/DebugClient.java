@@ -9,18 +9,11 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gui.DUI;
-import com.samrj.devil.math.Mat4;
-import com.samrj.devil.math.Util;
-import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
-import com.samrj.devil.math.Vec3;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.angle.omnicraft.world.World;
-import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 
 public class DebugClient implements Client {
@@ -30,7 +23,7 @@ public class DebugClient implements Client {
     public ShaderProgram outlineShader;
     public ShaderProgram textureShader;
     
-    private GameScreen screen;
+    private Screen screen;
     
     @Override
     public void preInit() {
@@ -92,10 +85,7 @@ public class DebugClient implements Client {
     
     @Override
     public void key(int key, int action, int mods) {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
-        if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
-            screen.toggeDebugScreen();
-        }
+        screen.key(key, action, mods);
     }
     
     @Override
