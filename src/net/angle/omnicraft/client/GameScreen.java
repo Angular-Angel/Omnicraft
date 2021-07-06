@@ -54,10 +54,8 @@ import static org.lwjgl.opengl.GL30C.GL_DEPTH_ATTACHMENT;
  * @author angle
  */
 public class GameScreen extends Screen {
-    private DebugClient client;
-    
-    private Player player;
-    private World world;
+    private final Player player;
+    private final World world;
     
     private Window debugWindow;
     private Text fpsNum;
@@ -67,8 +65,8 @@ public class GameScreen extends Screen {
     private Window waila;
     private Text blockName;
     
-    private OutlineStreamManager blockOutline;
-    private BlockBufferManager wailaBlockDisplay;
+    private final OutlineStreamManager blockOutline;
+    private final BlockBufferManager wailaBlockDisplay;
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
     
@@ -165,12 +163,6 @@ public class GameScreen extends Screen {
 
         world.prepare_block_palette();
         world.prepare_side_palette();
-
-        try {
-            DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
-        } catch (IOException ex) {
-            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         blockOutline = new OutlineStreamManager();
         blockOutline.begin();

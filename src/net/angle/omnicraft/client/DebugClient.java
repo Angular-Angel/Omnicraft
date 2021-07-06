@@ -9,7 +9,9 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gui.DUI;
+import com.samrj.devil.gui.Font;
 import com.samrj.devil.math.Vec2i;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +63,8 @@ public class DebugClient implements Client {
             //Could use VertexStream if we wanted something more dynamic.
             
             Game.getMouse().setGrabbed(true);
+            
+            DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
             
             screen = new GameScreen(this);
         } catch (IOException ex) {
