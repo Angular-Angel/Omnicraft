@@ -184,9 +184,7 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
                 chunkz -= World.CHUNK_EDGE_LENGTH_OF_REGION;
                 regionz++;
             }
-            Region region = world.regions.get(new Vec3i(regionx, regiony, regionz).toString());
-            if (region == null)
-                region = world.generateNewRegion(regionx, regiony, regionz);
+            Region region = world.checkRegion(new Vec3i(regionx, regiony, regionz));
             return region.generateChunk(chunkx, chunky, chunkz);
         }
         Chunk chunk = new Chunk(this, chunkx, chunky, chunkz);
@@ -268,14 +266,6 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     public int getEdgeLength() {
         return world.getBlockEdgeLengthOfRegion();
     }
-    
-    public int getEdgeLengthInChunks() {
-        return World.CHUNK_EDGE_LENGTH_OF_REGION;
-    }
-
-    public int getEdgeLengthOfContainedChunks() {
-        return World.BLOCK_EDGE_LENGTH_OF_CHUNK;
-    }
 
     public List<Chunk> getChunks() {
         return Arrays.stream(chunks)
@@ -310,14 +300,14 @@ public class Region extends VoxelPositionable implements BlockContainer, SideCon
     }
     
     public int getXChunkOffset() {
-        return getX() * getEdgeLengthInChunks();
+        return getX() * World.CHUNK_EDGE_LENGTH_OF_REGION;
     }
 
     public int getYChunkOffset() {
-        return getY() * getEdgeLengthInChunks();
+        return getY() * World.CHUNK_EDGE_LENGTH_OF_REGION;
     }
 
     public int getZChunkOffset() {
-        return getZ() * getEdgeLengthInChunks();
+        return getZ() * World.CHUNK_EDGE_LENGTH_OF_REGION;
     }
 }

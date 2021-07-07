@@ -87,7 +87,7 @@ public class WorldGenerator {
         
         spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
-        spawnRegion.getChunk(spawnRegion.getEdgeLengthInChunks() - 1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
+        spawnRegion.getChunk(World.CHUNK_EDGE_LENGTH_OF_REGION - 1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         
         spawnRegion.getChunk(0, 3, 0).setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
         

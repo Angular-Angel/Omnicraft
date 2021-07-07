@@ -88,11 +88,6 @@ public class World {
     }
     
     public void update(float dt) {
-        for (Region region : regions.values())
-            region.update(dt);
-//        for (Chunk chunk : loadedChunks) {
-//            if chunk.
-//        }
     }
     
     public void addSubstance(Substance substance) {
@@ -141,10 +136,6 @@ public class World {
     public void addRegion(Region region) {
         String coordstring = region.getCoordinates().toString();
         regions.put(coordstring, region);
-    }
-    
-    public Region getSpawnRegion() {
-        return regions.get("(0, 0, 0)");
     }
     
     public boolean loadChunk(Chunk chunk) {

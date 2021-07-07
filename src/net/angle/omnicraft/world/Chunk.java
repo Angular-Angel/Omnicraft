@@ -42,7 +42,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
 
     @Override
     public int getEdgeLength() {
-        return region.getEdgeLengthOfContainedChunks();
+        return World.BLOCK_EDGE_LENGTH_OF_CHUNK;
     }
     
     public void setBlockChunk(BlockChunk blockChunk) {
