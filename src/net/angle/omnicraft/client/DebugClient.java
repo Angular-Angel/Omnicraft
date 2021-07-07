@@ -59,11 +59,9 @@ public class DebugClient implements Client {
             outlineShader = DGL.loadProgram("resources/outline_shader");
             textureShader = DGL.loadProgram("resources/texture_shader");
             
-            Game.getMouse().setGrabbed(true);
-            
             DUI.setFont(new Font(new FileInputStream("resources/Helvetica-Normal.ttf")));
             
-            screen = new GameScreen(this);
+            changeScreen(new TitleScreen(this));
         } catch (IOException ex) {
             Logger.getLogger(DebugClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +80,11 @@ public class DebugClient implements Client {
     @Override
     public void mouseMoved(float x, float y) {
         screen.mouseMoved(x, y);
+    }
+
+    @Override
+    public void mouseButton(int button, int action, int mods) {
+        screen.mouseButton(button, action, mods);
     }
     
     @Override
@@ -103,6 +106,12 @@ public class DebugClient implements Client {
     @Override
     public void render() {
         screen.render();
+    }
+    
+    public void changeScreen(Screen newScreen) {
+        if (screen != null) screen.destroy(false);
+        screen = newScreen;
+        screen.init();
     }
     
     @Override

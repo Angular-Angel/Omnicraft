@@ -16,7 +16,11 @@ public abstract class Screen {
         this.client = client;
     }
     
+    public abstract void init();
+    
     public abstract void mouseMoved(float x, float y);
+    
+    public abstract void mouseButton(int button, int action, int mods);
     
     public abstract void key(int key, int action, int mods);
     

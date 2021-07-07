@@ -10,7 +10,6 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.FBO;
 import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.gui.DUI;
-import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.LayoutColumns;
 import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
@@ -19,10 +18,6 @@ import com.samrj.devil.math.Mat4;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.graphics.OutlineStreamManager;
 import net.angle.omnicraft.world.World;
@@ -65,13 +60,46 @@ public class GameScreen extends Screen {
     private Window waila;
     private Text blockName;
     
-    private final OutlineStreamManager blockOutline;
-    private final BlockBufferManager wailaBlockDisplay;
+    private OutlineStreamManager blockOutline;
+    private BlockBufferManager wailaBlockDisplay;
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
     
     private Texture2D wailaPreviewTexture;
     private Texture2D wailaDepthTexture;
+    
+    public GameScreen(DebugClient client) {
+        super(client);
+        
+        world = new World(new WorldGenerator());
+            
+        player = new Player(world);
+
+        //VertexBuffer is a static block of vertices, allocated once.
+        //Could use VertexStream if we wanted something more dynamic.
+    }
+    
+
+    @Override
+    public void init() {
+        Game.getMouse().setGrabbed(true);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearDepth(1.0);
+
+        world.prepare_block_palette();
+        world.prepare_side_palette();
+
+        blockOutline = new OutlineStreamManager();
+        blockOutline.begin();
+
+        buildDebugWindow();
+        buildWAILA();
+
+        wailaBlockDisplay = new BlockBufferManager();
+        
+        Game.getMouse().setGrabbed(true);
+    }
     
     private void buildDebugWindow() {
         debugWindow = new Window();
@@ -147,38 +175,13 @@ public class GameScreen extends Screen {
             DUI.show(debugWindow);
     }
     
-    public GameScreen(DebugClient client) {
-        super(client);
-        
-        world = new World(new WorldGenerator());
-            
-        player = new Player(world);
-
-        //VertexBuffer is a static block of vertices, allocated once.
-        //Could use VertexStream if we wanted something more dynamic.
-
-        Game.getMouse().setGrabbed(true);
-
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClearDepth(1.0);
-
-        glfwMaximizeWindow(Game.getWindow());
-
-        world.prepare_block_palette();
-        world.prepare_side_palette();
-
-        blockOutline = new OutlineStreamManager();
-        blockOutline.begin();
-
-        buildDebugWindow();
-        buildWAILA();
-
-        wailaBlockDisplay = new BlockBufferManager();
-    }
-    
     @Override
     public void mouseMoved(float x, float y) {
         player.mouseMoved(x, y);
+    }
+
+    @Override
+    public void mouseButton(int button, int action, int mods) {
     }
     
     @Override

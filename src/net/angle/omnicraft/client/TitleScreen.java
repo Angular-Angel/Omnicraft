@@ -6,8 +6,10 @@
 package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
+import com.samrj.devil.gui.Button;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
+import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
@@ -27,40 +29,59 @@ import static org.lwjgl.opengl.GL11.glClear;
  */
 public class TitleScreen extends Screen {
     
-    private Window TitleWindow;
+    private Window titleWindow;
+    private Window menuWindow;
     
-    private Font normalFont;
     private Font titleFont;
-
+    
     public TitleScreen(DebugClient client) {
         super(client);
+    }
+    
+    private void createTitleWindow() throws IOException {
+        Font.FontProperties titleProperties = new Font.FontProperties();
+        titleProperties.bitmapWidth = 1600;
+        titleProperties.bitmapHeight = 1800;
+        titleProperties.height = 100;
+        titleProperties.first = 65;
+        titleProperties.count = 57;
+        titleFont = new Font(new FileInputStream("resources/Helvetica-Normal.ttf"), titleProperties);
         
-        normalFont = DUI.font();
-        try {
-            Font.FontProperties titleProperties = new Font.FontProperties();
-            titleProperties.bitmapWidth = 1600;
-            titleProperties.bitmapHeight = 1800;
-            titleProperties.height = 100;
-            titleProperties.first = 65;
-            titleProperties.count = 57;
-            titleFont = new Font(new FileInputStream("resources/Helvetica-Normal.ttf"), titleProperties);
-        } catch (IOException ex) {
-            Logger.getLogger(TitleScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        TitleWindow = new Window();
-        TitleWindow.setTitleBarVisible(false);
+        titleWindow = new Window();
+        titleWindow.setTitleBarVisible(false);
         
         Text title = new TextWithFont("OMNICRAFT", titleFont);
-        TitleWindow.setContent(title);
-        TitleWindow.setSizeFromContent();
-        TitleWindow.setPosAlignToViewport(new Vec2(0.5f, 1));
+        titleWindow.setContent(title);
         
-        DUI.show(TitleWindow);
+        DUI.show(titleWindow);
+    }
+    
+    private void createMenuWindow(){
+        menuWindow = new Window();
+        
+        LayoutRows rows = new LayoutRows();
+        menuWindow.setContent(rows);
+        
+        Button button = new Button("Play");
+        rows.add(button);
+        
+        button.setCallback((t) -> {
+            client.changeScreen(new GameScreen(client));
+        });
+        
+        menuWindow.setTitleBarVisible(false);
+        
+        DUI.show(menuWindow);
     }
 
     @Override
     public void mouseMoved(float x, float y) {
+        DUI.mouseMoved(x, y);
+    }
+
+    @Override
+    public void mouseButton(int button, int action, int mods) {
+        DUI.mouseButton(button, action, mods);
     }
 
     @Override
@@ -70,9 +91,11 @@ public class TitleScreen extends Screen {
 
     @Override
     public void resize(int width, int height) {
-        TitleWindow.setWidth(width - 2);
-        TitleWindow.setHeight(height - 2);
-        TitleWindow.setPosCenterViewport();
+        titleWindow.setSizeFromContent();
+        titleWindow.setPosAlignToViewport(new Vec2(0.5f, 1));
+        
+        menuWindow.setSizeFromContent();
+        menuWindow.setPosAlignToViewport(new Vec2(0.5f, 0.5f));
     }
 
     @Override
@@ -87,6 +110,21 @@ public class TitleScreen extends Screen {
 
     @Override
     public void destroy(Boolean crashed) {
+        DUI.hide(titleWindow);
+        DUI.hide(menuWindow);
+        titleFont.destroy();
+    }
+
+    @Override
+    public void init() {
+        try {
+            createTitleWindow();
+            createMenuWindow();
+        } catch (IOException ex) {
+            Logger.getLogger(TitleScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        resize(client.resolution.x, client.resolution.y);
     }
     
 }

@@ -28,6 +28,7 @@ public interface Client {
                 
                 Game.onResize(this::resize);
                 Game.onMouseMoved(this::mouseMoved);
+                Game.onMouseButton(this::mouseButton);
                 Game.onKey(this::key);
                 Game.onStep(this::step);
                 Game.onRender(this::render);
@@ -49,6 +50,8 @@ public interface Client {
     public void init();
 
     public void mouseMoved(float x, float y);
+    
+    public void mouseButton(int button, int action, int mods);
 
     public void key(int key, int action, int mods);
 
