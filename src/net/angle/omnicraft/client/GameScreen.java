@@ -70,6 +70,9 @@ public class GameScreen extends Screen {
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
     
+    private Texture2D wailaPreviewTexture;
+    private Texture2D wailaDepthTexture;
+    
     private void buildDebugWindow() {
         debugWindow = new Window();
         debugWindow.setTitle("Debug Window");
@@ -128,13 +131,13 @@ public class GameScreen extends Screen {
         
         DGL.bindFBO(wailaBlockBuffer);
         
-        Texture2D tex = DGL.genTex2D();
-        tex.image(500, 500, GL_RGB8);
-        wailaBlockBuffer.texture2D(tex, GL_COLOR_ATTACHMENT0);
+        wailaPreviewTexture = DGL.genTex2D();
+        wailaPreviewTexture.image(500, 500, GL_RGB8);
+        wailaBlockBuffer.texture2D(wailaPreviewTexture, GL_COLOR_ATTACHMENT0);
         
-        tex = DGL.genTex2D();
-        tex.image(500, 500, GL_DEPTH_COMPONENT16);
-        wailaBlockBuffer.texture2D(tex, GL_DEPTH_ATTACHMENT);
+        wailaDepthTexture = DGL.genTex2D();
+        wailaDepthTexture.image(500, 500, GL_DEPTH_COMPONENT16);
+        wailaBlockBuffer.texture2D(wailaDepthTexture, GL_DEPTH_ATTACHMENT);
     }
     
     public void toggeDebugScreen() {
@@ -278,5 +281,7 @@ public class GameScreen extends Screen {
         world.delete();
         blockOutline.clearVertices();
         wailaBlockDisplay.clearVertices();
+        
+        DGL.delete(wailaDepthTexture, wailaPreviewTexture, wailaBlockBuffer);
     }
 }

@@ -53,14 +53,11 @@ public class DebugClient implements Client {
             
             resolution = Game.getResolution();
             
-            //This method loads shader.vert and shader.frag, as the vertex and
-            //fragment shaders respectively.
+            //This block loads shader.vert and shader.frag, as the vertex and
+            //fragment shaders respectively, for each of three different shaders.
             blockShader = DGL.loadProgram("resources/block_shader");
             outlineShader = DGL.loadProgram("resources/outline_shader");
             textureShader = DGL.loadProgram("resources/texture_shader");
-            
-            //VertexBuffer is a static block of vertices, allocated once.
-            //Could use VertexStream if we wanted something more dynamic.
             
             Game.getMouse().setGrabbed(true);
             
@@ -112,7 +109,7 @@ public class DebugClient implements Client {
     public void destroy(Boolean crashed) {
         screen.destroy(crashed);
         
-        DGL.delete(blockShader, outlineShader);
+        DGL.delete(blockShader, outlineShader, textureShader);
         DUI.font().destroy();
         
         if (crashed) DGL.setDebugLeakTracking(false);
