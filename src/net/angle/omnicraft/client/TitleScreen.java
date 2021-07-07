@@ -8,12 +8,10 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
-import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
 import com.samrj.devil.math.Vec2;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +38,11 @@ public class TitleScreen extends Screen {
         normalFont = DUI.font();
         try {
             Font.FontProperties titleProperties = new Font.FontProperties();
-            titleProperties.height = 50;
+            titleProperties.bitmapWidth = 1600;
+            titleProperties.bitmapHeight = 1800;
+            titleProperties.height = 100;
+            titleProperties.first = 65;
+            titleProperties.count = 57;
             titleFont = new Font(new FileInputStream("resources/Helvetica-Normal.ttf"), titleProperties);
         } catch (IOException ex) {
             Logger.getLogger(TitleScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,13 +51,10 @@ public class TitleScreen extends Screen {
         TitleWindow = new Window();
         TitleWindow.setTitleBarVisible(false);
         
-        TitleWindow.setWidth(600);
-        TitleWindow.setHeight(100);
-        TitleWindow.setPosAlignToViewport(new Vec2(0.5f, 1));
-        
-        DUI.setFont(titleFont);
-        Text title = new Text("OMNICRAFT");
+        Text title = new TextWithFont("OMNICRAFT", titleFont);
         TitleWindow.setContent(title);
+        TitleWindow.setSizeFromContent();
+        TitleWindow.setPosAlignToViewport(new Vec2(0.5f, 1));
         
         DUI.show(TitleWindow);
     }
