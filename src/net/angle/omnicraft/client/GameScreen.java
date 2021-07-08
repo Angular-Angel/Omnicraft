@@ -9,6 +9,7 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.FBO;
 import com.samrj.devil.gl.Texture2D;
+import com.samrj.devil.gui.Align;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.LayoutColumns;
 import com.samrj.devil.gui.LayoutRows;
@@ -143,7 +144,7 @@ public class GameScreen extends Screen {
         
         waila.setWidth(300f);
         waila.setHeight(75f);
-        waila.setPosAlignToViewport(new Vec2(0.5f, 1));
+        waila.setPosAlignToViewport(Align.N.vector());
         
         LayoutColumns columns = new LayoutColumns();
         waila.setContent(columns);
@@ -194,7 +195,7 @@ public class GameScreen extends Screen {
     
     @Override
     public void resize(int width, int height) {
-        waila.setPosAlignToViewport(new Vec2(0.5f, 1));
+        waila.setPosAlignToViewport(Align.N.vector());
         
         //Camera's aspect ratio may change if window is resized.
         player.camera.setFOV(width, height, Player.CAMERA_FOV);

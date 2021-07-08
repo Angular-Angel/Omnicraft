@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.lwjgl.glfw.GLFW.*;
 
-
 public class DebugClient implements Client {
     
     public Vec2i resolution;

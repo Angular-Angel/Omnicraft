@@ -6,6 +6,7 @@
 package net.angle.omnicraft.client;
 
 import com.samrj.devil.game.Game;
+import com.samrj.devil.gui.Align;
 import com.samrj.devil.gui.Button;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
@@ -92,10 +93,10 @@ public class TitleScreen extends Screen {
     @Override
     public void resize(int width, int height) {
         titleWindow.setSizeFromContent();
-        titleWindow.setPosAlignToViewport(new Vec2(0.5f, 1));
+        titleWindow.setPosAlignToViewport(Align.N.vector());
         
         menuWindow.setSizeFromContent();
-        menuWindow.setPosAlignToViewport(new Vec2(0.5f, 0.5f));
+        menuWindow.setPosAlignToViewport(Align.C.vector());
     }
 
     @Override
