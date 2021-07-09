@@ -33,12 +33,6 @@ public class UITexture extends Form {
         this.shader = shader;
         this.buffer = new TextureBufferManager();
         this.textureMatrix = textureMatrix;
-        
-        buffer.begin();
-        Vec2 pos = getPos();
-        Vec2 size = getSize();
-        buffer.bufferVertices(new Vec3(pos.x, pos.y + size.y, 0), new Vec3(pos.x + size.x, pos.y, 0));
-        buffer.upload();
     }
     
     @Override
@@ -46,16 +40,26 @@ public class UITexture extends Form {
     {
         width = texture.getWidth();
         height = texture.getHeight();
+        
+        buffer.clearVertices();
+        
+        buffer.begin();
+        Vec2 pos = getPos();
+        Vec2 size = getSize();
+        buffer.bufferVertices(new Vec3(pos.x, pos.y + size.y, 0), new Vec3(pos.x + size.x, pos.y, 0));
+        buffer.upload();
     }
 
     @Override
     protected void render(DUIDrawer drawer) {
         texture.bind(GL_TEXTURE2);
+        ShaderProgram currentProgram = DGL.currentProgram();
         DGL.useProgram(shader);
         shader.uniform1i("u_texture", 2);
-        shader.uniformMat4("u_projection_matrix", textureMatrix);
+        shader.uniformMat3("u_matrix", textureMatrix);
         buffer.draw();
         texture.unbind();
+        DGL.useProgram(currentProgram);
     }
     
     public void destroy() {
