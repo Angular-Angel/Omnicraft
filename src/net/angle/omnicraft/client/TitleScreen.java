@@ -13,7 +13,6 @@ import com.samrj.devil.gui.Font;
 import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Text;
 import com.samrj.devil.gui.Window;
-import com.samrj.devil.math.Vec2;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -67,7 +66,8 @@ public class TitleScreen extends Screen {
         rows.add(button);
         
         button.setCallback((t) -> {
-            client.changeScreen(new GameScreen(client));
+            if (client.screen == this)
+                client.changeScreen(new GameScreen(client));
         });
         
         menuWindow.setTitleBarVisible(false);

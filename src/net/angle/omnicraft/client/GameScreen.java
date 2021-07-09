@@ -27,7 +27,6 @@ import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.glfwMaximizeWindow;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
@@ -65,6 +64,8 @@ public class GameScreen extends Screen {
     private BlockBufferManager wailaBlockDisplay;
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
+    private Mat4 wailaTextureMatrix;
+    private UITexture wailaPreviewForm;
     
     private Texture2D wailaPreviewTexture;
     private Texture2D wailaDepthTexture;
@@ -142,31 +143,34 @@ public class GameScreen extends Screen {
         waila = new Window();
         waila.setTitleBarVisible(false);
         
-        waila.setWidth(300f);
-        waila.setHeight(75f);
-        waila.setPosAlignToViewport(Align.N.vector());
-        
         LayoutColumns columns = new LayoutColumns();
         waila.setContent(columns);
         
-        blockName = new Text("");
-        columns.add(blockName);
+        int previewWidth = 150, previewHeight = 150;
         
-        wailaBlockView = Mat4.translation(new Vec3(1, -1, -3)) 
-                .rotate(new Vec3(0, 1, 0), Util.toRadians(20.0f))
-                .rotate(new Vec3(1, 0, 0), Util.toRadians(10.0f));
+        wailaBlockView = Mat4.translation(new Vec3(-4.45f, 2.20f, -5));
+        wailaTextureMatrix = Mat4.orthographic(client.resolution.x, client.resolution.y, -1, 1);
         
         wailaBlockBuffer = DGL.genFBO();
         
         DGL.bindFBO(wailaBlockBuffer);
         
         wailaPreviewTexture = DGL.genTex2D();
-        wailaPreviewTexture.image(500, 500, GL_RGB8);
+        wailaPreviewTexture.image(previewWidth, previewHeight, GL_RGB8);
         wailaBlockBuffer.texture2D(wailaPreviewTexture, GL_COLOR_ATTACHMENT0);
         
         wailaDepthTexture = DGL.genTex2D();
-        wailaDepthTexture.image(500, 500, GL_DEPTH_COMPONENT16);
+        wailaDepthTexture.image(previewWidth, previewHeight, GL_DEPTH_COMPONENT16);
         wailaBlockBuffer.texture2D(wailaDepthTexture, GL_DEPTH_ATTACHMENT);
+        
+        wailaPreviewForm = new UITexture(wailaPreviewTexture, client.textureShader, wailaTextureMatrix);
+        columns.add(wailaPreviewForm);
+        
+        blockName = new Text("");
+        columns.add(blockName);
+        
+        waila.setSizeFromContent();
+        waila.setPosAlignToViewport(Align.N.vector());
     }
     
     public void toggeDebugScreen() {
@@ -195,6 +199,7 @@ public class GameScreen extends Screen {
     
     @Override
     public void resize(int width, int height) {
+        wailaTextureMatrix = Mat4.orthographic(width, height, -1, 1);
         waila.setPosAlignToViewport(Align.N.vector());
         
         //Camera's aspect ratio may change if window is resized.
@@ -210,9 +215,14 @@ public class GameScreen extends Screen {
     private void updateWaila() {
         Block block = player.pickBlock(25);
         if (block != null) {
-            blockName.setText(block.name);
-            DUI.show(waila);
             blockOutline.streamBlockOutline(player.getRegion(), player.pickedCoord);
+            
+            blockName.setText(block.name);
+            
+            waila.setSizeFromContent();
+            waila.setPosAlignToViewport(Align.N.vector());
+            DUI.show(waila);
+            
             wailaBlockDisplay.clearVertices();
             wailaBlockDisplay.begin(36, -1);
             Vec3 drawStart = new Vec3(-World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f);
@@ -285,6 +295,7 @@ public class GameScreen extends Screen {
         world.delete();
         blockOutline.clearVertices();
         wailaBlockDisplay.clearVertices();
+        wailaPreviewForm.destroy();
         
         DGL.delete(wailaDepthTexture, wailaPreviewTexture, wailaBlockBuffer);
     }

@@ -24,7 +24,7 @@ public class DebugClient implements Client {
     public ShaderProgram outlineShader;
     public ShaderProgram textureShader;
     
-    private Screen screen;
+    public Screen screen;
     
     @Override
     public void preInit() {
