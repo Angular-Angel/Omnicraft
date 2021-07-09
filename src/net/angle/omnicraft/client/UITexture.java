@@ -5,13 +5,15 @@
  */
 package net.angle.omnicraft.client;
 
+import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.gui.DUIDrawer;
 import com.samrj.devil.gui.Form;
-import com.samrj.devil.math.Mat4;
+import com.samrj.devil.math.Mat3;
 import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.graphics.TextureBufferManager;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
@@ -22,17 +24,18 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
  */
 public class UITexture extends Form {
     
-    private Texture2D texture;
-    private TextureBufferManager buffer;
-    private ShaderProgram shader;
-    private Mat4 textureMatrix;
+    private final Texture2D texture;
+    private final TextureBufferManager buffer;
+    private final ShaderProgram shader;
+    private Mat3 textureMatrix;
     
-    public UITexture(Texture2D texture, ShaderProgram shader, Mat4 textureMatrix) {
+    public UITexture(Texture2D texture, ShaderProgram shader) {
         super();
         this.texture = texture;
         this.shader = shader;
         this.buffer = new TextureBufferManager();
-        this.textureMatrix = textureMatrix;
+        Vec2i resolution = Game.getResolution();
+        this.textureMatrix = Mat3.orthographic(resolution.x, resolution.y);
     }
     
     @Override
@@ -40,6 +43,9 @@ public class UITexture extends Form {
     {
         width = texture.getWidth();
         height = texture.getHeight();
+        
+        Vec2i resolution = Game.getResolution();
+        this.textureMatrix = Mat3.orthographic(resolution.x, resolution.y);
         
         buffer.clearVertices();
         

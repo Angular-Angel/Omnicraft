@@ -64,7 +64,6 @@ public class GameScreen extends Screen {
     private BlockBufferManager wailaBlockDisplay;
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
-    private Mat4 wailaTextureMatrix;
     private UITexture wailaPreviewForm;
     
     private Texture2D wailaPreviewTexture;
@@ -149,7 +148,6 @@ public class GameScreen extends Screen {
         int previewWidth = 150, previewHeight = 150;
         
         wailaBlockView = Mat4.translation(new Vec3(-4.45f, 2.20f, -5));
-        wailaTextureMatrix = Mat4.orthographic(client.resolution.x, client.resolution.y, -1, 1);
         
         wailaBlockBuffer = DGL.genFBO();
         
@@ -163,7 +161,7 @@ public class GameScreen extends Screen {
         wailaDepthTexture.image(previewWidth, previewHeight, GL_DEPTH_COMPONENT16);
         wailaBlockBuffer.texture2D(wailaDepthTexture, GL_DEPTH_ATTACHMENT);
         
-        wailaPreviewForm = new UITexture(wailaPreviewTexture, client.textureShader, wailaTextureMatrix);
+        wailaPreviewForm = new UITexture(wailaPreviewTexture, client.textureShader);
         columns.add(wailaPreviewForm);
         
         blockName = new Text("");
@@ -199,7 +197,6 @@ public class GameScreen extends Screen {
     
     @Override
     public void resize(int width, int height) {
-        wailaTextureMatrix = Mat4.orthographic(width, height, -1, 1);
         waila.setPosAlignToViewport(Align.N.vector());
         
         //Camera's aspect ratio may change if window is resized.
