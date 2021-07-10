@@ -9,6 +9,7 @@ import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.Texture2D;
+import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.DUIDrawer;
 import com.samrj.devil.gui.Form;
 import com.samrj.devil.math.Mat3;
@@ -34,8 +35,8 @@ public class UITexture extends Form {
         this.texture = texture;
         this.shader = shader;
         this.buffer = new TextureBufferManager();
-        Vec2i resolution = Game.getResolution();
-        this.textureMatrix = Mat3.orthographic(resolution.x, resolution.y);
+        Vec2 viewport = DUI.viewport();
+        textureMatrix = Mat3.orthographic(0, viewport.x, 0, viewport.y);
     }
     
     @Override
@@ -44,15 +45,15 @@ public class UITexture extends Form {
         width = texture.getWidth();
         height = texture.getHeight();
         
-        Vec2i resolution = Game.getResolution();
-        this.textureMatrix = Mat3.orthographic(resolution.x, resolution.y);
+        Vec2 viewport = DUI.viewport();
+        textureMatrix = Mat3.orthographic(0, viewport.x, 0, viewport.y);
         
         buffer.clearVertices();
         
         buffer.begin();
         Vec2 pos = getPos();
-        Vec2 size = getSize();
-        buffer.bufferVertices(new Vec3(pos.x, pos.y + size.y, 0), new Vec3(pos.x + size.x, pos.y, 0));
+        buffer.bufferVertices(new Vec3(pos.x - viewport.x/2, pos.y + height - viewport.y/2, 0), 
+                              new Vec3(pos.x + width - viewport.x/2, pos.y - viewport.y/2, 0));
         buffer.upload();
     }
 

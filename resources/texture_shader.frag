@@ -1,6 +1,6 @@
 #version 140
 
-uniform sampler2D u_texture; //Only has red channel.
+uniform sampler2D u_texture;
 
 in vec2 v_tex_coord;
 

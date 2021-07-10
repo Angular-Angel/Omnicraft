@@ -147,7 +147,7 @@ public class GameScreen extends Screen {
         
         int previewWidth = 150, previewHeight = 150;
         
-        wailaBlockView = Mat4.translation(new Vec3(-4.45f, 2.20f, -5));
+        wailaBlockView = Mat4.translation(new Vec3(0, 0, -5));
         
         wailaBlockBuffer = DGL.genFBO();
         
@@ -166,6 +166,7 @@ public class GameScreen extends Screen {
         
         blockName = new Text("");
         columns.add(blockName);
+        columns.setAllAlignments(Align.C.vector());
         
         waila.setSizeFromContent();
         waila.setPosAlignToViewport(Align.N.vector());
@@ -281,7 +282,7 @@ public class GameScreen extends Screen {
             DGL.useProgram(client.blockShader);
             client.blockShader.uniformMat4("u_projection_matrix", 
                     Mat4.perspective(Util.toRadians(90.0f), 
-                            client.resolution.y/(float) client.resolution.x, 0.5f, 16));
+                            150/(float) 150, 0.5f, 16));
             client.blockShader.uniformMat4("u_view_matrix", wailaBlockView);
             wailaBlockDisplay.draw();
         }

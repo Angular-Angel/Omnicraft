@@ -33,7 +33,7 @@ public class TextureBufferManager extends VertexManager {
     }
     
     public void bufferVertices(Vec3 topLeft, Vec3 bottomRight) {
-        Vec3 topRight = new Vec3(bottomRight.x, topLeft.y, 0), 
+        Vec3 topRight = new Vec3(bottomRight.x, topLeft.y, 0),
              bottomLeft = new Vec3(topLeft.x, bottomRight.y, 0);
         
         bufferVPos.set(topLeft); bufferVTexCoord.set(0.0f, 0.0f); buffer.vertex();
