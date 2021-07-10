@@ -269,23 +269,24 @@ public class GameScreen extends Screen {
         
         world.draw();
         
-        DUI.render();
         if (waila.isVisible()) {
-            
-            DGL.useProgram(client.outlineShader);
-            client.outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
-            client.outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
-            blockOutline.draw();
             
             DGL.bindFBO(wailaBlockBuffer);
             
             DGL.useProgram(client.blockShader);
             client.blockShader.uniformMat4("u_projection_matrix", 
-                    Mat4.perspective(Util.toRadians(90.0f), 
-                            150/(float) 150, 0.5f, 16));
+                    Mat4.perspective(Util.toRadians(90.0f), 150/(float) 150, 0.5f, 16));
             client.blockShader.uniformMat4("u_view_matrix", wailaBlockView);
             wailaBlockDisplay.draw();
+            DGL.bindFBO(null);
+            
+            DGL.useProgram(client.outlineShader);
+            client.outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
+            client.outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
+            blockOutline.draw();
         }
+        
+        DUI.render();
     }
     
     @Override
