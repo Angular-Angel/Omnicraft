@@ -9,7 +9,7 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
 
 /**
  *

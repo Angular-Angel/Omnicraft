@@ -21,12 +21,8 @@ import net.angle.omnicraft.world.blocks.EmptySide;
 import net.angle.omnicraft.world.blocks.Side;
 import net.angle.omnicraft.world.types.Emptiness;
 import net.angle.omnicraft.world.types.Substance;
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE1;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  *
@@ -190,14 +186,8 @@ public class World {
             else
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
-        
-        glActiveTexture(GL_TEXTURE0);
-        block_palette.bind();
-        block_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        block_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         block_palette.image(image);
         DGL.delete(image);
-        block_palette.unbind();
         
         block_palette.bind(GL_TEXTURE0);
     }
@@ -215,13 +205,8 @@ public class World {
             else
                 throw new IllegalArgumentException("Asked for Band: " + band);
         });
-        glActiveTexture(GL_TEXTURE1);
-        side_palette.bind();
-        side_palette.parami(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        side_palette.parami(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         side_palette.image(image);
         DGL.delete(image);
-        side_palette.unbind();
         
         side_palette.bind(GL_TEXTURE1);
     }

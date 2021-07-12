@@ -5,7 +5,6 @@
  */
 package net.angle.omnicraft.client;
 
-import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.Texture2D;
@@ -14,10 +13,9 @@ import com.samrj.devil.gui.DUIDrawer;
 import com.samrj.devil.gui.Form;
 import com.samrj.devil.math.Mat3;
 import com.samrj.devil.math.Vec2;
-import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import net.angle.omnicraft.graphics.TextureBufferManager;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
+import static org.lwjgl.opengl.GL13C.GL_TEXTURE2;
 
 /**
  *
@@ -56,12 +54,13 @@ public class UITexture extends Form {
                               new Vec3(pos.x + width - viewport.x/2, pos.y - viewport.y/2, 0));
         buffer.upload();
     }
-
+    
     @Override
     protected void render(DUIDrawer drawer) {
-        texture.bind(GL_TEXTURE2);
         ShaderProgram currentProgram = DGL.currentProgram();
         DGL.useProgram(shader);
+        texture.bind();
+        texture.bind(GL_TEXTURE2);
         shader.uniform1i("u_texture", 2);
         shader.uniformMat3("u_matrix", textureMatrix);
         buffer.draw();

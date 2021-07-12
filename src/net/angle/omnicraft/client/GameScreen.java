@@ -27,19 +27,19 @@ import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.opengl.GL11.GL_BACK;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LEQUAL;
-import static org.lwjgl.opengl.GL11.GL_RGB8;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glClearDepth;
-import static org.lwjgl.opengl.GL11.glCullFace;
-import static org.lwjgl.opengl.GL11.glDepthFunc;
-import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11C.GL_BACK;
+import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11C.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11C.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11C.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11C.GL_LEQUAL;
+import static org.lwjgl.opengl.GL11C.GL_RGB8;
+import static org.lwjgl.opengl.GL11C.glClear;
+import static org.lwjgl.opengl.GL11C.glClearColor;
+import static org.lwjgl.opengl.GL11C.glClearDepth;
+import static org.lwjgl.opengl.GL11C.glCullFace;
+import static org.lwjgl.opengl.GL11C.glDepthFunc;
+import static org.lwjgl.opengl.GL11C.glEnable;
 import static org.lwjgl.opengl.GL14C.GL_DEPTH_COMPONENT16;
 import static org.lwjgl.opengl.GL30C.GL_COLOR_ATTACHMENT0;
 import static org.lwjgl.opengl.GL30C.GL_DEPTH_ATTACHMENT;
@@ -68,6 +68,8 @@ public class GameScreen extends Screen {
     
     private Texture2D wailaPreviewTexture;
     private Texture2D wailaDepthTexture;
+    
+    private static int previewWidth = 150, previewHeight = 150;
     
     public GameScreen(DebugClient client) {
         super(client);
@@ -144,8 +146,6 @@ public class GameScreen extends Screen {
         
         LayoutColumns columns = new LayoutColumns();
         waila.setContent(columns);
-        
-        int previewWidth = 150, previewHeight = 150;
         
         wailaBlockView = Mat4.translation(new Vec3(0, 0, -5));
         
@@ -270,12 +270,12 @@ public class GameScreen extends Screen {
         world.draw();
         
         if (waila.isVisible()) {
-            
             DGL.bindFBO(wailaBlockBuffer);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             DGL.useProgram(client.blockShader);
             client.blockShader.uniformMat4("u_projection_matrix", 
-                    Mat4.perspective(Util.toRadians(90.0f), 150/(float) 150, 0.5f, 16));
+                    Mat4.perspective(Util.toRadians(90.0f), previewHeight/(float) previewWidth, 0.5f, 16));
             client.blockShader.uniformMat4("u_view_matrix", wailaBlockView);
             wailaBlockDisplay.draw();
             DGL.bindFBO(null);
