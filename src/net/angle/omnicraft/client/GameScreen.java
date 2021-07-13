@@ -69,7 +69,7 @@ public class GameScreen extends Screen {
     private Texture2D wailaPreviewTexture;
     private Texture2D wailaDepthTexture;
     
-    private static int previewWidth = 150, previewHeight = 150;
+    private static final int previewWidth = 150, previewHeight = 150;
     
     public GameScreen(DebugClient client) {
         super(client);
@@ -77,9 +77,6 @@ public class GameScreen extends Screen {
         world = new World(new WorldGenerator());
             
         player = new Player(world);
-
-        //VertexBuffer is a static block of vertices, allocated once.
-        //Could use VertexStream if we wanted something more dynamic.
     }
     
 
@@ -161,7 +158,7 @@ public class GameScreen extends Screen {
         wailaDepthTexture.image(previewWidth, previewHeight, GL_DEPTH_COMPONENT16);
         wailaBlockBuffer.texture2D(wailaDepthTexture, GL_DEPTH_ATTACHMENT);
         
-        wailaPreviewForm = new UITexture(wailaPreviewTexture, client.textureShader);
+        wailaPreviewForm = new UITexture(wailaPreviewTexture, client.textureShader, previewWidth, previewHeight);
         columns.add(wailaPreviewForm);
         
         blockName = new Text("");

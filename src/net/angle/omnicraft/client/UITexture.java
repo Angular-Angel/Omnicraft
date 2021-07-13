@@ -28,21 +28,17 @@ public class UITexture extends Form {
     private final ShaderProgram shader;
     private Mat3 textureMatrix;
     
-    public UITexture(Texture2D texture, ShaderProgram shader) {
+    public UITexture(Texture2D texture, ShaderProgram shader, int width, int height) {
         super();
         this.texture = texture;
         this.shader = shader;
         this.buffer = new TextureBufferManager();
-        Vec2 viewport = DUI.viewport();
-        textureMatrix = Mat3.orthographic(0, viewport.x, 0, viewport.y);
+        this.width = width;
+        this.height = height;
     }
     
     @Override
-    protected void updateSize()
-    {
-        width = texture.getWidth();
-        height = texture.getHeight();
-        
+    protected void updateSize() {
         Vec2 viewport = DUI.viewport();
         textureMatrix = Mat3.orthographic(0, viewport.x, 0, viewport.y);
         
