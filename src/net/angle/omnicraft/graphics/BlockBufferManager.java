@@ -14,7 +14,7 @@ import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
 
 /**
  *
