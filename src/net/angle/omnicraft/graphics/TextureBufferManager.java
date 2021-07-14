@@ -36,13 +36,13 @@ public class TextureBufferManager extends VertexManager {
         Vec3 topRight = new Vec3(bottomRight.x, topLeft.y, 0),
              bottomLeft = new Vec3(topLeft.x, bottomRight.y, 0);
         
-        bufferVPos.set(topLeft); bufferVTexCoord.set(0.0f, 0.0f); buffer.vertex();
+        bufferVPos.set(topLeft); bufferVTexCoord.set(0, 1); buffer.vertex();
         
-        bufferVPos.set(topRight); bufferVTexCoord.set(1, 0.0f); buffer.vertex();
+        bufferVPos.set(topRight); bufferVTexCoord.set(1, 1); buffer.vertex();
         
-        bufferVPos.set(bottomRight); bufferVTexCoord.set(1, 1); buffer.vertex();
+        bufferVPos.set(bottomRight); bufferVTexCoord.set(1, 0); buffer.vertex();
         
-        bufferVPos.set(bottomLeft); bufferVTexCoord.set(0.0f, 1); buffer.vertex();
+        bufferVPos.set(bottomLeft); bufferVTexCoord.set(0, 0); buffer.vertex();
         
         buffer.index(0);
         buffer.index(1);
