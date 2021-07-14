@@ -132,7 +132,7 @@ public class GameScreen extends Screen {
         LayoutColumns columns = new LayoutColumns();
         waila.setContent(columns);
         
-        wailaBlockView = Mat4.translation(new Vec3(0, 0, -5));
+        wailaBlockView = Mat4.translation(new Vec3(-4.4f, -2.35f, -5));
         
         wailaBlockBuffer = DGL.genFBO();
         
@@ -261,12 +261,13 @@ public class GameScreen extends Screen {
             blockOutline.draw();
             
             DGL.bindFBO(wailaBlockBuffer);
-            glClearColor(1, 0, 1, 1);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
             DGL.useProgram(client.blockShader);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            
             client.blockShader.uniformMat4("u_projection_matrix", 
-                    Mat4.perspective(Util.toRadians(90.0f), previewHeight/(float) previewWidth, 0.5f, 16));
+                    Mat4.perspective(Util.toRadians(90.0f), client.resolution.y/(float) client.resolution.x, 0.5f, 16));
             client.blockShader.uniformMat4("u_view_matrix", wailaBlockView);
             wailaBlockDisplay.draw();
             
