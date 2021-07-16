@@ -263,132 +263,65 @@ public class World {
         return getBlock(coord.x, coord.y, coord.z);
     }
     
-    public Block getBlock(int blockx, int blocky, int blockz) {
-        
+    public int[] getChunkAndVoxelCoords(int voxelx, int voxely, int voxelz) {
         int chunkx = 0, chunky = 0, chunkz = 0;
-        while (blockx < 0) {
-            blockx += BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxelx < 0) {
+            voxelx += BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx--;
         }
-        while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxelx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            voxelx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx++;
         }
-        while (blocky < 0) {
-            blocky += BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxely < 0) {
+            voxely += BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky--;
         }
-        while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxely >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            voxely -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky++;
         }
-        while (blockz < 0) {
-            blockz += BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxelz < 0) {
+            voxelz += BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz--;
         }
-        while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        while (voxelz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            voxelz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz++;
         }
         
-        Chunk chunk = getChunk(chunkx, chunky, chunkz);
+        return new int[] {chunkx, chunky, chunkz, voxelx, voxely, voxelz};
+    }
+    
+    public Block getBlock(int blockx, int blocky, int blockz) {
+        int[] coords = getChunkAndVoxelCoords(blockx, blocky, blockz);
+        
+        Chunk chunk = getChunk(coords[0], coords[1], coords[2]);
         if (chunk == null) 
             return block_ids.get(0);
         else
-            return chunk.getBlock(blockx, blocky, blockz);
+            return chunk.getBlock(coords[3], coords[4], coords[5]);
     }
     
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
+        int[] coords = getChunkAndVoxelCoords(blockx, blocky, blockz);
         
-        int chunkx = 0, chunky = 0, chunkz = 0;
-        while (blockx < 0) {
-            blockx += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx--;
-        }
-        while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx++;
-        }
-        while (blocky < 0) {
-            blocky += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky--;
-        }
-        while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky++;
-        }
-        while (blockz < 0) {
-            blockz += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz--;
-        }
-        while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz++;
-        }
-        
-        checkChunk(chunkx, chunky, chunkz).setBlock(blockx, blocky, blockz, block);
+        checkChunk(coords[0], coords[1], coords[2]).setBlock(coords[3], coords[4], coords[5], block);
     }
     
     public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
+        int[] coords = getChunkAndVoxelCoords(sidex, sidey, sidez);
         
-        int chunkx = 0, chunky = 0, chunkz = 0;
-        while (sidex < 0) {
-            sidex += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx--;
-        }
-        while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx++;
-        }
-        while (sidey < 0) {
-            sidey += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky--;
-        }
-        while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky++;
-        }
-        while (sidez < 0) {
-            sidez += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz--;
-        }
-        while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz++;
-        }
-        
-        return checkChunk(chunkx, chunky, chunkz).getSide(face, sidex, sidey, sidez);
+        Chunk chunk = getChunk(coords[0], coords[1], coords[2]);
+        if (chunk == null) 
+            return side_ids.get(0);
+        else
+            return chunk.getSide(face, coords[3], coords[4], coords[5]);
     }
     
-    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
+    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {int[] coords = getChunkAndVoxelCoords(sidex, sidey, sidez);
         
-        int chunkx = 0, chunky = 0, chunkz = 0;
-        while (sidex < 0) {
-            sidex += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx--;
-        }
-        while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkx++;
-        }
-        while (sidey < 0) {
-            sidey += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky--;
-        }
-        while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunky++;
-        }
-        while (sidez < 0) {
-            sidez += BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz--;
-        }
-        while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
-            sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
-            chunkz++;
-        }
-        
-        checkChunk(chunkx, chunky, chunkz).setSide(face, sidex, sidey, sidez, side);
+        checkChunk(coords[0], coords[1], coords[2]).setSide(face, coords[3], coords[4], coords[5], side);
     }
     
     public float intbound(float start, float delta) {
