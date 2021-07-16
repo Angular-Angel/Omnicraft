@@ -333,4 +333,92 @@ public class World {
         
         CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).setBlock(blockx, blocky, blockz, block);
     }
+    
+    public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
+        int regionx = 0, regiony = 0, regionz = 0;
+        while (sidex < 0) {
+            sidex += getBlockEdgeLengthOfRegion();
+            regionx--;
+        }
+        while (sidex >= getBlockEdgeLengthOfRegion()) {
+            sidex -= getBlockEdgeLengthOfRegion();
+            regionx++;
+        }
+        while (sidey < 0) {
+            sidey += getBlockEdgeLengthOfRegion();
+            regiony--;
+        }
+        while (sidey >= getBlockEdgeLengthOfRegion()) {
+            sidey -= getBlockEdgeLengthOfRegion();
+            regiony++;
+        }
+        while (sidez < 0) {
+            sidez += getBlockEdgeLengthOfRegion();
+            regionz--;
+        }
+        while (sidez >= getBlockEdgeLengthOfRegion()) {
+            sidez -= getBlockEdgeLengthOfRegion();
+            regionz++;
+        }
+        
+        int chunkx = 0, chunky = 0, chunkz = 0;
+        while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx++;
+        }
+        while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky++;
+        }
+        while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz++;
+        }
+        
+        return CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).getSide(face, sidex, sidey, sidez);
+    }
+    
+    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
+        int regionx = 0, regiony = 0, regionz = 0;
+        while (sidex < 0) {
+            sidex += getBlockEdgeLengthOfRegion();
+            regionx--;
+        }
+        while (sidex >= getBlockEdgeLengthOfRegion()) {
+            sidex -= getBlockEdgeLengthOfRegion();
+            regionx++;
+        }
+        while (sidey < 0) {
+            sidey += getBlockEdgeLengthOfRegion();
+            regiony--;
+        }
+        while (sidey >= getBlockEdgeLengthOfRegion()) {
+            sidey -= getBlockEdgeLengthOfRegion();
+            regiony++;
+        }
+        while (sidez < 0) {
+            sidez += getBlockEdgeLengthOfRegion();
+            regionz--;
+        }
+        while (sidez >= getBlockEdgeLengthOfRegion()) {
+            sidez -= getBlockEdgeLengthOfRegion();
+            regionz++;
+        }
+        
+        int chunkx = 0, chunky = 0, chunkz = 0;
+        while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx++;
+        }
+        while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky++;
+        }
+        while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz++;
+        }
+        
+        CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).setSide(face, sidex, sidey, sidez, side);
+    }
 }
