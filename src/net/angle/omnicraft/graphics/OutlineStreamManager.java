@@ -9,7 +9,6 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.VertexStream;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
-import net.angle.omnicraft.world.Region;
 import net.angle.omnicraft.world.World;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
@@ -30,11 +29,11 @@ public class OutlineStreamManager extends VertexManager {
         super.begin();
     }
     
-    public void streamBlockOutline(Region region, Vec3i coord) {
+    public void streamBlockOutline(Vec3i coord) {
         //starting corner
-        float startx = (region.getXVoxelOffset() + coord.x) * World.EDGE_LENGTH_OF_BLOCK;
-        float starty = (region.getYVoxelOffset() + coord.y) * World.EDGE_LENGTH_OF_BLOCK;
-        float startz = (region.getZVoxelOffset() + coord.z) * World.EDGE_LENGTH_OF_BLOCK;
+        float startx = (coord.x) * World.EDGE_LENGTH_OF_BLOCK;
+        float starty = (coord.y) * World.EDGE_LENGTH_OF_BLOCK;
+        float startz = (coord.z) * World.EDGE_LENGTH_OF_BLOCK;
         
         //end corner
         float endx = startx + World.EDGE_LENGTH_OF_BLOCK;

@@ -9,6 +9,8 @@ import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
@@ -17,22 +19,23 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class Chunk extends VoxelPositionable implements BlockContainer, SideContainer {
     
-    public final Region region;
+    public final World world;
     
     public BlockBufferManager vertexManager;
     
     public BlockChunk blockChunk;
     public SideChunk sideChunk;
     
-    public Chunk(Region region, int x, int y, int z) {
-        this(region, region.world.block_ids.get(0), region.world.side_ids.get(0), x, y, z);
+    public Chunk(World world, int x, int y, int z) {
+        this(world, world.block_ids.get(0), world.side_ids.get(0), x, y, z);
     }
 
-    public Chunk(Region region, Block block, Side side, int x, int y, int z) {
+    public Chunk(World world, Block block, Side side, int x, int y, int z) {
         super(x, y, z);
-        this.region = region;
+        this.world = world;
         
         vertexManager = new BlockBufferManager();
         
@@ -52,7 +55,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     @Override
     public Block getBlock(int blockx, int blocky, int blockz) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            return region.getBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset());
+            return world.getBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset());
         }
         return blockChunk.getBlock(blockx, blocky, blockz);
     }
@@ -60,7 +63,7 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     @Override
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
-            region.setBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset(), block);
+            world.setBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset(), block);
         }
         blockChunk.setBlock(blockx, blocky, blockz, block);
     }
@@ -68,14 +71,17 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     @Override
     public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
         if (!containsCoordinates(sidex, sidey, sidez)) {
-            return region.getSide(face, sidex + getXVoxelOffset(), sidey + getYVoxelOffset(), sidez + getZVoxelOffset());
+            return world.getSide(face, sidex + getXVoxelOffset(), sidey + getYVoxelOffset(), sidez + getZVoxelOffset());
         }
         return sideChunk.getSide(face, sidex, sidey, sidez);
     }
 
     @Override
-    public void setSide(Block.BlockFace face, int blockx, int blocky, int blockz, Side side) {
-        sideChunk.setSide(face, blockx, blocky, blockz, side);
+    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
+        if (!containsCoordinates(sidex, sidey, sidez)) {
+            world.setSide(face, sidex + getXVoxelOffset(), sidey + getYVoxelOffset(), sidez + getZVoxelOffset(), side);
+        }
+        sideChunk.setSide(face, sidex, sidey, sidez, side);
     }
     
     public boolean blockIsTransparent(int blockx, int blocky, int blockz) {
@@ -239,28 +245,15 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
                 expandDown = false;
         }
         
-        float drawStartx = region.getXVoxelOffset() + getXVoxelOffset() + coord.x;
-        float drawStarty = region.getYVoxelOffset() + getYVoxelOffset() + coord.y;
-        float drawStartz = region.getZVoxelOffset() + getZVoxelOffset() + coord.z;
+        float drawStartx = getXVoxelOffset() + coord.x;
+        float drawStarty = getYVoxelOffset() + coord.y;
+        float drawStartz = getZVoxelOffset() + coord.z;
         
         Vec2 dimensions = new Vec2(width, height);
         
         vertexManager.BufferFace(block, side, face, dimensions, new Vec3(drawStartx, drawStarty, drawStartz));
         
         return new Vec2i(width, height);
-    }
-    
-    public int axialDist(Chunk other) {
-        if (other.region != this.region) {
-            int xDist = Math.abs((other.getX() + other.region.getXChunkOffset()) 
-                    - (getX() + region.getXChunkOffset()));
-            int yDist = Math.abs((other.getY() + other.region.getYChunkOffset()) 
-                    - (getY() + region.getYChunkOffset()));
-            int zDist = Math.abs((other.getZ() + other.region.getZChunkOffset()) 
-                    - (getZ() + region.getZChunkOffset()));
-            return Math.max(xDist, Math.max(yDist, zDist));
-        }
-        else return super.axialDist(other);
     }
 
     @Override
