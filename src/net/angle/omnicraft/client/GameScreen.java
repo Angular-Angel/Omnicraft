@@ -191,14 +191,14 @@ public class GameScreen extends Screen {
     
     private void updateDebugWindow() {
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
-        posDisplay.setText(player.getPositionInRegion().toString());
+        posDisplay.setText(player.getApproximateVoxelPosition().toString());
         dirDisplay.setText(player.camera.forward.toString());
     }
     
     private void updateWaila() {
         Block block = player.pickBlock(25);
         if (block != null) {
-            blockOutline.streamBlockOutline(player.getRegion(), player.pickedCoord);
+            blockOutline.streamBlockOutline(player.pickedCoord);
             
             blockName.setText(block.name);
             

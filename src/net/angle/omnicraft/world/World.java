@@ -10,6 +10,7 @@ import com.samrj.devil.gl.Image;
 import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.TextureRectangle;
 import com.samrj.devil.math.Util;
+import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,6 @@ public class World {
     public static final int PALETTE_SIZE = 40;
     public static final int GENERATION_DISTANCE = 7;
     public static final int RENDER_DISTANCE = 6;
-    public static final int CHUNK_EDGE_LENGTH_OF_REGION = 16;
     public static final int BLOCK_EDGE_LENGTH_OF_CHUNK = 16;
     public static final float EDGE_LENGTH_OF_BLOCK = 0.5f;
     
@@ -44,7 +44,7 @@ public class World {
     public final Map<String, Side> sideTypes;
     
     //Stored by coordinates
-    public final Map<String, Region> regions;
+    public final Map<String, Chunk> chunks;
     
     public final List<Chunk> loadedChunks;
     
@@ -62,7 +62,7 @@ public class World {
         substances = new HashMap<>();
         blockTypes = new HashMap<>();
         sideTypes = new HashMap<>();
-        regions = new HashMap<>();
+        chunks = new HashMap<>();
         loadedChunks = new ArrayList<>();
         substance_ids = new ArrayList<>();
         block_ids = new ArrayList<>();
@@ -74,17 +74,37 @@ public class World {
         worldGenerator.generateBlocks(this);
         worldGenerator.generateSpawnRegion(this);
     }
-    
-    public Region CheckRegion(int regionx, int regiony, int regionz) {
-        return checkRegion(new Vec3i(regionx, regiony, regionz));
+
+    public Chunk getChunk(int chunkx, int chunky, int chunkz) {
+        return generateNewChunk(new Vec3i(chunkx, chunky, chunkz));
     }
     
-    public Region checkRegion(Vec3i coord) {
-        Region region = regions.get(coord.toString());
-        if (region == null) {
-            region = generateNewRegion(coord);
+    public Chunk getChunk(Vec3i coords) {
+        return chunks.get(coords.toString());
+    }
+    
+    public Chunk checkChunk(int chunkx, int chunky, int chunkz) {
+        return checkChunk(new Vec3i(chunkx, chunky, chunkz));
+    }
+    
+    public Chunk checkChunk(Vec3i coord) {
+        Chunk chunk = getChunk(coord);
+        if (chunk == null) {
+            chunk = generateChunk(coord);
         }
-        return region;
+        return chunk;
+    }
+    
+    public float getRealEdgeLengthOfChunk() {
+        return EDGE_LENGTH_OF_BLOCK * BLOCK_EDGE_LENGTH_OF_CHUNK;
+    }
+    
+    public Vec3i getChunkCoordsFromVoxelCoords(int voxelx, int voxely, int voxelz) {
+        //Fixing a rounding problem
+        if (voxelx < 0) voxelx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        if (voxely < 0) voxely -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        if (voxelz < 0) voxelz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+        return new Vec3i(voxelx / BLOCK_EDGE_LENGTH_OF_CHUNK, voxely / BLOCK_EDGE_LENGTH_OF_CHUNK, voxelz / BLOCK_EDGE_LENGTH_OF_CHUNK);
     }
     
     public void update(float dt) {
@@ -116,14 +136,14 @@ public class World {
         side_ids.add(side);
     }
     
-    public Region generateNewRegion(Vec3i coord) {
-        return generateNewRegion(coord.x, coord.y, coord.z);
+    public Chunk generateNewChunk(Vec3i coord) {
+        return generateNewChunk(coord.x, coord.y, coord.z);
     }
 
-    public Region generateNewRegion(int x, int y, int z) {
-        Region region = new Region(this, x, y, z);
-        addRegion(region);
-        return region;
+    public Chunk generateNewChunk(int x, int y, int z) {
+        Chunk chunk = new Chunk(this, x, y, z);
+        addChunk(chunk);
+        return chunk;
     }
     
     public Chunk generateChunkTerrain(Chunk chunk) {
@@ -133,9 +153,17 @@ public class World {
         return chunk;
     }
     
-    public void addRegion(Region region) {
-        String coordstring = region.getCoordinates().toString();
-        regions.put(coordstring, region);
+    public Chunk generateChunk(Vec3i coords) {
+        return generateChunk(coords.x, coords.y, coords.z);
+    }
+    
+    public Chunk generateChunk(int x, int y, int z) {
+        return generateChunkTerrain(generateNewChunk(x, y, z));
+    }
+    
+    public void addChunk(Chunk chunk) {
+        String coordstring = chunk.getCoordinates().toString();
+        chunks.put(coordstring, chunk);
     }
     
     public boolean loadChunk(Chunk chunk) {
@@ -162,19 +190,12 @@ public class World {
     }
     
     public void reloadAdjacentChunks(Chunk chunk) {
-        reloadChunk(chunk.region.getChunk(chunk.getX() + 1, chunk.getY(), chunk.getZ()));
-        reloadChunk(chunk.region.getChunk(chunk.getX() - 1, chunk.getY(), chunk.getZ()));
-        reloadChunk(chunk.region.getChunk(chunk.getX(), chunk.getY() + 1, chunk.getZ()));
-        reloadChunk(chunk.region.getChunk(chunk.getX(), chunk.getY() - 1, chunk.getZ()));
-        reloadChunk(chunk.region.getChunk(chunk.getX(), chunk.getY(), chunk.getZ() + 1));
-        reloadChunk(chunk.region.getChunk(chunk.getX(), chunk.getY(), chunk.getZ() - 1));
-    }
-    
-    public void loadRegion(Region region) {
-        List<Chunk> chunks = region.getChunks();
-        chunks.forEach(chunk -> {
-            loadChunk(chunk);
-        });
+        reloadChunk(getChunk(chunk.getX() + 1, chunk.getY(), chunk.getZ()));
+        reloadChunk(getChunk(chunk.getX() - 1, chunk.getY(), chunk.getZ()));
+        reloadChunk(getChunk(chunk.getX(), chunk.getY() + 1, chunk.getZ()));
+        reloadChunk(getChunk(chunk.getX(), chunk.getY() - 1, chunk.getZ()));
+        reloadChunk(getChunk(chunk.getX(), chunk.getY(), chunk.getZ() + 1));
+        reloadChunk(getChunk(chunk.getX(), chunk.getY(), chunk.getZ() - 1));
     }
     
     public void prepare_block_palette() {
@@ -224,14 +245,6 @@ public class World {
         shader.uniform1f("u_texel_length", (16.0f * EDGE_LENGTH_OF_BLOCK) - 0.00001f);
     }
     
-    public int getBlockEdgeLengthOfRegion() {
-        return BLOCK_EDGE_LENGTH_OF_CHUNK * CHUNK_EDGE_LENGTH_OF_REGION;
-    }
-    
-    public float getRealEdgeLengthOfRegion() {
-        return getBlockEdgeLengthOfRegion() * EDGE_LENGTH_OF_BLOCK;
-    }
-    
     public void draw() {
         loadedChunks.forEach(chunk -> {
             chunk.vertexManager.draw();
@@ -246,179 +259,205 @@ public class World {
         DGL.delete(side_palette);
     }
     
+    public Block getBlock(Vec3i coord) {
+        return getBlock(coord.x, coord.y, coord.z);
+    }
+    
     public Block getBlock(int blockx, int blocky, int blockz) {
-        int regionx = 0, regiony = 0, regionz = 0;
-        while (blockx < 0) {
-            blockx += getBlockEdgeLengthOfRegion();
-            regionx--;
-        }
-        while (blockx >= getBlockEdgeLengthOfRegion()) {
-            blockx -= getBlockEdgeLengthOfRegion();
-            regionx++;
-        }
-        while (blocky < 0) {
-            blocky += getBlockEdgeLengthOfRegion();
-            regiony--;
-        }
-        while (blocky >= getBlockEdgeLengthOfRegion()) {
-            blocky -= getBlockEdgeLengthOfRegion();
-            regiony++;
-        }
-        while (blockz < 0) {
-            blockz += getBlockEdgeLengthOfRegion();
-            regionz--;
-        }
-        while (blockz >= getBlockEdgeLengthOfRegion()) {
-            blockz -= getBlockEdgeLengthOfRegion();
-            regionz++;
-        }
         
         int chunkx = 0, chunky = 0, chunkz = 0;
+        while (blockx < 0) {
+            blockx += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx--;
+        }
         while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx++;
         }
+        while (blocky < 0) {
+            blocky += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky--;
+        }
         while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky++;
+        }
+        while (blockz < 0) {
+            blockz += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz--;
         }
         while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz++;
         }
         
-        return CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).getBlock(blockx, blocky, blockz);
+        return checkChunk(chunkx, chunky, chunkz).getBlock(blockx, blocky, blockz);
     }
     
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
-        int regionx = 0, regiony = 0, regionz = 0;
-        while (blockx < 0) {
-            blockx += getBlockEdgeLengthOfRegion();
-            regionx--;
-        }
-        while (blockx >= getBlockEdgeLengthOfRegion()) {
-            blockx -= getBlockEdgeLengthOfRegion();
-            regionx++;
-        }
-        while (blocky < 0) {
-            blocky += getBlockEdgeLengthOfRegion();
-            regiony--;
-        }
-        while (blocky >= getBlockEdgeLengthOfRegion()) {
-            blocky -= getBlockEdgeLengthOfRegion();
-            regiony++;
-        }
-        while (blockz < 0) {
-            blockz += getBlockEdgeLengthOfRegion();
-            regionz--;
-        }
-        while (blockz >= getBlockEdgeLengthOfRegion()) {
-            blockz -= getBlockEdgeLengthOfRegion();
-            regionz++;
-        }
         
         int chunkx = 0, chunky = 0, chunkz = 0;
+        while (blockx < 0) {
+            blockx += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx--;
+        }
         while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx++;
         }
+        while (blocky < 0) {
+            blocky += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky--;
+        }
         while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky++;
+        }
+        while (blockz < 0) {
+            blockz += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz--;
         }
         while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz++;
         }
         
-        CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).setBlock(blockx, blocky, blockz, block);
+        checkChunk(chunkx, chunky, chunkz).setBlock(blockx, blocky, blockz, block);
     }
     
     public Side getSide(Block.BlockFace face, int sidex, int sidey, int sidez) {
-        int regionx = 0, regiony = 0, regionz = 0;
-        while (sidex < 0) {
-            sidex += getBlockEdgeLengthOfRegion();
-            regionx--;
-        }
-        while (sidex >= getBlockEdgeLengthOfRegion()) {
-            sidex -= getBlockEdgeLengthOfRegion();
-            regionx++;
-        }
-        while (sidey < 0) {
-            sidey += getBlockEdgeLengthOfRegion();
-            regiony--;
-        }
-        while (sidey >= getBlockEdgeLengthOfRegion()) {
-            sidey -= getBlockEdgeLengthOfRegion();
-            regiony++;
-        }
-        while (sidez < 0) {
-            sidez += getBlockEdgeLengthOfRegion();
-            regionz--;
-        }
-        while (sidez >= getBlockEdgeLengthOfRegion()) {
-            sidez -= getBlockEdgeLengthOfRegion();
-            regionz++;
-        }
         
         int chunkx = 0, chunky = 0, chunkz = 0;
+        while (sidex < 0) {
+            sidex += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx--;
+        }
         while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx++;
         }
+        while (sidey < 0) {
+            sidey += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky--;
+        }
         while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky++;
+        }
+        while (sidez < 0) {
+            sidez += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz--;
         }
         while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz++;
         }
         
-        return CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).getSide(face, sidex, sidey, sidez);
+        return checkChunk(chunkx, chunky, chunkz).getSide(face, sidex, sidey, sidez);
     }
     
     public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
-        int regionx = 0, regiony = 0, regionz = 0;
-        while (sidex < 0) {
-            sidex += getBlockEdgeLengthOfRegion();
-            regionx--;
-        }
-        while (sidex >= getBlockEdgeLengthOfRegion()) {
-            sidex -= getBlockEdgeLengthOfRegion();
-            regionx++;
-        }
-        while (sidey < 0) {
-            sidey += getBlockEdgeLengthOfRegion();
-            regiony--;
-        }
-        while (sidey >= getBlockEdgeLengthOfRegion()) {
-            sidey -= getBlockEdgeLengthOfRegion();
-            regiony++;
-        }
-        while (sidez < 0) {
-            sidez += getBlockEdgeLengthOfRegion();
-            regionz--;
-        }
-        while (sidez >= getBlockEdgeLengthOfRegion()) {
-            sidez -= getBlockEdgeLengthOfRegion();
-            regionz++;
-        }
         
         int chunkx = 0, chunky = 0, chunkz = 0;
+        while (sidex < 0) {
+            sidex += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx--;
+        }
         while (sidex >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidex -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkx++;
         }
+        while (sidey < 0) {
+            sidey += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky--;
+        }
         while (sidey >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidey -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunky++;
+        }
+        while (sidez < 0) {
+            sidez += BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz--;
         }
         while (sidez >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
             sidez -= BLOCK_EDGE_LENGTH_OF_CHUNK;
             chunkz++;
         }
         
-        CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).setSide(face, sidex, sidey, sidez, side);
+        checkChunk(chunkx, chunky, chunkz).setSide(face, sidex, sidey, sidez, side);
+    }
+    
+    public float intbound(float start, float delta) {
+        if (delta < 0) {
+            return intbound(-start, -delta);
+        } else {
+            start = (start % 1 + 1) % 1;
+            return (1 - start) / delta;
+        }
+    }
+    
+    public Vec3i raycast(Vec3 origin, Vec3 direction, int radius) {
+        float curx = origin.x;
+        float cury = origin.y;
+        float curz = origin.z;
+        
+        float dx = direction.x;
+        float dy = direction.y;
+        float dz = direction.z;
+        
+        if (dx < 0.05f && dx > -0.05f)
+            dx = 0;
+        
+        if (dy < 0.05f && dy > -0.05f)
+            dy = 0;
+        
+        if (dz < 0.05f && dz > -0.05f)
+            dz = 0;
+        
+        int stepX = (int) Math.signum(dx);
+        int stepY = (int) Math.signum(dy);
+        int stepZ = (int) Math.signum(dz);
+        
+        int steps = 0;
+        
+        float tMaxX = dx != 0 ? intbound(origin.x, dx) : Float.POSITIVE_INFINITY;
+        float tMaxY = dy != 0 ? intbound(origin.y, dy) : Float.POSITIVE_INFINITY;
+        float tMaxZ = dz != 0 ? intbound(origin.z, dz) : Float.POSITIVE_INFINITY;
+        
+        // The change in t when taking a step (always positive).
+        
+        float tDeltaX = dx != 0 ? stepX/dx : 0;
+        float tDeltaY = dy != 0 ? stepY/dy : 0;
+        float tDeltaZ = dz != 0 ? stepZ/dz : 0;
+        
+        if (dx == 0 && dy == 0 && dz == 0)
+            throw new IllegalArgumentException("Raycast in zero direction!");
+        
+        while (steps < radius) {
+            if(tMaxX < tMaxY) {
+                if(tMaxX < tMaxZ) {
+                    curx += stepX;
+                    tMaxX += tDeltaX;
+                } else {
+                    curz += stepZ;
+                    tMaxZ += tDeltaZ;
+                }
+            } else {
+                if(tMaxY < tMaxZ) {
+                    cury += stepY;
+                    tMaxY += tDeltaY;
+                } else {
+                    curz += stepZ;
+                    tMaxZ += tDeltaZ;
+                }
+            }
+            steps++;
+            Vec3i coord = new Vec3i((int) Math.floor(curx), (int) Math.floor(cury), (int) Math.floor(curz));
+            Block block = getBlock(coord);
+            if (block != null && block.isDrawable())
+                return coord;
+        }
+        
+        return null;
     }
 }

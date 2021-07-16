@@ -52,31 +52,20 @@ public class WorldGenerator {
     }
     
     public Chunk generateDirtFloor(Chunk chunk) {
-        World world = chunk.region.world;
+        World world = chunk.world;
         chunk.setAllBlocks(world.blockTypes.get("Dirt Block"));
         return chunk;
     }
     
-    public Region generateDirtFloor(Region region) {
-        World world = region.world;
-        for (int i = 0; i < World.CHUNK_EDGE_LENGTH_OF_REGION; i++)
-            for (int j = 0; j < World.CHUNK_EDGE_LENGTH_OF_REGION; j++)
-                generateDirtFloor(region.getChunk(i, 0, j));
-        return region;
-    }
-    
     public Chunk generateChunk(Chunk chunk) {
-        if (chunk.getY() == 0 && chunk.region.getY() == 0)
+        if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
         else return chunk;
     }
     
     public void generateSpawnRegion(World world) {
-        Region spawnRegion = world.generateNewRegion(0, 0, 0);
-        spawnRegion.generateChunks();
-        generateDirtFloor(spawnRegion);
         
-        Chunk chunk = spawnRegion.getChunk(0, 0, 0);
+        Chunk chunk = world.checkChunk(0, 0, 0);
         chunk.setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
         chunk.setBlock(chunk.getEdgeLength() - 1, 1, 0, world.blockTypes.get("Gravel Block"));
@@ -85,13 +74,13 @@ public class WorldGenerator {
         chunk.setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
         chunk.setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
         
-        spawnRegion.getChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
-        spawnRegion.getChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
-        spawnRegion.getChunk(World.CHUNK_EDGE_LENGTH_OF_REGION - 1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
+        world.checkChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
+        world.checkChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
+        world.checkChunk(15, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         
-        spawnRegion.getChunk(0, 3, 0).setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
+        world.checkChunk(0, 3, 0).setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
         
-        spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
-        spawnRegion.getChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
+        world.checkChunk(0, 3, 0).setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
+        world.checkChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
 }

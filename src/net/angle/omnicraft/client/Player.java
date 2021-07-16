@@ -14,7 +14,6 @@ import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.world.Chunk;
-import net.angle.omnicraft.world.Region;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.blocks.Block;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
@@ -42,7 +41,6 @@ public class Player {
     public static final float MOVE_SPEED = 10.0f;
     
     private final Vec3 position;
-    private final Vec3i regionPosition;
     
     public Vec3i pickedCoord;
     
@@ -69,19 +67,14 @@ public class Player {
         camera.setFOV(resolution.x, resolution.y, camera_fov);
         
         cameraController = new Camera3DController(camera);
-        position = new Vec3(world.getRealEdgeLengthOfRegion() / 2, 17, world.getRealEdgeLengthOfRegion() / 2);
-        regionPosition = new Vec3i(0, 0, 0);
+        position = new Vec3(world.getRealEdgeLengthOfChunk() * 8, 17, world.getRealEdgeLengthOfChunk() * 8);
         
         Vec2 mousePos = Game.getMouse().getPos();
         prevMouseX = mousePos.x; prevMouseY = mousePos.y;
     }
     
-    public Region getRegion() {
-        return world.regions.get(regionPosition.toString());
-    }
-    
     public Chunk getChunk() {
-        return getRegion().getChunk(getChunkCoords());
+        return world.getChunk(getChunkCoords());
     }
     
     public void mouseMoved(float x, float y) {
@@ -102,54 +95,30 @@ public class Player {
         }
     }
     
-    public void updateRegionPosition() {
-            if (position.x >= world.getRealEdgeLengthOfRegion() * (regionPosition.x + 1)) {
-                regionPosition.x += 1;
-            }
-            if (position.x < world.getRealEdgeLengthOfRegion() * regionPosition.x) {
-                regionPosition.x -= 1;
-            }
-            if (position.y >= world.getRealEdgeLengthOfRegion() * (regionPosition.y + 1)) {
-                regionPosition.y += 1;
-            }
-            if (position.y < world.getRealEdgeLengthOfRegion() * regionPosition.y) {
-                regionPosition.y -= 1;
-            }
-            if (position.z >= world.getRealEdgeLengthOfRegion() * (regionPosition.z + 1)) {
-                regionPosition.z += 1;
-            }
-            if (position.z < world.getRealEdgeLengthOfRegion() * regionPosition.z) {
-                regionPosition.z -= 1;
-            }
+    public Vec3 getApproximateVoxelPosition() {
+        return new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
     }
     
-    public Vec3 getPositionInRegion() {
-        Vec3 pos = new Vec3(position).div(World.EDGE_LENGTH_OF_BLOCK);
-        pos.x -= regionPosition.x * world.getBlockEdgeLengthOfRegion();
-        pos.y -= regionPosition.y * world.getBlockEdgeLengthOfRegion();
-        pos.z -= regionPosition.z * world.getBlockEdgeLengthOfRegion();
-        return pos;
+    public Vec3i getVoxelPosition() {
+        Vec3 pos = getApproximateVoxelPosition();
+        return new Vec3i((int) pos.x, (int) pos.y, (int) pos.z);
     }
     
     public Vec3i getChunkCoords() {
-        Vec3 positionInRegion = getPositionInRegion();
-        Vec3i voxelPosition = new Vec3i((int) positionInRegion.x, (int) positionInRegion.y, (int) positionInRegion.z);
+        Vec3i voxelPosition = getVoxelPosition();
         
-        return getRegion().getChunkCoordsFromVoxelCoords(voxelPosition.x, voxelPosition.y, voxelPosition.z);
+        return world.getChunkCoordsFromVoxelCoords(voxelPosition.x, voxelPosition.y, voxelPosition.z);
     }
     
     public void generateNeededChunks() {
         int generatedChunks = 0;
-        Region region = getRegion();
-        if (region == null)
-            return;
         Vec3i chunkCoords = getChunkCoords();
         for (; chunkGenX <= World.GENERATION_DISTANCE; chunkGenX++) {
             for (; chunkGenY <= World.GENERATION_DISTANCE; chunkGenY++) {
                 for (; chunkGenZ <= World.GENERATION_DISTANCE; chunkGenZ++) {
-                    Chunk chunk = region.getChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
+                    Chunk chunk = world.getChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
                     if (chunk == null) {
-                        region.generateChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
+                        world.generateChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
                         generatedChunks++;
                         if (generatedChunks >= 3)
                             return;
@@ -164,14 +133,11 @@ public class Player {
     
     public void loadChunks() {
         int renderedChunks = 0;
-        Region region = getRegion();
-        if (region == null)
-            return;
         Vec3i chunkCoords = getChunkCoords();
         for (; chunkRenderX <= World.RENDER_DISTANCE; chunkRenderX++) {
             for (; chunkRenderY <= World.RENDER_DISTANCE; chunkRenderY++) {
                 for (; chunkRenderZ <= World.RENDER_DISTANCE; chunkRenderZ++) {
-                    if (world.loadChunk(region.getChunk(chunkCoords.x + chunkRenderX, chunkCoords.y + chunkRenderY, chunkCoords.z + chunkRenderZ))) {
+                    if (world.loadChunk(world.getChunk(chunkCoords.x + chunkRenderX, chunkCoords.y + chunkRenderY, chunkCoords.z + chunkRenderZ))) {
                         renderedChunks++;
                         if (renderedChunks >= 8)
                             return;
@@ -242,15 +208,13 @@ public class Player {
             direction.normalize();
             direction.mult(MOVE_SPEED * dt);
             position.add(direction);
-            updateRegionPosition();
         }
     }
     
     public Block pickBlock(int range) {
-        Region region = getRegion();
-        pickedCoord = region.raycast(getPositionInRegion(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
+        pickedCoord = world.raycast(getApproximateVoxelPosition(), new Vec3(camera.forward).mult(World.EDGE_LENGTH_OF_BLOCK), range);
         if (pickedCoord != null)
-            return region.getBlock(pickedCoord);
+            return world.getBlock(pickedCoord);
         else return null;
     }
     
