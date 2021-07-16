@@ -152,6 +152,7 @@ public class Player {
     
     public void unloadChunks() {
         Chunk ownChunk = getChunk();
+        if (ownChunk == null) return;
         for (int i = 0; i < 10; i++) {
             if (unloadChunkIndex >= world.loadedChunks.size())
                 unloadChunkIndex = 0;
@@ -219,7 +220,6 @@ public class Player {
     }
     
     public void update(float dt) {
-        
         move(dt);
         
         generateNeededChunks();

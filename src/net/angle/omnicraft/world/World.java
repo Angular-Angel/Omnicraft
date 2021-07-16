@@ -76,7 +76,7 @@ public class World {
     }
 
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
-        return generateNewChunk(new Vec3i(chunkx, chunky, chunkz));
+        return getChunk(new Vec3i(chunkx, chunky, chunkz));
     }
     
     public Chunk getChunk(Vec3i coords) {
@@ -291,7 +291,11 @@ public class World {
             chunkz++;
         }
         
-        return checkChunk(chunkx, chunky, chunkz).getBlock(blockx, blocky, blockz);
+        Chunk chunk = getChunk(chunkx, chunky, chunkz);
+        if (chunk == null) 
+            return block_ids.get(0);
+        else
+            return chunk.getBlock(blockx, blocky, blockz);
     }
     
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
