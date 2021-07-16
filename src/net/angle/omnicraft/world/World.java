@@ -75,6 +75,10 @@ public class World {
         worldGenerator.generateSpawnRegion(this);
     }
     
+    public Region CheckRegion(int regionx, int regiony, int regionz) {
+        return checkRegion(new Vec3i(regionx, regiony, regionz));
+    }
+    
     public Region checkRegion(Vec3i coord) {
         Region region = regions.get(coord.toString());
         if (region == null) {
@@ -240,5 +244,93 @@ public class World {
         }
         DGL.delete(block_palette);
         DGL.delete(side_palette);
+    }
+    
+    public Block getBlock(int blockx, int blocky, int blockz) {
+        int regionx = 0, regiony = 0, regionz = 0;
+        while (blockx < 0) {
+            blockx += getBlockEdgeLengthOfRegion();
+            regionx--;
+        }
+        while (blockx >= getBlockEdgeLengthOfRegion()) {
+            blockx -= getBlockEdgeLengthOfRegion();
+            regionx++;
+        }
+        while (blocky < 0) {
+            blocky += getBlockEdgeLengthOfRegion();
+            regiony--;
+        }
+        while (blocky >= getBlockEdgeLengthOfRegion()) {
+            blocky -= getBlockEdgeLengthOfRegion();
+            regiony++;
+        }
+        while (blockz < 0) {
+            blockz += getBlockEdgeLengthOfRegion();
+            regionz--;
+        }
+        while (blockz >= getBlockEdgeLengthOfRegion()) {
+            blockz -= getBlockEdgeLengthOfRegion();
+            regionz++;
+        }
+        
+        int chunkx = 0, chunky = 0, chunkz = 0;
+        while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx++;
+        }
+        while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky++;
+        }
+        while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz++;
+        }
+        
+        return CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).getBlock(blockx, blocky, blockz);
+    }
+    
+    public void setBlock(int blockx, int blocky, int blockz, Block block) {
+        int regionx = 0, regiony = 0, regionz = 0;
+        while (blockx < 0) {
+            blockx += getBlockEdgeLengthOfRegion();
+            regionx--;
+        }
+        while (blockx >= getBlockEdgeLengthOfRegion()) {
+            blockx -= getBlockEdgeLengthOfRegion();
+            regionx++;
+        }
+        while (blocky < 0) {
+            blocky += getBlockEdgeLengthOfRegion();
+            regiony--;
+        }
+        while (blocky >= getBlockEdgeLengthOfRegion()) {
+            blocky -= getBlockEdgeLengthOfRegion();
+            regiony++;
+        }
+        while (blockz < 0) {
+            blockz += getBlockEdgeLengthOfRegion();
+            regionz--;
+        }
+        while (blockz >= getBlockEdgeLengthOfRegion()) {
+            blockz -= getBlockEdgeLengthOfRegion();
+            regionz++;
+        }
+        
+        int chunkx = 0, chunky = 0, chunkz = 0;
+        while (blockx >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blockx -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkx++;
+        }
+        while (blocky >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blocky -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunky++;
+        }
+        while (blockz >= BLOCK_EDGE_LENGTH_OF_CHUNK) {
+            blockz -= BLOCK_EDGE_LENGTH_OF_CHUNK;
+            chunkz++;
+        }
+        
+        CheckRegion(regionx, regiony, regionz).getChunk(chunkx, chunky, chunkz).setBlock(blockx, blocky, blockz, block);
     }
 }
