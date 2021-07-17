@@ -14,6 +14,10 @@ public abstract class VertexManager {
     public boolean loaded;
     public boolean drawing;
     
+    public boolean isVisible() {
+        return loaded && drawing;
+    }
+    
     protected abstract void uploadVertices();
     
     protected abstract void deleteVertices();
@@ -37,7 +41,7 @@ public abstract class VertexManager {
     }
     
     public void draw() {
-        if (loaded && drawing)
+        if (isVisible())
             drawVertices();
     }
     

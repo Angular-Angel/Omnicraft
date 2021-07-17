@@ -106,7 +106,6 @@ public class Player {
     
     public Vec3i getChunkCoords() {
         Vec3i voxelPosition = getVoxelPosition();
-        
         return world.getChunkCoordsFromVoxelCoords(voxelPosition.x, voxelPosition.y, voxelPosition.z);
     }
     
@@ -120,7 +119,7 @@ public class Player {
                     if (chunk == null) {
                         world.generateChunk(chunkCoords.x + chunkGenX, chunkCoords.y + chunkGenY, chunkCoords.z + chunkGenZ);
                         generatedChunks++;
-                        if (generatedChunks >= 3)
+                        if (generatedChunks >= 5)
                             return;
                     }
                 }
@@ -139,7 +138,7 @@ public class Player {
                 for (; chunkRenderZ <= World.RENDER_DISTANCE; chunkRenderZ++) {
                     if (world.loadChunk(world.getChunk(chunkCoords.x + chunkRenderX, chunkCoords.y + chunkRenderY, chunkCoords.z + chunkRenderZ))) {
                         renderedChunks++;
-                        if (renderedChunks >= 8)
+                        if (renderedChunks >= 10)
                             return;
                     }
                 }
@@ -154,10 +153,10 @@ public class Player {
         Chunk ownChunk = getChunk();
         if (ownChunk == null) return;
         for (int i = 0; i < 10; i++) {
-            if (unloadChunkIndex >= world.loadedChunks.size())
-                unloadChunkIndex = 0;
             if (world.loadedChunks.isEmpty())
                 return;
+            if (unloadChunkIndex >= world.loadedChunks.size())
+                unloadChunkIndex = 0;
             Chunk chunk = world.loadedChunks.get(unloadChunkIndex);
             if (ownChunk.axialDist(chunk) > World.RENDER_DISTANCE + 2)
                 world.unloadChunk(chunk);
@@ -169,7 +168,6 @@ public class Player {
     
     public void move(float dt) {
         float forwards = 0, rightwards = 0;
-        
         boolean moving = false;
         
         if (Game.getKeyboard().isKeyDown(GLFW_KEY_W)){
@@ -225,7 +223,6 @@ public class Player {
         generateNeededChunks();
         
         loadChunks();
-        
         unloadChunks();
         
         cameraController.target.set(position);

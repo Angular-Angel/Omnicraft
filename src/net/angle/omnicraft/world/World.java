@@ -183,7 +183,7 @@ public class World {
     }
     
     public void reloadChunk(Chunk chunk) {
-        if (chunk != null && chunk.vertexManager.loaded) {
+        if (chunk != null && chunk.vertexManager.isVisible()) {
             unloadChunk(chunk);
             loadChunk(chunk);
         }
@@ -319,7 +319,8 @@ public class World {
             return chunk.getSide(face, coords[3], coords[4], coords[5]);
     }
     
-    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {int[] coords = getChunkAndVoxelCoords(sidex, sidey, sidez);
+    public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
+        int[] coords = getChunkAndVoxelCoords(sidex, sidey, sidez);
         
         checkChunk(coords[0], coords[1], coords[2]).setSide(face, coords[3], coords[4], coords[5], side);
     }
