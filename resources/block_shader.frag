@@ -23,6 +23,10 @@ vec2 randomV2toV2 (vec2 st) {
     return vec2(randomV2ToF(st * 0.87), randomV2ToF(st * 1.43));
 }
 
+float fand(float a, float b) {
+    return a + b - a * b;
+}
+
 float startingInterp(float interpolator){
     return interpolator * interpolator;
 }
@@ -34,11 +38,32 @@ float endingInterp(float interpolator){
 float smoothInterp(float interpolator){
     float start = startingInterp(interpolator);
     float end = endingInterp(interpolator);
-    return smoothstep(start, end, interpolator);
+    return mix(start, end, interpolator);
+}
+
+//valueNoise!
+float valueNoise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    float bottomLeft = randomV2ToF(i);
+    float bottomRight = randomV2ToF(i + vec2(1.0, 0.0));
+    float topLeft = randomV2ToF(i + vec2(0.0, 1.0));
+    float topRight = randomV2ToF(i + vec2(1.0, 1.0));
+    
+    // Smooth Interpolation
+    float interpolatorX = smoothInterp(f.x);
+    float interpolatorY = smoothInterp(f.y);
+
+    float upperCells = mix(topLeft, topRight, interpolatorX);
+    float lowerCells = mix(bottomLeft, bottomRight, interpolatorX);
+
+    float noise = mix(lowerCells, upperCells, interpolatorY);
+    return noise;
 }
 
 //Perlin Noise!
-float noise(vec2 st) {
+float perlinNoise(vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
 
@@ -56,10 +81,10 @@ float noise(vec2 st) {
     float interpolatorX = smoothInterp(f.x);
     float interpolatorY = smoothInterp(f.y);
 
-    float upperCells = smoothstep(topLeftFunc, topRightFunc, interpolatorX);
-    float lowerCells = smoothstep(bottomLeftFunc, bottomRightFunc, interpolatorX);
+    float upperCells = mix(topLeftFunc, topRightFunc, interpolatorX);
+    float lowerCells = mix(bottomLeftFunc, bottomRightFunc, interpolatorX);
 
-    float noise = smoothstep(lowerCells, upperCells, interpolatorY);
+    float noise = mix(lowerCells, upperCells, interpolatorY);
     return noise;
 }
 
@@ -115,7 +140,8 @@ void main() {
 
         int side_palette_size = side_texture_size.x - 1;
         int side_palette_length = side_texture_size.y - 1;
-        float n = noise(texel_position / 2);
+        float n = valueNoise(texel_position / 2);
+        n = fand(n, 0.35);
         out_color = mix(out_color, getSidePaletteColor(1, side_palette_length), pow(n, 5));
         return;
     }
