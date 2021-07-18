@@ -19,26 +19,38 @@ float random (vec2 st) {
                  * 983.234567 * f_random);
 }
 
+float startingInterp(float interpolator){
+    return interpolator * interpolator;
+}
+
+float endingInterp(float interpolator){
+    return 1 - startingInterp(1 - interpolator);
+}
+
+float smoothInterp(float interpolator){
+    float start = startingInterp(interpolator);
+    float end = endingInterp(interpolator);
+    return smoothstep(start, end, interpolator);
+}
+
 float noise (vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
 
-    // Four corners in 2D of a tile
-    float a = random(i);
-    float b = random(i + vec2(1.0, 0.0));
-    float c = random(i + vec2(0.0, 1.0));
-    float d = random(i + vec2(1.0, 1.0));
-
+    float bottomLeft = random(i);
+    float bottomRight = random(i + vec2(1.0, 0.0));
+    float topLeft = random(i + vec2(0.0, 1.0));
+    float topRight = random(i + vec2(1.0, 1.0));
+    
     // Smooth Interpolation
+    float interpolatorX = smoothInterp(f.x);
+    float interpolatorY = smoothInterp(f.y);
 
-    // Cubic Hermine Curve.  Same as SmoothStep()
-    vec2 u = f*f*(3.0-2.0*f);
-    // u = smoothstep(0.,1.,f);
+    float upperCells = smoothstep(topLeft, topRight, interpolatorX);
+    float lowerCells = smoothstep(bottomLeft, bottomRight, interpolatorX);
 
-    // Mix 4 coorners percentages
-    return mix(a, b, u.x) +
-            (c - a)* u.y * (1.0 - u.x) +
-            (d - b) * u.x * u.y;
+    float noise = smoothstep(lowerCells, upperCells, interpolatorY);
+    return noise;
 }
 
 vec3 getBlockPaletteColor(int index, int palette_length) {
