@@ -5,8 +5,6 @@
  */
 package net.angle.omnicraft.client;
 
-import com.samrj.devil.game.Game;
-import com.samrj.devil.gui.Align;
 import com.samrj.devil.gui.Button;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
@@ -17,20 +15,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11C.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11C.glClear;
 
 /**
  *
  * @author angle
  */
-public class TitleScreen extends Screen {
-    
-    private Window titleWindow;
-    private Window menuWindow;
+public class TitleScreen extends MenuScreen {
     
     private Font titleFont;
     
@@ -38,36 +28,43 @@ public class TitleScreen extends Screen {
         super(client);
     }
     
-    private void createTitleWindow() throws IOException {
-        Font.FontProperties titleProperties = new Font.FontProperties();
-        titleProperties.bitmapWidth = 1600;
-        titleProperties.bitmapHeight = 1800;
-        titleProperties.height = 100;
-        titleProperties.first = 65;
-        titleProperties.count = 57;
-        titleFont = new Font(new FileInputStream("resources/Helvetica-Normal.ttf"), titleProperties);
-        
-        titleWindow = new Window();
-        titleWindow.setTitleBarVisible(false);
-        
-        Text title = new TextWithFont("OMNICRAFT", titleFont);
-        titleWindow.setContent(title);
-        
-        DUI.show(titleWindow);
+    @Override
+    protected void createTitleWindow() {
+        try {
+            Font.FontProperties titleProperties = new Font.FontProperties();
+            titleProperties.bitmapWidth = 1600;
+            titleProperties.bitmapHeight = 1800;
+            titleProperties.height = 100;
+            titleProperties.first = 65;
+            titleProperties.count = 57;
+
+            titleFont = new Font(new FileInputStream("resources/Helvetica-Normal.ttf"), titleProperties);
+
+            titleWindow = new Window();
+            titleWindow.setTitleBarVisible(false);
+
+            Text title = new TextWithFont("OMNICRAFT", titleFont);
+            titleWindow.setContent(title);
+
+            DUI.show(titleWindow);
+        } catch (IOException ex) {
+            Logger.getLogger(TitleScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    private void createMenuWindow(){
+    @Override
+    protected void createMenuWindow() {
         menuWindow = new Window();
         
         LayoutRows rows = new LayoutRows();
         menuWindow.setContent(rows);
         
-        Button button = new Button("Play");
+        Button button = new Button("Local Game");
         rows.add(button);
         
         button.setCallback((t) -> {
             if (client.screen == this)
-                client.changeScreen(new GameScreen(client));
+                client.changeScreen(new WorldSelectScreen(client));
         });
         
         menuWindow.setTitleBarVisible(false);
@@ -76,56 +73,9 @@ public class TitleScreen extends Screen {
     }
 
     @Override
-    public void mouseMoved(float x, float y) {
-        DUI.mouseMoved(x, y);
-    }
-
-    @Override
-    public void mouseButton(int button, int action, int mods) {
-        DUI.mouseButton(button, action, mods);
-    }
-
-    @Override
-    public void key(int key, int action, int mods) {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) Game.stop();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        titleWindow.setSizeFromContent();
-        titleWindow.setPosAlignToViewport(Align.N.vector());
-        
-        menuWindow.setSizeFromContent();
-        menuWindow.setPosAlignToViewport(Align.C.vector());
-    }
-
-    @Override
-    public void step(float dt) {
-    }
-
-    @Override
-    public void render() {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        DUI.render();
-    }
-
-    @Override
     public void destroy(Boolean crashed) {
-        DUI.hide(titleWindow);
-        DUI.hide(menuWindow);
+        super.destroy(crashed);
         titleFont.destroy();
-    }
-
-    @Override
-    public void init() {
-        try {
-            createTitleWindow();
-            createMenuWindow();
-        } catch (IOException ex) {
-            Logger.getLogger(TitleScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        resize(client.resolution.x, client.resolution.y);
     }
     
 }
