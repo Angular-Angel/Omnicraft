@@ -70,8 +70,7 @@ public class World {
         addSubstance(new Emptiness());
         addBlockType(new EmptyBlock());
         addSideType(new EmptySide());
-        worldGenerator.generateSubstances(this);
-        worldGenerator.generateBlocks(this);
+        worldGenerator.generateAbstract(this);
         worldGenerator.generateSpawnRegion(this);
     }
 

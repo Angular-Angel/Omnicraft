@@ -25,6 +25,11 @@ import net.angle.omnicraft.world.types.Mixture;
  */
 public class WorldGenerator {
     
+    public void generateAbstract(World world) {
+        generateSubstances(world);
+        generateBlocks(world);
+    }
+    
     public void generateSubstances(World world) {
         world.addSubstance(new Mineraloid("Pebbles", new ColorSource.GreyVariedColorSource(new Color(64, 64, 64, 30), 60)));
         world.addSubstance(new Mineraloid("Sand", new ColorSource.GreyVariedColorSource(new Color(200, 150, 80, 60), 30)));
@@ -64,7 +69,6 @@ public class WorldGenerator {
     }
     
     public void generateSpawnRegion(World world) {
-        
         Chunk chunk = world.checkChunk(0, 0, 0);
         chunk.setAllBlocks(world.blockTypes.get("Desert Sand Block"));
         chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));

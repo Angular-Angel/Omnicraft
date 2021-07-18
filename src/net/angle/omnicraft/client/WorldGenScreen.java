@@ -5,6 +5,9 @@
  */
 package net.angle.omnicraft.client;
 
+import com.samrj.devil.gui.Button;
+import com.samrj.devil.gui.DUI;
+import com.samrj.devil.gui.LayoutRows;
 import com.samrj.devil.gui.Window;
 
 /**
@@ -26,6 +29,14 @@ public class WorldGenScreen extends MenuScreen {
     protected void createMenuWindow() {
         menuWindow = new Window();
         menuWindow.setTitleBarVisible(false);
+        
+        LayoutRows rows = new LayoutRows();
+        menuWindow.setContent(rows);
+        
+        Button button = new Button("Generate");
+        rows.add(button);
+        
+        DUI.show(menuWindow);
     }
     
 }

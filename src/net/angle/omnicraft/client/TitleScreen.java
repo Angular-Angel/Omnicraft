@@ -5,6 +5,7 @@
  */
 package net.angle.omnicraft.client;
 
+import com.samrj.devil.gui.Align;
 import com.samrj.devil.gui.Button;
 import com.samrj.devil.gui.DUI;
 import com.samrj.devil.gui.Font;
@@ -55,6 +56,7 @@ public class TitleScreen extends MenuScreen {
     @Override
     protected void createMenuWindow() {
         menuWindow = new Window();
+        menuWindow.setTitleBarVisible(false);
         
         LayoutRows rows = new LayoutRows();
         menuWindow.setContent(rows);
@@ -67,9 +69,19 @@ public class TitleScreen extends MenuScreen {
                 client.changeScreen(new WorldSelectScreen(client));
         });
         
-        menuWindow.setTitleBarVisible(false);
+        button = new Button("Network Game");
+        rows.add(button);
         
         DUI.show(menuWindow);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        titleWindow.setSizeFromContent();
+        titleWindow.setPosAlignToViewport(Align.N.vector());
+        
+        menuWindow.setSizeFromContent();
+        menuWindow.setPosAlignToViewport(Align.C.vector());
     }
 
     @Override
