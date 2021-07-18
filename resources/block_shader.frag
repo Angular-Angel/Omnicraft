@@ -13,10 +13,14 @@ in float f_distance;
 out vec3 out_color; //The color of a pixel/fragment.
 
 // 2D Random
-float random (vec2 st) {
+float randomV2ToF (vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(234.66, 32.4)))
                  * 983.234567 * f_random);
+}
+
+vec2 randomV2toV2 (vec2 st) {
+    return vec2(randomV2ToF(st * 0.87), randomV2ToF(st * 1.43));
 }
 
 float startingInterp(float interpolator){
@@ -33,21 +37,27 @@ float smoothInterp(float interpolator){
     return smoothstep(start, end, interpolator);
 }
 
-float noise (vec2 st) {
+//Perlin Noise!
+float noise(vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
 
-    float bottomLeft = random(i);
-    float bottomRight = random(i + vec2(1.0, 0.0));
-    float topLeft = random(i + vec2(0.0, 1.0));
-    float topRight = random(i + vec2(1.0, 1.0));
+    vec2 bottomLeftDir = randomV2toV2(i) * 2 - 1;
+    vec2 bottomRightDir = randomV2toV2(i + vec2(1.0, 0.0)) * 2 - 1;
+    vec2 topLeftDir = randomV2toV2(i + vec2(0.0, 1.0)) * 2 - 1;
+    vec2 topRightDir = randomV2toV2(i + vec2(1.0, 1.0)) * 2 - 1;
+
+    float bottomLeftFunc = dot(bottomLeftDir, f);
+    float bottomRightFunc = dot(bottomRightDir, f - vec2(0, 1));
+    float topLeftFunc = dot(topLeftDir, f - vec2(1, 0));
+    float topRightFunc = dot(topRightDir, f - vec2(1, 1));
     
     // Smooth Interpolation
     float interpolatorX = smoothInterp(f.x);
     float interpolatorY = smoothInterp(f.y);
 
-    float upperCells = smoothstep(topLeft, topRight, interpolatorX);
-    float lowerCells = smoothstep(bottomLeft, bottomRight, interpolatorX);
+    float upperCells = smoothstep(topLeftFunc, topRightFunc, interpolatorX);
+    float lowerCells = smoothstep(bottomLeftFunc, bottomRightFunc, interpolatorX);
 
     float noise = smoothstep(lowerCells, upperCells, interpolatorY);
     return noise;
@@ -65,7 +75,7 @@ vec3 getSidePaletteColor(int index, int palette_length) {
 // Use the random function, times the palette_size and then floored, 
 // and then use that to select a color from the palette and return that color.
 vec3 getTexel(vec2 texel_coords, int palette_size, int palette_length) {
-    return getBlockPaletteColor(int(floor(random(texel_coords) * palette_size)), palette_length).rgb;
+    return getBlockPaletteColor(int(floor(randomV2ToF(texel_coords) * palette_size)), palette_length).rgb;
 }
 
 void main() {
