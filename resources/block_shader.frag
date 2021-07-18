@@ -14,7 +14,7 @@ out vec3 out_color; //The color of a pixel/fragment.
 
 // 2D Random
 float randomV2ToF (vec2 st) {
-    return fract(sin(dot(st.xy,
+    return fract(sin(dot(st,
                          vec2(234.66, 32.4)))
                  * 983.234567 * f_random);
 }
@@ -62,7 +62,7 @@ float valueNoise(vec2 st) {
     return noise;
 }
 
-//Perlin Noise!
+//Perlin Noise! Doesn't work properly right now.
 float perlinNoise(vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
@@ -73,8 +73,8 @@ float perlinNoise(vec2 st) {
     vec2 topRightDir = randomV2toV2(i + vec2(1.0, 1.0)) * 2 - 1;
 
     float bottomLeftFunc = dot(bottomLeftDir, f);
-    float bottomRightFunc = dot(bottomRightDir, f - vec2(0, 1));
-    float topLeftFunc = dot(topLeftDir, f - vec2(1, 0));
+    float bottomRightFunc = dot(bottomRightDir, f - vec2(1, 0));
+    float topLeftFunc = dot(topLeftDir, f - vec2(0, 1));
     float topRightFunc = dot(topRightDir, f - vec2(1, 1));
     
     // Smooth Interpolation
