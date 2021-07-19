@@ -25,9 +25,12 @@ import net.angle.omnicraft.world.types.Mixture;
  */
 public class WorldGenerator {
     
+    public int[][] heightMap;
+    
     public void generateAbstract(World world) {
         generateSubstances(world);
         generateBlocks(world);
+        heightMap = HeightMapGenerator.valueNoise(10, 10, 1, 16, new OmniRandom());
     }
     
     public void generateSubstances(World world) {
@@ -57,14 +60,23 @@ public class WorldGenerator {
     }
     
     public Chunk generateDirtFloor(Chunk chunk) {
-        World world = chunk.world;
-        chunk.setAllBlocks(world.blockTypes.get("Dirt Block"));
+        chunk.setAllBlocks(chunk.world.blockTypes.get("Dirt Block"));
+        return chunk;
+    }
+    
+    public Chunk generateDirtFromHeightMap(Chunk chunk) {
+        
+        chunk.setBlocksBelow(heightMap[chunk.getX()][chunk.getZ()], chunk.world.blockTypes.get("Dirt Block"));
         return chunk;
     }
     
     public Chunk generateChunk(Chunk chunk) {
         if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
+        if (chunk.getY() == 1 && chunk.getX() < heightMap.length && chunk.getX() >= 0
+                              && chunk.getZ() < heightMap[0].length && chunk.getZ() >= 0)
+            return generateDirtFromHeightMap(chunk);
+            
         else return chunk;
     }
     
