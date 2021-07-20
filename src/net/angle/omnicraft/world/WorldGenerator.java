@@ -65,16 +65,30 @@ public class WorldGenerator {
     }
     
     public Chunk generateDirtFromHeightMap(Chunk chunk) {
-        
-        chunk.setBlocksBelow(heightMap[chunk.getX()][chunk.getZ()], chunk.world.blockTypes.get("Dirt Block"));
+        Block dirt = chunk.world.blockTypes.get("Dirt Block");
+        int chunkx = chunk.getX();
+        int chunkz = chunk.getZ();
+        for (int blockx = 0; blockx < chunk.getEdgeLength() ; blockx++) {
+            for (int blockz = 0; blockz < chunk.getEdgeLength(); blockz++) {
+                
+                float interpolatorX = blockx/16f;
+                float interpolatorZ = blockz/16f;
+                
+                int upperCells = OmniRandom.mix(heightMap[chunkx][chunkz], heightMap[chunkx + 1][chunkz], interpolatorX);
+                int lowerCells = OmniRandom.mix(heightMap[chunkx][chunkz + 1], heightMap[chunkx + 1][chunkz + 1], interpolatorX);
+                int height = OmniRandom.mix(lowerCells, upperCells, interpolatorZ);
+                
+                chunk.setBlocksBelow(blockx, blockz, height, dirt);
+            }
+        }
         return chunk;
     }
     
     public Chunk generateChunk(Chunk chunk) {
         if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
-        if (chunk.getY() == 1 && chunk.getX() < heightMap.length && chunk.getX() >= 0
-                              && chunk.getZ() < heightMap[0].length && chunk.getZ() >= 0)
+        if (chunk.getY() == 1 && chunk.getX() < heightMap.length - 1 && chunk.getX() >= 0
+                              && chunk.getZ() < heightMap[0].length - 1 && chunk.getZ() >= 0)
             return generateDirtFromHeightMap(chunk);
             
         else return chunk;

@@ -37,8 +37,7 @@ public class HeightMapGenerator {
             for (int j = 0; j < z; j++) {
                 float upperCells = random.mix(relativeHeights[i][j], relativeHeights[i + 1][j], 0.5f);
                 float lowerCells = random.mix(relativeHeights[i][j + 1], relativeHeights[i + 1][j + 1], 0.5f);
-
-                heights[i][j] = min + (int)(max * random.mix(lowerCells, upperCells, 0.5f));
+                heights[i][j] = random.mix(min, max, random.mix(lowerCells, upperCells, 0.5f));
             }
         }
         

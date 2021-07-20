@@ -31,6 +31,12 @@ public interface BlockContainer extends VoxelContainer {
         setBlock(coord.x, coord.y, coord.z, block);
     }
     
+    public default void setBlocksBelow(int blockx, int blockz, int height, Block block) {
+        for (int blocky = 0; blocky < height; blocky++) {
+            setBlock(blockx, blocky, blockz, block);
+        }
+    }
+    
     public default void setBlocksBelow(int height, Block block) {
         for (int blockx = 0; blockx < getEdgeLength(); blockx++) {
             for (int blocky = 0; blocky < height; blocky++) {
