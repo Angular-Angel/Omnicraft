@@ -30,7 +30,7 @@ public class WorldGenerator {
     public void generateAbstract(World world) {
         generateSubstances(world);
         generateBlocks(world);
-        heightMap = HeightMapGenerator.valueNoise(10, 10, 1, 16, new OmniRandom());
+        heightMap = HeightMapGenerator.valueNoise(5, 5, 1, 16, new OmniRandom());
     }
     
     public void generateSubstances(World world) {
@@ -94,25 +94,5 @@ public class WorldGenerator {
             return generateDirtFromHeightMap(chunk);
             
         else return chunk;
-    }
-    
-    public void generateSpawnRegion(World world) {
-        Chunk chunk = world.checkChunk(0, 0, 0);
-        chunk.setAllBlocks(world.blockTypes.get("Desert Sand Block"));
-        chunk.setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
-        chunk.setBlock(chunk.getEdgeLength() - 1, 1, 0, world.blockTypes.get("Gravel Block"));
-        chunk.setBlock(0, chunk.getEdgeLength() - 1, 0, world.blockTypes.get("Gravel Block"));
-
-        chunk.setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
-        chunk.setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
-        
-        world.checkChunk(1, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
-        world.checkChunk(2, 2, 2).setAllBlocks(world.blockTypes.get("Gravel Block"));
-        world.checkChunk(15, 1, 1).setAllBlocks(world.blockTypes.get("Desert Sand Block"));
-        
-        world.checkChunk(0, 3, 0).setBlock(0, 0, 0, world.blockTypes.get("Gravel Block"));
-        
-        world.checkChunk(0, 3, 0).setSide(Block.BlockFace.left, 0, 0, 0, world.sideTypes.get("Moss"));
-        world.checkChunk(0, 3, 0).setSide(Block.BlockFace.front, 0, 0, 0, world.sideTypes.get("Moss"));
     }
 }

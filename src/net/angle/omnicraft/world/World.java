@@ -71,7 +71,6 @@ public class World {
         addBlockType(new EmptyBlock());
         addSideType(new EmptySide());
         worldGenerator.generateAbstract(this);
-        worldGenerator.generateSpawnRegion(this);
     }
 
     public Chunk getChunk(int chunkx, int chunky, int chunkz) {
