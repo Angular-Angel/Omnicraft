@@ -130,26 +130,26 @@ public abstract class Block extends Renderable {
             return coord;
         }
         
-        public boolean continueAcross(Vec3i coord, BlockChunk chunk) {
+        public boolean continueAcross(Vec3i coord, VoxelContainer container) {
             switch(this) {
-                case top: return coord.z < chunk.getEdgeLength() - 1;
-                case bottom: return coord.z < chunk.getEdgeLength() - 1;
-                case front: return coord.x < chunk.getEdgeLength() - 1;
+                case top: return coord.z < container.getEdgeLength() - 1;
+                case bottom: return coord.z < container.getEdgeLength() - 1;
+                case front: return coord.x < container.getEdgeLength() - 1;
                 case back: return coord.x > 0;
-                case left: return coord.z < chunk.getEdgeLength() - 1;
+                case left: return coord.z < container.getEdgeLength() - 1;
                 case right: return coord.z > 0;
             }
             return false;
         }
         
-        public boolean continueDown(Vec3i coord, BlockChunk chunk) {
+        public boolean continueDown(Vec3i coord, VoxelContainer container) {
             switch(this) {
                 case top: return coord.x > 0;
-                case bottom: return coord.x < chunk.getEdgeLength() - 1;
+                case bottom: return coord.x < container.getEdgeLength() - 1;
                 case front:
                 case back:
                 case left:
-                case right: return coord.y < chunk.getEdgeLength() - 1;
+                case right: return coord.y < container.getEdgeLength() - 1;
             }
             return false;
         }

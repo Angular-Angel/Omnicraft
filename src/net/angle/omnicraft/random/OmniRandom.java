@@ -42,11 +42,11 @@ public class OmniRandom extends Random {
         return a + b - a * b;
     }
 
-    public static float startingInterp(float interpolator){
+    public static float startingInterp(float interpolator) {
         return interpolator * interpolator;
     }
 
-    public static float endingInterp(float interpolator){
+    public static float endingInterp(float interpolator) {
         return 1 - startingInterp(1 - interpolator);
     }
     

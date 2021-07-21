@@ -5,12 +5,18 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec3i;
+
 /**
  *
  * @author angle
  */
 public interface VoxelContainer {
     public int getEdgeLength();
+    
+    public default boolean containsCoordinates(Vec3i coords) {
+        return containsCoordinates(coords.x, coords.y, coords.z);
+    }
     
     public default boolean containsCoordinates(int x, int y, int z) {
         return x >= 0 && x < getEdgeLength() && y >= 0 && y < getEdgeLength() && 
