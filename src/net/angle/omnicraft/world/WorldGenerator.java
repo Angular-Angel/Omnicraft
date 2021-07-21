@@ -81,6 +81,7 @@ public class WorldGenerator {
                 chunk.setBlocksBelow(blockx, blockz, height, dirt);
             }
         }
+        chunk.setAllSidesOnSurface(Block.BlockFace.top, chunk.world.sideTypes.get("Moss"));
         return chunk;
     }
     

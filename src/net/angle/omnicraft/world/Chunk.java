@@ -84,6 +84,26 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
         sideChunk.setSide(face, sidex, sidey, sidez, side);
     }
     
+    public void setAllSidesOnSurface(Block.BlockFace face, Side side) {
+        Vec3i startingPosition = face.getStartingPosition(this);
+        
+        for (int i = 0; i < getEdgeLength(); i++) {
+            Vec3i coord2 = new Vec3i(startingPosition);
+            for (int j = 0; j < getEdgeLength(); j++) {
+                Vec3i coord3 = new Vec3i(coord2);
+                for (int k = 0; k < getEdgeLength(); k++) {
+                    if (getBlock(coord3).isDrawable()) {
+                        setSide(face, coord3, side);
+                        break;
+                    } else
+                        face.moveIn(coord3);
+                }
+                face.moveAcross(coord2);
+            }
+            face.moveDown(startingPosition);
+        }
+    }
+    
     public boolean blockIsTransparent(int blockx, int blocky, int blockz) {
         return blockIsTransparent(getBlock(blockx, blocky, blockz));
     }

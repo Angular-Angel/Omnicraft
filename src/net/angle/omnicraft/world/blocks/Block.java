@@ -6,11 +6,11 @@
 package net.angle.omnicraft.world.blocks;
 
 import com.samrj.devil.math.Vec2;
-import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.world.BlockChunk;
+import net.angle.omnicraft.world.VoxelContainer;
 
 /**
  *
@@ -33,14 +33,14 @@ public abstract class Block extends Renderable {
             this.id = id;
         }
         
-        public Vec3i getStartingPosition(BlockChunk chunk) {
+        public Vec3i getStartingPosition(VoxelContainer container) {
             switch(this) {
-                case top: return new Vec3i(chunk.getEdgeLength() - 1, chunk.getEdgeLength() - 1, 0);
+                case top: return new Vec3i(container.getEdgeLength() - 1, container.getEdgeLength() - 1, 0);
                 case bottom: return new Vec3i(0, 0, 0);
-                case front: return new Vec3i(0, 0, chunk.getEdgeLength() - 1);
-                case back: return new Vec3i(chunk.getEdgeLength() - 1, 0, 0);
+                case front: return new Vec3i(0, 0, container.getEdgeLength() - 1);
+                case back: return new Vec3i(container.getEdgeLength() - 1, 0, 0);
                 case left: return new Vec3i(0, 0, 0);
-                case right: return new Vec3i(chunk.getEdgeLength() - 1, 0, chunk.getEdgeLength() - 1);
+                case right: return new Vec3i(container.getEdgeLength() - 1, 0, container.getEdgeLength() - 1);
             }
             return new Vec3i(-1, -1, -1);
         }
