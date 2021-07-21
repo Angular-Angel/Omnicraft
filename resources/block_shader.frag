@@ -113,27 +113,28 @@ void main() {
     
     out_color = getTexel(texel_position, block_palette_size, block_palette_length);
 
-    vec2 texel_above = vec2(texel_position.x, texel_position.y - 1);
-    vec2 texel_below = vec2(texel_position.x, texel_position.y + 1);
-
     vec2 texel_left = vec2(texel_position.x - 1, texel_position.y);
     vec2 texel_right = vec2(texel_position.x + 1, texel_position.y);
 
-    vec3 color_above = getTexel(texel_above, block_palette_size, block_palette_length);
-    vec3 color_below = getTexel(texel_below, block_palette_size, block_palette_length);
+    vec2 texel_above = vec2(texel_position.x, texel_position.y - 1);
+    vec2 texel_below = vec2(texel_position.x, texel_position.y + 1);
 
     vec3 color_left = getTexel(texel_left, block_palette_size, block_palette_length);
     vec3 color_right = getTexel(texel_right, block_palette_size, block_palette_length);
 
-    vec3 blur_color = mix(mix(color_above, color_below, 0.5), mix(color_left, color_right, 0.5), 0.5);
+    vec3 color_above = getTexel(texel_above, block_palette_size, block_palette_length);
+    vec3 color_below = getTexel(texel_below, block_palette_size, block_palette_length);
+
+    vec3 mixed_color = mix(mix(color_above, color_below, 0.5), mix(color_left, color_right, 0.5), 0.5);
+
+    out_color = mix(mixed_color, out_color, 0.4);
 
     //make things darker the farther away they are, 
     float distance = f_distance / 75;
     float blur_factor = 1.0 / exp((distance) * (distance));
 
-    out_color = mix(blur_color, out_color, 0.4);
-
     out_color = mix(getBlockPaletteColor(block_palette_size, block_palette_length), out_color, blur_factor);
+
     if (i_side_palette_index != 0) {
     
         ivec2 side_texture_size = textureSize(u_side_palette);
