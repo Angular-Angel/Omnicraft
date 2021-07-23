@@ -9,7 +9,9 @@ import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.VertexBuffer;
 import com.samrj.devil.gl.VertexBuilder;
 import com.samrj.devil.math.Vec2;
+import com.samrj.devil.math.Vec2i;
 import com.samrj.devil.math.Vec3;
+import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.world.Chunk;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.blocks.Block;
@@ -56,8 +58,105 @@ public class BlockBufferManager extends VertexManager {
             drawing = false;
             return;
         }
-        chunk.bufferMeshes();
+        bufferMeshes(chunk);
         upload();
+    }
+    
+    public void bufferMeshes(Chunk chunk) {
+        for (Block.BlockFace face : Block.BlockFace.values()) {
+            optimizeMeshes(face, chunk);
+        }
+    }
+    
+    public void optimizeMeshes(Block.BlockFace face, Chunk chunk) {
+        Vec3i coord1 = face.getStartingPosition(chunk);
+        int edgeLength = chunk.getEdgeLength();
+        for (int i = 0; i < chunk.getEdgeLength(); i++) {
+            boolean[][] checked = new boolean[edgeLength][edgeLength];
+            
+            Vec3i coord2 = new Vec3i(coord1);
+            
+            for (int j = 0; j < edgeLength; j++) {
+                Vec3i coord3 = new Vec3i(coord2);
+                
+                for (int k = 0; k < edgeLength; k++) {
+                    if (checked[j][k] == false) {
+                        Vec2i dimensions = greedyMeshExpansion(face, chunk, coord3);
+                        
+                        for (int l = 0; l < dimensions.y; l++) {
+                            for (int m = 0; m < dimensions.x; m++) {
+                                checked[j+l][k+m] = true;
+                            }
+                        }
+                    }
+                    face.moveAcross(coord3);
+                }
+                face.moveDown(coord2);
+            }
+            face.moveIn(coord1);
+        }
+    }
+    
+    public Vec2i greedyMeshExpansion(Block.BlockFace face, Chunk chunk, Vec3i coord) {
+        
+        Block block = chunk.getBlock(coord);
+        Side side = chunk.getSide(face, coord);
+        
+        if (chunk.blockIsTransparent(block) || !block.faceIsVisible(face, chunk, coord))
+            return new Vec2i(1, 1);
+        
+        boolean expandDown = true, expandAcross = true;
+        
+        int width = 1, height = 1;
+        
+        Vec3i workingCoord = new Vec3i(coord);
+        
+        while (expandAcross && face.continueAcross(workingCoord, chunk)) {
+            face.moveAcross(workingCoord);
+            if (checkMesh(chunk, block, side, face, workingCoord, 1, height)) {
+                width++;
+            } else
+                expandAcross = false;
+        }
+        
+        workingCoord = new Vec3i(coord);
+        
+        while (expandDown && face.continueDown(workingCoord, chunk)) {
+            face.moveDown(workingCoord);
+            if (checkMesh(chunk, block, side, face, workingCoord, width, 1)) {
+                height++;
+            } else
+                expandDown = false;
+        }
+        
+        float drawStartx = chunk.getXVoxelOffset() + coord.x;
+        float drawStarty = chunk.getYVoxelOffset() + coord.y;
+        float drawStartz = chunk.getZVoxelOffset() + coord.z;
+        
+        Vec2 dimensions = new Vec2(width, height);
+        
+        bufferFace(block, side, face, dimensions, new Vec3(drawStartx, drawStarty, drawStartz));
+        
+        return new Vec2i(width, height);
+    }
+    
+    public boolean checkMesh(Chunk chunk, Block block, Side side, Block.BlockFace face, Vec3i coord, int width, int height) {
+        //Goes down relative to the block face, not the chunks y coordinate
+        Vec3i workingCoordy = new Vec3i(coord);
+        for (int i = 0; i < height; i++) {
+            
+            //Goes across relative to the block face, not the chunks x coordinate
+            Vec3i workingCoordx = new Vec3i(workingCoordy);
+            for (int j = 0; j < width; j++) {
+                if (chunk.getBlock(workingCoordx) != block || !block.faceIsVisible(face, chunk, workingCoordx) || chunk.getSide(face, workingCoordx) != side) {
+                    return false;
+                }
+                face.moveAcross(workingCoordx);
+            }
+            face.moveDown(workingCoordy);
+        }
+        
+        return true;
     }
     
     public void bufferFlatVertices(int block_id, int side_id, float startx, float starty, float startz, float xoff, float yoff, float zoff) {
@@ -121,7 +220,7 @@ public class BlockBufferManager extends VertexManager {
         buffer_side_palette_index.x = side_id; bufferVRandom.set(topRight); buffer.vertex();
     }
     
-    public void BufferFace(Block block, Side side, Block.BlockFace face, Vec2 dimensions, Vec3 drawStart) {
+    public void bufferFace(Block block, Side side, Block.BlockFace face, Vec2 dimensions, Vec3 drawStart) {
         Vec3 orientFace = face.orientFace(dimensions);
         
         drawStart = face.getDrawStart(drawStart);

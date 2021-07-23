@@ -210,12 +210,12 @@ public class GameScreen extends Screen {
             wailaBlockDisplay.begin(36, -1);
             Vec3 drawStart = new Vec3(-World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f, -World.EDGE_LENGTH_OF_BLOCK/2.0f);
             Vec2 dimensions = new Vec2(1, 1);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.front, dimensions, drawStart);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.back, dimensions, drawStart);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.left, dimensions, drawStart);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.right, dimensions, drawStart);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.top, dimensions, drawStart);
-            wailaBlockDisplay.BufferFace(block, world.side_ids.get(0), Block.BlockFace.bottom, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.front, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.back, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.left, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.right, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.top, dimensions, drawStart);
+            wailaBlockDisplay.bufferFace(block, world.side_ids.get(0), Block.BlockFace.bottom, dimensions, drawStart);
             wailaBlockDisplay.upload();
         } else {
             DUI.hide(waila);

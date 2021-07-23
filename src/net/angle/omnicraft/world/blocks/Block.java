@@ -10,6 +10,7 @@ import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.graphics.RenderData;
 import net.angle.omnicraft.world.BlockChunk;
+import net.angle.omnicraft.world.BlockContainer;
 import net.angle.omnicraft.world.VoxelContainer;
 
 /**
@@ -191,43 +192,43 @@ public abstract class Block extends Renderable {
         return adjacentBlock == null || adjacentBlock.isTransparent();
     }
     
-    public boolean faceIsVisible(BlockFace face, BlockChunk chunk, Vec3i coord) {
-        return faceIsVisible(face, chunk, coord.x, coord.y, coord.z);
+    public boolean faceIsVisible(BlockFace face, BlockContainer container, Vec3i coord) {
+        return faceIsVisible(face, container, coord.x, coord.y, coord.z);
     }
     
-    public boolean faceIsVisible(BlockFace face, BlockChunk chunk, int blockx, int blocky, int blockz) {
+    public boolean faceIsVisible(BlockFace face, BlockContainer container, int blockx, int blocky, int blockz) {
         switch(face) {
-            case top: return topIsVisible(chunk, blockx, blocky, blockz);
-            case bottom: return bottomIsVisible(chunk, blockx, blocky, blockz);
-            case front: return frontIsVisible(chunk, blockx, blocky, blockz);
-            case back: return backIsVisible(chunk, blockx, blocky, blockz);
-            case left: return leftSideIsVisible(chunk, blockx, blocky, blockz);
-            case right: return rightSideIsVisible(chunk, blockx, blocky, blockz);
+            case top: return topIsVisible(container, blockx, blocky, blockz);
+            case bottom: return bottomIsVisible(container, blockx, blocky, blockz);
+            case front: return frontIsVisible(container, blockx, blocky, blockz);
+            case back: return backIsVisible(container, blockx, blocky, blockz);
+            case left: return leftSideIsVisible(container, blockx, blocky, blockz);
+            case right: return rightSideIsVisible(container, blockx, blocky, blockz);
             default: throw new IllegalArgumentException("Checking visibility of face: " + face);
         }
     }
     
-    public boolean topIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx, blocky + 1, blockz));
+    public boolean topIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx, blocky + 1, blockz));
     }
     
-    public boolean bottomIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx, blocky - 1, blockz));
+    public boolean bottomIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx, blocky - 1, blockz));
     }
     
-    public boolean frontIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx, blocky, blockz + 1));
+    public boolean frontIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx, blocky, blockz + 1));
     }
     
-    public boolean backIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx, blocky, blockz - 1));
+    public boolean backIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx, blocky, blockz - 1));
     }
     
-    public boolean leftSideIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx - 1, blocky, blockz));
+    public boolean leftSideIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx - 1, blocky, blockz));
     }
     
-    public boolean rightSideIsVisible(BlockChunk chunk, int blockx, int blocky, int blockz) {
-        return isVisibleThrough(chunk.getBlock(blockx + 1, blocky, blockz));
+    public boolean rightSideIsVisible(BlockContainer container, int blockx, int blocky, int blockz) {
+        return isVisibleThrough(container.getBlock(blockx + 1, blocky, blockz));
     }
 }
