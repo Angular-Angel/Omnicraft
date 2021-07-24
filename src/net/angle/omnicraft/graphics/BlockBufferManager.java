@@ -31,10 +31,6 @@ public class BlockBufferManager extends VertexManager {
     private VertexBuilder.IntAttribute buffer_block_palette_index;
     private VertexBuilder.IntAttribute buffer_side_palette_index;
     private Vec3 bufferVRandom;
-    
-    private boolean[][] meshed;
-    
-    private int meshx, meshy;
 
     @Override
     public void begin() {
@@ -76,7 +72,7 @@ public class BlockBufferManager extends VertexManager {
         Vec3i coord1 = face.getStartingPosition(chunk);
         int edgeLength = chunk.getEdgeLength();
         for (int i = 0; i < chunk.getEdgeLength(); i++) {
-            meshed = new boolean[edgeLength][edgeLength];
+            boolean[][] meshed = new boolean[edgeLength][edgeLength];
             
             Vec3i coord2 = new Vec3i(coord1);
             
@@ -85,9 +81,7 @@ public class BlockBufferManager extends VertexManager {
                 
                 for (int k = 0; k < edgeLength; k++) {
                     if (meshed[j][k] == false) {
-                        meshy = j;
-                        meshx = k;
-                        Vec2i dimensions = greedyMeshExpansion(face, chunk, coord3);
+                        Vec2i dimensions = greedyMeshExpansion(face, chunk, coord3, meshed, k, j);
                         
                         for (int l = 0; l < dimensions.y; l++) {
                             for (int m = 0; m < dimensions.x; m++) {
@@ -103,7 +97,7 @@ public class BlockBufferManager extends VertexManager {
         }
     }
     
-    public Vec2i greedyMeshExpansion(Block.BlockFace face, Chunk chunk, Vec3i coord) {
+    public Vec2i greedyMeshExpansion(Block.BlockFace face, Chunk chunk, Vec3i coord, boolean[][] meshed, int meshx, int meshy) {
         
         Block block = chunk.getBlock(coord);
         Side side = chunk.getSide(face, coord);
