@@ -93,7 +93,6 @@ public class GameScreen extends Screen {
     private void buildDebugWindow() {
         debugWindow = new Window();
         debugWindow.setTitle("Debug Window");
-        debugWindow.setWidth(500);
         LayoutRows rows = new LayoutRows();
         debugWindow.setContent(rows);
         
@@ -209,6 +208,7 @@ public class GameScreen extends Screen {
             lookDisplay.setText(player.pickedCoord.toString());
         else
             lookDisplay.setText("None");
+        debugWindow.setSizeFromContent();
     }
     
     private void updateWaila() {
