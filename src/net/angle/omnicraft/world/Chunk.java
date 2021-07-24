@@ -6,8 +6,6 @@
 package net.angle.omnicraft.world;
 
 import com.samrj.devil.math.Vec3i;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.Side;
@@ -16,7 +14,6 @@ import net.angle.omnicraft.world.blocks.Side;
  *
  * @author angle
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class Chunk extends VoxelPositionable implements BlockContainer, SideContainer {
     
     public final World world;

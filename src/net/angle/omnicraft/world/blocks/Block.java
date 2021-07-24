@@ -9,7 +9,6 @@ import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
 import com.samrj.devil.math.Vec3i;
 import net.angle.omnicraft.graphics.RenderData;
-import net.angle.omnicraft.world.BlockChunk;
 import net.angle.omnicraft.world.BlockContainer;
 import net.angle.omnicraft.world.VoxelContainer;
 

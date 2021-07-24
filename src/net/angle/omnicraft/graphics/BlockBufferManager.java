@@ -31,6 +31,10 @@ public class BlockBufferManager extends VertexManager {
     private VertexBuilder.IntAttribute buffer_block_palette_index;
     private VertexBuilder.IntAttribute buffer_side_palette_index;
     private Vec3 bufferVRandom;
+    
+    private boolean[][] meshed;
+    
+    private int meshx, meshy;
 
     @Override
     public void begin() {
@@ -72,7 +76,7 @@ public class BlockBufferManager extends VertexManager {
         Vec3i coord1 = face.getStartingPosition(chunk);
         int edgeLength = chunk.getEdgeLength();
         for (int i = 0; i < chunk.getEdgeLength(); i++) {
-            boolean[][] checked = new boolean[edgeLength][edgeLength];
+            meshed = new boolean[edgeLength][edgeLength];
             
             Vec3i coord2 = new Vec3i(coord1);
             
@@ -80,12 +84,14 @@ public class BlockBufferManager extends VertexManager {
                 Vec3i coord3 = new Vec3i(coord2);
                 
                 for (int k = 0; k < edgeLength; k++) {
-                    if (checked[j][k] == false) {
+                    if (meshed[j][k] == false) {
+                        meshy = j;
+                        meshx = k;
                         Vec2i dimensions = greedyMeshExpansion(face, chunk, coord3);
                         
                         for (int l = 0; l < dimensions.y; l++) {
                             for (int m = 0; m < dimensions.x; m++) {
-                                checked[j+l][k+m] = true;
+                                meshed[j+l][k+m] = true;
                             }
                         }
                     }
@@ -113,7 +119,7 @@ public class BlockBufferManager extends VertexManager {
         
         while (expandAcross && face.continueAcross(workingCoord, chunk)) {
             face.moveAcross(workingCoord);
-            if (checkMesh(chunk, block, side, face, workingCoord, 1, height)) {
+            if (!meshed[meshy + height - 1][meshx + width] && checkMesh(chunk, block, side, face, workingCoord, 1, height)) {
                 width++;
             } else
                 expandAcross = false;
@@ -123,7 +129,7 @@ public class BlockBufferManager extends VertexManager {
         
         while (expandDown && face.continueDown(workingCoord, chunk)) {
             face.moveDown(workingCoord);
-            if (checkMesh(chunk, block, side, face, workingCoord, width, 1)) {
+            if (!meshed[meshy + height][meshx + width - 1] && checkMesh(chunk, block, side, face, workingCoord, width, 1)) {
                 height++;
             } else
                 expandDown = false;
