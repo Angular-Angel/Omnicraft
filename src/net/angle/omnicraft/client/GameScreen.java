@@ -44,6 +44,7 @@ public class GameScreen extends Screen {
     private Text fpsNum;
     private Text posDisplay;
     private Text dirDisplay;
+    private Text lookDisplay;
     
     private Window waila;
     private Text blockName;
@@ -99,8 +100,8 @@ public class GameScreen extends Screen {
         LayoutColumns columns = new LayoutColumns();
         rows.add(columns);
         
-        Text fps = new Text("FPS: ");
-        columns.add(fps);
+        Text text = new Text("FPS: ");
+        columns.add(text);
         
         fpsNum = new Text("");
         columns.add(fpsNum);
@@ -108,8 +109,8 @@ public class GameScreen extends Screen {
         columns = new LayoutColumns();
         rows.add(columns);
         
-        Text pos = new Text("POS: ");
-        columns.add(pos);
+        text = new Text("POS: ");
+        columns.add(text);
         
         posDisplay = new Text("");
         columns.add(posDisplay);
@@ -117,11 +118,20 @@ public class GameScreen extends Screen {
         columns = new LayoutColumns();
         rows.add(columns);
         
-        Text dir = new Text("DIR: ");
-        columns.add(dir);
+        text = new Text("DIR: ");
+        columns.add(text);
         
         dirDisplay = new Text("");
         columns.add(dirDisplay);
+        
+        columns = new LayoutColumns();
+        rows.add(columns);
+        
+        text = new Text("LOOK: ");
+        columns.add(text);
+        
+        lookDisplay = new Text("");
+        columns.add(lookDisplay);
         
     }
     
@@ -190,9 +200,15 @@ public class GameScreen extends Screen {
     }
     
     private void updateDebugWindow() {
+        if (!debugWindow.isVisible())
+            return;
         fpsNum.setText("" + 1000000000l/Game.getLastFrameNano());
         posDisplay.setText(player.getApproximateVoxelPosition().toString());
         dirDisplay.setText(player.camera.forward.toString());
+        if (player.pickedCoord != null)
+            lookDisplay.setText(player.pickedCoord.toString());
+        else
+            lookDisplay.setText("None");
     }
     
     private void updateWaila() {
