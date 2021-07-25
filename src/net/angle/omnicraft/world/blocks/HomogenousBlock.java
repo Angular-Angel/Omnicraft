@@ -6,7 +6,7 @@
 package net.angle.omnicraft.world.blocks;
 
 import net.angle.omnicraft.graphics.RenderData;
-import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.utils.OmniRandom;
 import static net.angle.omnicraft.world.World.PALETTE_SIZE;
 import net.angle.omnicraft.world.types.Substance;
 

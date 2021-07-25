@@ -5,10 +5,12 @@
  */
 package net.angle.omnicraft.world;
 
+import net.angle.omnicraft.utils.HeightMapGenerator;
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
-import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.utils.OmniMath;
+import net.angle.omnicraft.utils.OmniRandom;
 import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
@@ -75,9 +77,9 @@ public class WorldGenerator {
                 float interpolatorX = blockx/16f;
                 float interpolatorZ = blockz/16f;
                 
-                int upperCells = OmniRandom.mix(heightMap[chunkx][chunkz], heightMap[chunkx + 1][chunkz], interpolatorX);
-                int lowerCells = OmniRandom.mix(heightMap[chunkx][chunkz + 1], heightMap[chunkx + 1][chunkz + 1], interpolatorX);
-                int height = OmniRandom.mix(lowerCells, upperCells, interpolatorZ);
+                int upperCells = OmniMath.mix(heightMap[chunkx][chunkz], heightMap[chunkx + 1][chunkz], interpolatorX);
+                int lowerCells = OmniMath.mix(heightMap[chunkx][chunkz + 1], heightMap[chunkx + 1][chunkz + 1], interpolatorX);
+                int height = OmniMath.mix(lowerCells, upperCells, interpolatorZ);
                 
                 chunk.setBlocksBelow(blockx, blockz, height, dirt);
             }

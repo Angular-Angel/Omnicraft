@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.angle.omnicraft.world;
+package net.angle.omnicraft.utils;
 
-import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.utils.OmniMath;
+import net.angle.omnicraft.utils.OmniRandom;
 
 /**
  *
@@ -35,9 +36,9 @@ public class HeightMapGenerator {
         int[][] heights = new int[x][z];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < z; j++) {
-                float upperCells = random.mix(relativeHeights[i][j], relativeHeights[i + 1][j], 0.5f);
-                float lowerCells = random.mix(relativeHeights[i][j + 1], relativeHeights[i + 1][j + 1], 0.5f);
-                heights[i][j] = random.mix(min, max, random.mix(lowerCells, upperCells, 0.5f));
+                float upperCells = OmniMath.mix(relativeHeights[i][j], relativeHeights[i + 1][j], 0.5f);
+                float lowerCells = OmniMath.mix(relativeHeights[i][j + 1], relativeHeights[i + 1][j + 1], 0.5f);
+                heights[i][j] = OmniMath.mix(min, max, OmniMath.mix(lowerCells, upperCells, 0.5f));
             }
         }
         

@@ -7,7 +7,7 @@ package net.angle.omnicraft.world.types;
 
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
-import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.utils.OmniRandom;
 
 /**
  *

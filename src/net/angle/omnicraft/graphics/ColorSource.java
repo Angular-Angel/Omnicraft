@@ -7,7 +7,7 @@ package net.angle.omnicraft.graphics;
 
 import com.samrj.devil.math.Vec3i;
 import java.awt.Color;
-import net.angle.omnicraft.random.OmniRandom;
+import net.angle.omnicraft.utils.OmniRandom;
 
 /**
  *
