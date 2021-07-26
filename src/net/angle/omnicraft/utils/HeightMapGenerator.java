@@ -5,6 +5,8 @@
  */
 package net.angle.omnicraft.utils;
 
+import com.samrj.devil.math.Vec2;
+
 
 /**
  *
@@ -25,8 +27,32 @@ public class HeightMapGenerator {
     }
     
     public static float getValue(int x, int z) {
-        r.setSeed(x * 234567 + z * 98527);
+        return getValue(x, z, 0);
+    }
+    
+    public static float getValue(int x, int z, int i) {
+        r.setSeed(x * 234567 + z * 98527 + i * 345678);
         return r.nextFloat();
+    }
+    
+    public static Vec2 getPerlinDir(int x, int z) {
+        return new Vec2(getValue(x, z, 0), getValue(x, z, 1));
+    }
+    
+    public static int getChunkHeight(int chunkx, int chunkz, int min, int max) {
+        return OmniMath.mix(min, max, getValue(chunkx, chunkz));
+    }
+    
+    public static int getBlockHeight(int blockx, int blockz, int topLeft, int topRight, int bottomLeft, int bottomRight) {
+        float interpolatorX = blockx/16f;
+        float interpolatorZ = blockz/16f;
+
+        interpolatorX = OmniMath.smoothInterp(interpolatorX);
+        interpolatorZ = OmniMath.smoothInterp(interpolatorZ);
+
+        int upperCells = OmniMath.mix(topLeft, topRight, interpolatorX);
+        int lowerCells = OmniMath.mix(bottomLeft, bottomRight, interpolatorX);
+        return OmniMath.mix(upperCells, lowerCells, interpolatorZ);
     }
     
     public static int getValueHeight(int x, int z, int min, int max) {

@@ -69,20 +69,15 @@ public class WorldGenerator {
         int chunkx = chunk.getX();
         int chunkz = chunk.getZ();
         
-        int topLeft = HeightMapGenerator.getValueHeight(chunkx, chunkz, 1, 15);
-        int topRight = HeightMapGenerator.getValueHeight(chunkx + 1, chunkz, 1, 15);
-        int bottomLeft = HeightMapGenerator.getValueHeight(chunkx, chunkz + 1, 1, 15);
-        int bottomRight = HeightMapGenerator.getValueHeight(chunkx + 1, chunkz + 1, 1, 15);
+        int topLeft = HeightMapGenerator.getChunkHeight(chunkx, chunkz, 1, 15);
+        int topRight = HeightMapGenerator.getChunkHeight(chunkx + 1, chunkz, 1, 15);
+        int bottomLeft = HeightMapGenerator.getChunkHeight(chunkx, chunkz + 1, 1, 15);
+        int bottomRight = HeightMapGenerator.getChunkHeight(chunkx + 1, chunkz + 1, 1, 15);
         
         for (int blockx = 0; blockx < chunk.getEdgeLength() ; blockx++) {
             for (int blockz = 0; blockz < chunk.getEdgeLength(); blockz++) {
                 
-                float interpolatorX = blockx/16f;
-                float interpolatorZ = blockz/16f;
-                
-                int upperCells = OmniMath.mix(topLeft, topRight, interpolatorX);
-                int lowerCells = OmniMath.mix(bottomLeft, bottomRight, interpolatorX);
-                int height = OmniMath.mix(upperCells, lowerCells, interpolatorZ);
+                int height = HeightMapGenerator.getBlockHeight(blockx, blockz, topLeft, topRight, bottomLeft, bottomRight);
                 
                 chunk.setBlocksBelow(blockx, blockz, height, dirt);
             }

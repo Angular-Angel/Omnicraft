@@ -34,7 +34,7 @@ public class BlockBufferManager extends VertexManager {
 
     @Override
     public void begin() {
-        begin(720, -1);
+        begin(1440, -1);
     }
     
     public void begin(int vertices, int indices) {
