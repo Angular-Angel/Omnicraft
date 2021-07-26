@@ -5,14 +5,14 @@
  */
 package net.angle.omnicraft.utils;
 
-import net.angle.omnicraft.utils.OmniMath;
-import net.angle.omnicraft.utils.OmniRandom;
 
 /**
  *
  * @author angle
  */
 public class HeightMapGenerator {
+    private static final OmniRandom r = new OmniRandom();
+    
     public static int[][] flat(int x, int z, int height) {
         int[][] heights = new int[x][z];
         
@@ -22,6 +22,17 @@ public class HeightMapGenerator {
             }
         }
         return heights;
+    }
+    
+    public static float getValue(int x, int z) {
+        r.setSeed(x * 234567 + z * 98527);
+        return r.nextFloat();
+    }
+    
+    public static int getValueHeight(int x, int z, int min, int max) {
+        float upperCells = OmniMath.mix(getValue(x, z), getValue(x + 1, z), 0.5f);
+        float lowerCells = OmniMath.mix(getValue(x, z + 1), getValue(x + 1, z + 1), 0.5f);
+        return OmniMath.mix(min, max, OmniMath.mix(lowerCells, upperCells, 0.5f));
     }
     
     public static int[][] valueNoise(int x, int z, int min, int max, OmniRandom random) {
