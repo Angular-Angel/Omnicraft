@@ -50,6 +50,7 @@ public class GameScreen extends Screen {
     private Text blockName;
     
     private OutlineStreamManager blockOutline;
+    private OutlineStreamManager chunkOutline;
     private BlockBufferManager wailaBlockDisplay;
     private FBO wailaBlockBuffer;
     private Mat4 wailaBlockView;
@@ -81,6 +82,9 @@ public class GameScreen extends Screen {
 
         blockOutline = new OutlineStreamManager();
         blockOutline.begin();
+        
+        chunkOutline = new OutlineStreamManager();
+        chunkOutline.begin();
 
         buildDebugWindow();
         buildWAILA();
@@ -209,6 +213,8 @@ public class GameScreen extends Screen {
         else
             lookDisplay.setText("None");
         debugWindow.setSizeFromContent();
+        
+        chunkOutline.streamBlockOutline(player.getChunkCoords().mult(16), 16);
     }
     
     private void updateWaila() {
@@ -288,6 +294,13 @@ public class GameScreen extends Screen {
             wailaBlockDisplay.draw();
             
             DGL.bindFBO(null);
+        }
+        
+        if (debugWindow.isVisible()) {
+            DGL.useProgram(client.outlineShader);
+            client.outlineShader.uniformMat4("u_projection_matrix", player.camera.projMat);
+            client.outlineShader.uniformMat4("u_view_matrix", player.camera.viewMat);
+            chunkOutline.draw();
         }
         
         DUI.render();

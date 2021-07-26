@@ -30,15 +30,19 @@ public class OutlineStreamManager extends VertexManager {
     }
     
     public void streamBlockOutline(Vec3i coord) {
+        streamBlockOutline(coord, 1);
+    }
+    
+    public void streamBlockOutline(Vec3i coord, int sideLength) {
         //starting corner
         float startx = (coord.x) * World.EDGE_LENGTH_OF_BLOCK;
         float starty = (coord.y) * World.EDGE_LENGTH_OF_BLOCK;
         float startz = (coord.z) * World.EDGE_LENGTH_OF_BLOCK;
         
         //end corner
-        float endx = startx + World.EDGE_LENGTH_OF_BLOCK;
-        float endy = starty + World.EDGE_LENGTH_OF_BLOCK;
-        float endz = startz + World.EDGE_LENGTH_OF_BLOCK;
+        float endx = startx + World.EDGE_LENGTH_OF_BLOCK * sideLength;
+        float endy = starty + World.EDGE_LENGTH_OF_BLOCK * sideLength;
+        float endz = startz + World.EDGE_LENGTH_OF_BLOCK * sideLength;
         
         blockOutlineVPos.set(new Vec3(startx, starty, startz)); blockOutline.vertex();
         
