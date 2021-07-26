@@ -58,8 +58,8 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     public void setBlock(int blockx, int blocky, int blockz, Block block) {
         if (!containsCoordinates(blockx, blocky, blockz)) {
             world.setBlock(blockx + getXVoxelOffset(), blocky + getYVoxelOffset(), blockz + getZVoxelOffset(), block);
-        }
-        blockChunk.setBlock(blockx, blocky, blockz, block);
+        } else
+            blockChunk.setBlock(blockx, blocky, blockz, block);
     }
 
     @Override
@@ -74,8 +74,8 @@ public class Chunk extends VoxelPositionable implements BlockContainer, SideCont
     public void setSide(Block.BlockFace face, int sidex, int sidey, int sidez, Side side) {
         if (!containsCoordinates(sidex, sidey, sidez)) {
             world.setSide(face, sidex + getXVoxelOffset(), sidey + getYVoxelOffset(), sidez + getZVoxelOffset(), side);
-        }
-        sideChunk.setSide(face, sidex, sidey, sidez, side);
+        } else
+            sideChunk.setSide(face, sidex, sidey, sidez, side);
     }
     
     public void setAllSidesOnSurface(Block.BlockFace face, Side side) {

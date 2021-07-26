@@ -58,7 +58,7 @@ float valueNoise(vec2 st) {
     float upperCells = mix(topLeft, topRight, interpolatorX);
     float lowerCells = mix(bottomLeft, bottomRight, interpolatorX);
 
-    float noise = mix(lowerCells, upperCells, interpolatorY);
+    float noise = mix(upperCells, lowerCells, interpolatorY);
     return noise;
 }
 
@@ -84,7 +84,7 @@ float perlinNoise(vec2 st) {
     float upperCells = mix(topLeftFunc, topRightFunc, interpolatorX);
     float lowerCells = mix(bottomLeftFunc, bottomRightFunc, interpolatorX);
 
-    float noise = mix(lowerCells, upperCells, interpolatorY);
+    float noise = mix(upperCells, lowerCells, interpolatorY);
     return noise;
 }
 
