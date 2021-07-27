@@ -142,8 +142,9 @@ void main() {
         int side_palette_size = side_texture_size.x - 1;
         int side_palette_length = side_texture_size.y - 1;
         float n = valueNoise(texel_position / 2);
+        n = smoothInterp(n);
         n = fand(n, getSidePaletteColor(0, side_palette_length).x);
-        out_color = mix(out_color, getSidePaletteColor(1, side_palette_length), pow(n, 5));
+        out_color = mix(out_color, getSidePaletteColor(1, side_palette_length), pow(n, 4));
         return;
     }
 }
