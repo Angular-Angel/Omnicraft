@@ -5,15 +5,11 @@
  */
 package net.angle.omnicraft.world;
 
-import com.samrj.devil.math.Vec2;
 import net.angle.omnicraft.utils.HeightMapGenerator;
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
-import static net.angle.omnicraft.utils.HeightMapGenerator.getValue;
-import net.angle.omnicraft.utils.OmniMath;
 import net.angle.omnicraft.utils.OmniRandom;
-import net.angle.omnicraft.world.blocks.Block;
 import net.angle.omnicraft.world.blocks.CubeShape;
 import net.angle.omnicraft.world.blocks.HomogenousBlock;
 import net.angle.omnicraft.world.blocks.Splatter;
@@ -70,7 +66,7 @@ public class WorldGenerator {
         if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
         if (chunk.getY() == 1)
-            return HeightMapGenerator.generateDirtFromValueHeightMap(chunk);
+            return HeightMapGenerator.generateDirtFromPerlinHeightMap(chunk, 1, 16);
             
         else return chunk;
     }

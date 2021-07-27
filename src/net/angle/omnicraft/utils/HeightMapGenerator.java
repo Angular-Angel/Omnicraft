@@ -57,15 +57,15 @@ public class HeightMapGenerator {
         return OmniMath.mix(upperCells, lowerCells, interpolatorZ);
     }
     
-    public static Chunk generateDirtFromValueHeightMap(Chunk chunk) {
+    public static Chunk generateDirtFromValueHeightMap(Chunk chunk, int min, int max) {
         Block dirt = chunk.world.blockTypes.get("Dirt Block");
         int chunkx = chunk.getX();
         int chunkz = chunk.getZ();
         
-        int topLeft = HeightMapGenerator.getValueChunkHeight(chunkx, chunkz, 1, 15);
-        int topRight = HeightMapGenerator.getValueChunkHeight(chunkx + 1, chunkz, 1, 15);
-        int bottomLeft = HeightMapGenerator.getValueChunkHeight(chunkx, chunkz + 1, 1, 15);
-        int bottomRight = HeightMapGenerator.getValueChunkHeight(chunkx + 1, chunkz + 1, 1, 15);
+        int topLeft = HeightMapGenerator.getValueChunkHeight(chunkx, chunkz, min, max);
+        int topRight = HeightMapGenerator.getValueChunkHeight(chunkx + 1, chunkz, min, max);
+        int bottomLeft = HeightMapGenerator.getValueChunkHeight(chunkx, chunkz + 1, min, max);
+        int bottomRight = HeightMapGenerator.getValueChunkHeight(chunkx + 1, chunkz + 1, min, max);
         
         for (int blockx = 0; blockx < chunk.getEdgeLength() ; blockx++) {
             for (int blockz = 0; blockz < chunk.getEdgeLength(); blockz++) {
@@ -81,7 +81,7 @@ public class HeightMapGenerator {
     
     
     
-    public static Chunk generateDirtFromPerlinHeightMap(Chunk chunk) {
+    public static Chunk generateDirtFromPerlinHeightMap(Chunk chunk, int min, int max) {
         Block dirt = chunk.world.blockTypes.get("Dirt Block");
         
         int chunkx = chunk.getX();
@@ -100,18 +100,18 @@ public class HeightMapGenerator {
                 
                 Vec2 interpolator = new Vec2(interpolatorX, interpolatorZ);
         
-                float topLeftValue = topLeftDir.dot(interpolator);
-                float topRightValue = topRightDir.dot(interpolator);
-                float bottomLeftValue = bottomLeftDir.dot(interpolator);
-                float bottomRightValue = bottomRightDir.dot(interpolator);
+                float topLeftValue = topLeftDir.dot(new Vec2(interpolator).sub(new Vec2(0, 0))) * 0.5f + 0.5f;
+                float topRightValue = topRightDir.dot(new Vec2(interpolator).sub(new Vec2(1, 0))) * 0.5f + 0.5f;
+                float bottomLeftValue = bottomLeftDir.dot(new Vec2(interpolator).sub(new Vec2(0, 1))) * 0.5f + 0.5f;
+                float bottomRightValue = bottomRightDir.dot(new Vec2(interpolator).sub(new Vec2(1, 1))) * 0.5f + 0.5f;
 
                 interpolatorX = OmniMath.smoothInterp(interpolatorX);
                 interpolatorZ = OmniMath.smoothInterp(interpolatorZ);
                 
-                int topLeft = OmniMath.mix(1, 15, topLeftValue);
-                int topRight = OmniMath.mix(1, 15, topRightValue);
-                int bottomLeft = OmniMath.mix(1, 15, bottomLeftValue);
-                int bottomRight = OmniMath.mix(1, 15, bottomRightValue);
+                int topLeft = OmniMath.mix(min, max, topLeftValue);
+                int topRight = OmniMath.mix(min, max, topRightValue);
+                int bottomLeft = OmniMath.mix(min, max, bottomLeftValue);
+                int bottomRight = OmniMath.mix(min, max, bottomRightValue);
 
                 int upperCells = OmniMath.mix(topLeft, topRight, interpolatorX);
                 int lowerCells = OmniMath.mix(bottomLeft, bottomRight, interpolatorX);
