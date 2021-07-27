@@ -37,8 +37,18 @@ public class HeightMapGenerator {
         return r.nextFloat();
     }
     
+    private static final float sqrt2o2 = (float) Math.sqrt(2)/2;
+    
+    private static final Vec2[] perlinDirs = new Vec2[]{new Vec2(1, 0), new Vec2(-1, 0), new Vec2(0, 1), new Vec2(0, -1),
+                                           new Vec2(sqrt2o2, sqrt2o2), new Vec2(-sqrt2o2, sqrt2o2), new Vec2(sqrt2o2, -sqrt2o2), new Vec2(-sqrt2o2, -sqrt2o2)};
+    
+    public static Vec2 getRandomDir(int x, int z) {
+        return new Vec2(getValue(x, z, 0) * 2 - 1, getValue(x, z, 1) * 2 - 1).normalize();
+    }
+    
     public static Vec2 getPerlinDir(int x, int z) {
-        return new Vec2(getValue(x, z, 0) * 2 - 1, getValue(x, z, 1) * 2 - 1);
+        r.setSeed(x * 234567 + z * 98527);
+        return perlinDirs[r.getBoundedInt(8)];
     }
     
     public static int getValueChunkHeight(int chunkx, int chunkz, int min, int max) {
@@ -49,8 +59,8 @@ public class HeightMapGenerator {
         float interpolatorX = blockx/16f;
         float interpolatorZ = blockz/16f;
 
-        interpolatorX = OmniMath.smoothInterp(interpolatorX);
-        interpolatorZ = OmniMath.smoothInterp(interpolatorZ);
+        interpolatorX = OmniMath.fifthDegPoly(interpolatorX);
+        interpolatorZ = OmniMath.fifthDegPoly(interpolatorZ);
 
         int upperCells = OmniMath.mix(topLeft, topRight, interpolatorX);
         int lowerCells = OmniMath.mix(bottomLeft, bottomRight, interpolatorX);
@@ -105,8 +115,8 @@ public class HeightMapGenerator {
                 float bottomLeftValue = bottomLeftDir.dot(new Vec2(interpolator).sub(new Vec2(0, 1))) * 0.5f + 0.5f;
                 float bottomRightValue = bottomRightDir.dot(new Vec2(interpolator).sub(new Vec2(1, 1))) * 0.5f + 0.5f;
 
-                interpolatorX = OmniMath.smoothInterp(interpolatorX);
-                interpolatorZ = OmniMath.smoothInterp(interpolatorZ);
+                interpolatorX = OmniMath.fifthDegPoly(interpolatorX);
+                interpolatorZ = OmniMath.fifthDegPoly(interpolatorZ);
                 
                 int topLeft = OmniMath.mix(min, max, topLeftValue);
                 int topRight = OmniMath.mix(min, max, topRightValue);

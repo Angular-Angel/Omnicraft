@@ -35,4 +35,12 @@ public class OmniMath {
         float end = endingInterp(interpolator);
         return mix(start, end, interpolator);
     }
+    
+    public static float hermiteBlend(float t) {
+        return (float) (3 * Math.pow(t, 2) - 2 * Math.pow(t, 3));
+    }
+    
+    public static float fifthDegPoly(float t) {
+        return (float) (6 * Math.pow(t, 5) - 15 * Math.pow(t, 4) + 10 * Math.pow(t, 3));
+    }
 }
