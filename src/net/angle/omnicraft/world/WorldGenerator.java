@@ -5,10 +5,12 @@
  */
 package net.angle.omnicraft.world;
 
+import com.samrj.devil.math.Vec2;
 import net.angle.omnicraft.utils.HeightMapGenerator;
 import java.awt.Color;
 import net.angle.omnicraft.graphics.ColorSource;
 import net.angle.omnicraft.graphics.RenderData;
+import static net.angle.omnicraft.utils.HeightMapGenerator.getValue;
 import net.angle.omnicraft.utils.OmniMath;
 import net.angle.omnicraft.utils.OmniRandom;
 import net.angle.omnicraft.world.blocks.Block;
@@ -64,33 +66,11 @@ public class WorldGenerator {
         return chunk;
     }
     
-    public Chunk generateDirtFromHeightMap(Chunk chunk) {
-        Block dirt = chunk.world.blockTypes.get("Dirt Block");
-        int chunkx = chunk.getX();
-        int chunkz = chunk.getZ();
-        
-        int topLeft = HeightMapGenerator.getChunkHeight(chunkx, chunkz, 1, 15);
-        int topRight = HeightMapGenerator.getChunkHeight(chunkx + 1, chunkz, 1, 15);
-        int bottomLeft = HeightMapGenerator.getChunkHeight(chunkx, chunkz + 1, 1, 15);
-        int bottomRight = HeightMapGenerator.getChunkHeight(chunkx + 1, chunkz + 1, 1, 15);
-        
-        for (int blockx = 0; blockx < chunk.getEdgeLength() ; blockx++) {
-            for (int blockz = 0; blockz < chunk.getEdgeLength(); blockz++) {
-                
-                int height = HeightMapGenerator.getBlockHeight(blockx, blockz, topLeft, topRight, bottomLeft, bottomRight);
-                
-                chunk.setBlocksBelow(blockx, blockz, height, dirt);
-            }
-        }
-        chunk.setAllSidesOnSurface(Block.BlockFace.top, chunk.world.sideTypes.get("Grass"));
-        return chunk;
-    }
-    
     public Chunk generateChunk(Chunk chunk) {
         if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
         if (chunk.getY() == 1)
-            return generateDirtFromHeightMap(chunk);
+            return HeightMapGenerator.generateDirtFromValueHeightMap(chunk);
             
         else return chunk;
     }
