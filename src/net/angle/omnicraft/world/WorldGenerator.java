@@ -66,7 +66,7 @@ public class WorldGenerator {
         if (chunk.getY() == 0)
             return generateDirtFloor(chunk);
         if (chunk.getY() == 1)
-            return HeightMapGenerator.generateDirtFromPerlinHeightMap(chunk, 1, 16);
+            return HeightMapGenerator.generateDirtFromSimplexHeightMap(chunk, 1, 16);
             
         else return chunk;
     }

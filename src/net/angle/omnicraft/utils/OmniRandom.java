@@ -13,6 +13,14 @@ import java.util.Random;
  * @license https://gitlab.com/AngularAngel/omnicraft/-/blob/master/LICENSE
  */
 public class OmniRandom extends Random {
+
+    public OmniRandom(int seed) {
+        super(seed);
+    }
+
+    public OmniRandom() {
+        super();
+    }
     public int getIntBetween(int min, int max) {
         if (max == 0 && min == 0)
             return 0;

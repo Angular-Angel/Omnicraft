@@ -16,6 +16,7 @@ import net.angle.omnicraft.world.blocks.Block;
  */
 public class HeightMapGenerator {
     private static final OmniRandom r = new OmniRandom();
+    private static final SimplexNoise simplex = new SimplexNoise();
     
     public static int[][] flat(int x, int z, int height) {
         int[][] heights = new int[x][z];
@@ -89,8 +90,6 @@ public class HeightMapGenerator {
         return chunk;
     }
     
-    
-    
     public static Chunk generateDirtFromPerlinHeightMap(Chunk chunk, int min, int max) {
         Block dirt = chunk.world.blockTypes.get("Dirt Block");
         
@@ -126,6 +125,20 @@ public class HeightMapGenerator {
                 int upperCells = OmniMath.mix(topLeft, topRight, interpolatorX);
                 int lowerCells = OmniMath.mix(bottomLeft, bottomRight, interpolatorX);
                 int height = OmniMath.mix(upperCells, lowerCells, interpolatorZ);
+                
+                chunk.setBlocksBelow(blockx, blockz, height, dirt);
+            }
+        }
+        chunk.setAllSidesOnSurface(Block.BlockFace.top, chunk.world.sideTypes.get("Grass"));
+        return chunk;
+    }
+    
+    public static Chunk generateDirtFromSimplexHeightMap(Chunk chunk, int min, int max) {
+        Block dirt = chunk.world.blockTypes.get("Dirt Block");
+        
+        for (int blockx = 0; blockx < chunk.getEdgeLength() ; blockx++) {
+            for (int blockz = 0; blockz < chunk.getEdgeLength(); blockz++) {
+                int height = OmniMath.mix(min, max, (float) simplex.noise(chunk.getX() + blockx/16.0, chunk.getZ() + blockz/16.0) * 0.5f + 0.5f);
                 
                 chunk.setBlocksBelow(blockx, blockz, height, dirt);
             }
