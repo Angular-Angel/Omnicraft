@@ -335,9 +335,10 @@ public class GameScreen extends Screen {
     public void destroy(Boolean crashed) {
         world.delete();
         blockOutline.clearVertices();
+        chunkOutline.clearVertices();
         wailaBlockDisplay.clearVertices();
         wailaPreviewForm.destroy();
         
-        DGL.delete(wailaDepthTexture, wailaPreviewTexture, wailaBlockBuffer);
+        DGL.delete(wailaDepthTexture, wailaPreviewTexture, wailaBlockBuffer, skyboxShader);
     }
 }
