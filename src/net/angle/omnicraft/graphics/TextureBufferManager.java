@@ -15,21 +15,11 @@ import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
  *
  * @author angle
  */
-public class TextureBufferManager extends VertexManager {
-    
-    private VertexBuffer buffer;
-    private Vec3 bufferVPos;
-    private Vec2 bufferVTexCoord;
+public class TextureBufferManager extends VertexBufferManager {
 
     @Override
     public void begin() {
-        buffer = DGL.genVertexBuffer(4, 6);
-        
-        bufferVPos = buffer.vec3("in_pos");
-        bufferVTexCoord = buffer.vec2("in_tex_coord");
-        
-        buffer.begin();
-        super.begin();
+        begin(4, 6);
     }
     
     public void bufferVertices(Vec3 topLeft, Vec3 bottomRight) {
@@ -50,21 +40,6 @@ public class TextureBufferManager extends VertexManager {
         buffer.index(0);
         buffer.index(2);
         buffer.index(3);
-    }
-
-    @Override
-    protected void uploadVertices() {
-        buffer.end();
-    }
-
-    @Override
-    protected void drawVertices() {
-        DGL.draw(buffer, GL_TRIANGLES);
-    }
-
-    @Override
-    protected void deleteVertices() {
-        DGL.delete(buffer);
     }
     
 }

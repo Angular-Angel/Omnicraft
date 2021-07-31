@@ -22,12 +22,7 @@ import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
  *
  * @author angle
  */
-public class BlockBufferManager extends VertexManager {
-    
-    private VertexBuffer buffer;
-    
-    private Vec3 bufferVPos;
-    private Vec2 bufferVTexCoord;
+public class BlockBufferManager extends VertexBufferManager {
     private VertexBuilder.IntAttribute buffer_block_palette_index;
     private VertexBuilder.IntAttribute buffer_side_palette_index;
     private Vec3 bufferVRandom;
@@ -36,18 +31,13 @@ public class BlockBufferManager extends VertexManager {
     public void begin() {
         begin(5760, -1);
     }
-    
-    public void begin(int vertices, int indices) {
-        buffer = DGL.genVertexBuffer(vertices, indices);
-        
-        bufferVPos = buffer.vec3("in_pos");
-        bufferVTexCoord = buffer.vec2("in_tex_coord");
+
+    @Override
+    protected void beginVariables(int vertices, int indices) {
+        super.beginVariables(vertices, indices); //To change body of generated methods, choose Tools | Templates.
         buffer_block_palette_index = buffer.aint("in_block_palette_index");
         buffer_side_palette_index = buffer.aint("in_side_palette_index");
         bufferVRandom = buffer.vec3("in_random");
-        
-        buffer.begin();
-        super.begin();
     }
     
     public void bufferOptimizedMesh(Chunk chunk) {

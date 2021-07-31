@@ -8,6 +8,7 @@ package net.angle.omnicraft.client;
 import com.samrj.devil.game.Game;
 import com.samrj.devil.gl.DGL;
 import com.samrj.devil.gl.FBO;
+import com.samrj.devil.gl.ShaderProgram;
 import com.samrj.devil.gl.Texture2D;
 import com.samrj.devil.gui.Align;
 import com.samrj.devil.gui.DUI;
@@ -19,8 +20,12 @@ import com.samrj.devil.math.Mat4;
 import com.samrj.devil.math.Util;
 import com.samrj.devil.math.Vec2;
 import com.samrj.devil.math.Vec3;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.angle.omnicraft.graphics.BlockBufferManager;
 import net.angle.omnicraft.graphics.OutlineStreamManager;
+import net.angle.omnicraft.graphics.SkyboxBufferManager;
 import net.angle.omnicraft.world.World;
 import net.angle.omnicraft.world.WorldGenerator;
 import net.angle.omnicraft.world.blocks.Block;
@@ -49,6 +54,8 @@ public class GameScreen extends Screen {
     private Window waila;
     private Text blockName;
     
+    private SkyboxBufferManager skybox;
+    
     private OutlineStreamManager blockOutline;
     private OutlineStreamManager chunkOutline;
     private BlockBufferManager wailaBlockDisplay;
@@ -58,6 +65,8 @@ public class GameScreen extends Screen {
     
     private Texture2D wailaPreviewTexture;
     private Texture2D wailaDepthTexture;
+    
+    public ShaderProgram skyboxShader;
     
     private static final int previewWidth = 150, previewHeight = 150;
     
@@ -72,6 +81,11 @@ public class GameScreen extends Screen {
 
     @Override
     public void init() {
+        try {
+            skyboxShader = DGL.loadProgram("resources/skybox_shader");
+        } catch (IOException ex) {
+            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Game.getMouse().setGrabbed(true);
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -90,6 +104,8 @@ public class GameScreen extends Screen {
         buildWAILA();
 
         wailaBlockDisplay = new BlockBufferManager();
+        
+        skybox = new SkyboxBufferManager();
         
         Game.getMouse().setGrabbed(true);
     }
@@ -244,6 +260,13 @@ public class GameScreen extends Screen {
         }
     }
     
+    private void bufferSkybox() {
+        skybox.clearVertices();
+        wailaBlockDisplay.begin(36, -1);
+        
+        wailaBlockDisplay.upload();
+    }
+    
     @Override
     public void step(float dt) {
         player.update(dt);
@@ -273,6 +296,8 @@ public class GameScreen extends Screen {
         world.prepareShader(client.blockShader);
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        skybox.draw();
         
         world.draw();
         
